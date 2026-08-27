@@ -1,21 +1,21 @@
 <!--
-name: 'Data: Managed Agents reference — Ruby'
-description: Managed Agents API reference doc (Ruby bindings).
-ccVersion: 2.1.205
+name: "Data: Managed Agents reference — Ruby"
+description: "Reference guide for using the Anthropic Ruby SDK to create and manage agents, environments, and sessions"
+ccVersion: "2.1.235"
 -->
-# Managed Agents — Ruby
+# Managed Agents — Ruby.
 
-> **Bindings not shown here:** This README covers the most common managed-agents flows for Ruby. If you need a class, method, namespace, field, or behavior that isn't shown, WebFetch the Ruby SDK repo **or the relevant docs page** from `shared/live-sources.md` rather than guess. Do not extrapolate from cURL shapes or another language's SDK.
+> **Bindings not shown here:** This README covers the most common managed-agents flows for Ruby. If you need a class, method, namespace, field, or behavior that is not shown, WebFetch the Ruby SDK repo **or the relevant docs page** from `shared/live-sources.md` rather than guess. Do not extrapolate from cURL shapes or another language's SDK.
 
-> **Agents are persistent — create once, reference by ID.** Store the agent ID returned by `client.beta.agents.create` and pass it to every subsequent `client.beta.sessions.create`; do not call `agents.create` in the request path. **Recommended:** define agents and environments as version-controlled YAML applied with the `ant` CLI — see `shared/anthropic-cli.md` (its live-docs URL is in `shared/live-sources.md`). The CLI owns the control plane (create/update); your code owns the data plane (sessions with the stored ID). The examples below show in-code creation for when you must provision programmatically; in production the create call belongs in setup, not in the request path.
+> **Agents are persistent. Create once, reference by ID**. Store the agent ID returned by `client.beta.agents.create` and pass it to every subsequent `client.beta.sessions.create`. Do not call `agents.create` in the request path. **Recommended:** define agents and environments as version-controlled YAML applied with the `ant` CLI. See `shared/anthropic-cli.md` (its live-docs URL is in `shared/live-sources.md`). The CLI owns the control plane (create/update). Your code owns the data plane (sessions with the stored ID). The examples below show in-code creation for when you must provision programmatically. In production the create call belongs in setup, not in the request path.
 
-## Installation
+## Installation.
 
 ```bash
 gem install anthropic
 ```
 
-## Client Initialization
+## Client Initialization.
 
 ```ruby
 require "anthropic"
@@ -31,7 +31,7 @@ client = Anthropic::Client.new(api_key: "your-api-key")
 
 ---
 
-## Create an Environment
+## Create an Environment.
 
 ```ruby
 environment = client.beta.environments.create(
@@ -46,11 +46,11 @@ puts "Environment ID: #{environment.id}" # env_...
 
 ---
 
-## Create an Agent (required first step)
+## Create an Agent (required first step).
 
-> ⚠️ **There is no inline agent config.** `model`/`system_`/`tools` live on the agent object, not the session. Always start with `client.beta.agents.create()` — the session takes either `agent: agent.id` or the typed hash form `agent: {type: "agent", id: agent.id, version: agent.version}`.
+> ⚠️ **There is no inline agent config**. `model`/`system_`/`tools` live on the agent object, not the session. Always start with `client.beta.agents.create()`. The session takes either `agent: agent.id` or the typed hash form `agent: {type: "agent", id: agent.id, version: agent.version}`.
 
-### Minimal
+### Minimal.
 
 ```ruby
 # 1. Create the agent (reusable, versioned)
@@ -71,9 +71,9 @@ puts "Session ID: #{session.id}"
 puts "Trace: https://platform.claude.com/workspaces/default/sessions/#{session.id}"  # swap 'default' for your workspace ID if the API key is not in the Default workspace
 ```
 
-### Updating an Agent
+### Updating an Agent.
 
-Updates create new versions; the agent object is immutable per version.
+Updates create new versions. The agent object is immutable per version.
 
 ```ruby
 updated_agent = client.beta.agents.update(
@@ -95,7 +95,7 @@ puts "Archived at: #{archived.archived_at.iso8601}"
 
 ---
 
-## Send a User Message
+## Send a User Message.
 
 ```ruby
 client.beta.sessions.events.send_(
@@ -107,11 +107,11 @@ client.beta.sessions.events.send_(
 )
 ```
 
-> 💡 **Stream-first:** Open the stream *before* (or concurrently with) sending the message. The stream only delivers events that occur after it opens — stream-after-send means early events arrive buffered in one batch. See [Steering Patterns](../../shared/managed-agents-events.md#steering-patterns).
+> 💡 **Stream-first:** Open the stream *before* (or concurrently with) sending the message. The stream only delivers events that occur after it opens. Stream-after-send means early events arrive buffered in one batch. See [Steering Patterns](../../shared/managed-agents-events.md#steering-patterns).
 
 ---
 
-## Stream Events (SSE)
+## Stream Events (SSE).
 
 ```ruby
 # Open the stream first, then send the user message
@@ -130,11 +130,13 @@ stream.each do |event|
   in :"agent.message"
     event.content.each { |block| print block.text }
   in :"agent.tool_use"
-    puts "\n[Using tool: #{event.name}]"
+    puts "\
+[Using tool: #{event.name}]"
   in :"session.status_idle"
     break
   in :"session.error"
-    puts "\n[Error: #{event.error&.message || "unknown"}]"
+    puts "\
+[Error: #{event.error&.message || "unknown"}]"
     break
   else
     # ignore other event types
@@ -144,7 +146,7 @@ end
 
 > ℹ️ Event `.type` is a Symbol (compare with `:"agent.message"`, not `"agent.message"`).
 
-### Reconnecting and Tailing
+### Reconnecting and Tailing.
 
 When reconnecting mid-session, list past events first to dedupe, then tail live events:
 
@@ -174,13 +176,13 @@ end
 
 ---
 
-## Provide Custom Tool Result
+## Provide Custom Tool Result.
 
 > ℹ️ The Ruby managed-agents bindings for `user.custom_tool_result` are not yet documented in this skill or in the apps source examples. Refer to `shared/managed-agents-events.md` for the wire format and the `anthropic` Ruby gem repository for the corresponding params.
 
 ---
 
-## Poll Events
+## Poll Events.
 
 ```ruby
 client.beta.sessions.events.list(session.id).auto_paging_each do |event|
@@ -190,7 +192,7 @@ end
 
 ---
 
-## Upload a File
+## Upload a File.
 
 ```ruby
 require "pathname"
@@ -212,7 +214,7 @@ session = client.beta.sessions.create(
 )
 ```
 
-### Add and Manage Resources on an Existing Session
+### Add and Manage Resources on an Existing Session.
 
 ```ruby
 # Attach an additional file to an open session
@@ -233,7 +235,7 @@ client.beta.sessions.resources.delete(resource.id, session_id: session.id)
 
 ---
 
-## List and Download Session Files
+## List and Download Session Files.
 
 ```ruby
 files = client.beta.files.list(scope_id: "sesn_abc123", betas: ["managed-agents-2026-04-01"])
@@ -243,7 +245,7 @@ File.binwrite("output.txt", content.read)
 
 ---
 
-## Session Management
+## Session Management.
 
 ```ruby
 # List environments
@@ -264,7 +266,7 @@ client.beta.sessions.delete(session.id)
 
 ---
 
-## MCP Server Integration
+## MCP Server Integration.
 
 ```ruby
 # Agent declares MCP server (no auth here — auth goes in a vault)
@@ -296,7 +298,7 @@ See `shared/managed-agents-tools.md` §Vaults for creating vaults and adding cre
 
 ---
 
-## Vaults
+## Vaults.
 
 ```ruby
 # Create a vault
@@ -346,7 +348,7 @@ client.beta.vaults.archive(vault.id)
 
 ---
 
-## GitHub Repository Integration
+## GitHub Repository Integration.
 
 Mount a GitHub repository as a session resource (a vault holds the GitHub MCP credential):
 

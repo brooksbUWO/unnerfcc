@@ -1,21 +1,25 @@
 <!--
-name: 'Tool Description: WebFetch'
-description: Tool description for web fetch functionality.
-ccVersion: 2.1.235
+name: "Tool Description: WebFetch"
+description: "Tool description for web fetch functionality"
+ccVersion: "2.1.233"
+variables:
+  - "WEBFETCH_CACHE_TTL_FN"
 -->
 
-- Fetches content from a specified URL and processes it using an AI model
-- Takes a URL and a prompt as input
-- Fetches the URL content, converts HTML to markdown
-- Processes the content with the prompt using a small, fast model
-- Returns the model's response about the content
-- Use this tool when you need to retrieve and analyze web content
+- Fetches content from a specified URL and processes it with an AI model.
+- Takes a URL and a prompt as input.
+- Fetches the URL content and converts HTML to markdown.
+- Processes the content with the prompt and a small, fast model.
+- Returns the response of the model about the content.
+- Use this tool to retrieve and analyze web content.
 
 Usage notes:
-  - IMPORTANT: If an MCP-provided web fetch tool is available, prefer using that tool instead of this one, as it may have fewer restrictions.
-  - The URL must be a fully-formed valid URL
-  - HTTP URLs will be automatically upgraded to HTTPS
-  - The prompt should describe what information you want to extract from the page
-  - This tool is read-only and does not modify any files
-  - Results may be summarized if the content is very large
-  - Includes a self-cleaning cache (entries expire after 
+  - IMPORTANT: If an MCP web fetch tool is available, prefer it over this tool. It can have fewer restrictions.
+  - The URL must be a fully-formed valid URL.
+  - HTTP URLs are upgraded to HTTPS automatically.
+  - The prompt describes what information you want from the page.
+  - This tool is read-only. It does not modify any files.
+  - Large content can come back summarized.
+  - This tool includes a self-cleaning cache for faster responses on the same URL. Entries expire after ${WEBFETCH_CACHE_TTL_FN()}.
+  - When a URL redirects to a different host, the tool gives you the redirect URL in a special format. Then make a new WebFetch request with the redirect URL to fetch the content.
+  - For GitHub URLs, prefer the gh CLI through Bash (for example, gh pr view, gh issue view, gh api).

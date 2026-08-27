@@ -1,24 +1,22 @@
 <!--
-name: 'Data: Live documentation sources'
-description: >-
-  WebFetch URLs for fetching current Claude API and Agent SDK documentation from
-  official sources
-ccVersion: 2.1.231
+name: "Data: Live documentation sources"
+description: "WebFetch URLs for fetching current Claude API and Agent SDK documentation from official sources"
+ccVersion: "2.1.224"
 -->
-# Live Documentation Sources
+# Live Documentation Sources.
 
-This file contains WebFetch URLs for fetching current information from platform.claude.com and Agent SDK repositories. Use these when users need the latest data that may have changed since the cached content was last updated.
+This file contains WebFetch URLs for fetching current information from platform.claude.com and Agent SDK repositories. Use these when users need the latest data that can have changed since the cached content was last updated.
 
-## When to Use WebFetch
+## When to Use WebFetch.
 
-- User explicitly asks for "latest" or "current" information
-- Cached data seems incorrect
-- User asks about features not covered in cached content
-- User needs specific API details or examples
+- User explicitly asks for "latest" or "current" information.
+- Cached data seems incorrect.
+- User asks about features not covered in cached content.
+- User needs specific API details or examples.
 
-## Claude API Documentation URLs
+## Claude API Documentation URLs.
 
-### Models & Pricing
+### Models & Pricing.
 
 | Topic           | URL                                                                          | Extraction Prompt                                                               |
 | --------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
@@ -27,7 +25,7 @@ This file contains WebFetch URLs for fetching current information from platform.
 | Introducing Claude Fable 5 | `https://platform.claude.com/docs/en/about-claude/models/introducing-claude-fable-5.md` | "Extract capabilities, API changes, and availability stages for Claude Fable 5 and Claude Mythos 5" |
 | Pricing         | `https://platform.claude.com/docs/en/pricing.md`                             | "Extract current pricing per million tokens for input and output"               |
 
-### Core Features
+### Core Features.
 
 | Topic             | URL                                                                          | Extraction Prompt                                                                      |
 | ----------------- | ---------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
@@ -38,14 +36,14 @@ This file contains WebFetch URLs for fetching current information from platform.
 | Streaming         | `https://platform.claude.com/docs/en/build-with-claude/streaming.md`         | "Extract streaming event types, SDK examples, and best practices"                      |
 | Prompt Caching    | `https://platform.claude.com/docs/en/build-with-claude/prompt-caching.md`    | "Extract cache_control usage, pricing benefits, and implementation examples"           |
 
-### Media & Files
+### Media & Files.
 
 | Topic       | URL                                                                    | Extraction Prompt                                                 |
 | ----------- | ---------------------------------------------------------------------- | ----------------------------------------------------------------- |
 | Vision      | `https://platform.claude.com/docs/en/build-with-claude/vision.md`      | "Extract supported image formats, size limits, and code examples" |
 | PDF Support | `https://platform.claude.com/docs/en/build-with-claude/pdf-support.md` | "Extract PDF handling capabilities, limits, and examples"         |
 
-### API Operations
+### API Operations.
 
 | Topic            | URL                                                                         | Extraction Prompt                                                                                       |
 | ---------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
@@ -56,9 +54,9 @@ This file contains WebFetch URLs for fetching current information from platform.
 | Errors           | `https://platform.claude.com/docs/en/api/errors.md`                         | "Extract HTTP error codes, meanings, and retry guidance"                                                |
 | Amazon Bedrock   | `https://platform.claude.com/docs/en/build-with-claude/claude-on-amazon-bedrock.md` | "Extract the AnthropicBedrockMantle client per language, `anthropic.`-prefixed model IDs, auth paths, feature availability, and regions" |
 | Claude Platform on AWS | `https://platform.claude.com/docs/en/build-with-claude/claude-platform-on-aws.md` | "Extract the AnthropicAWS client per language, SigV4 auth, credential precedence, short-term API keys, workspace_id, and region requirements" |
-| Claude Platform on AWS — IAM actions | `https://platform.claude.com/docs/en/api/claude-platform-on-aws-iam-actions.md` | "Extract the IAM action names, resource ARNs, and policy examples required for each API capability" |
+| Claude Platform on AWS. IAM actions | `https://platform.claude.com/docs/en/api/claude-platform-on-aws-iam-actions.md` | "Extract the IAM action names, resource ARNs, and policy examples required for each API capability" |
 
-### Tools
+### Tools.
 
 | Topic          | URL                                                                                    | Extraction Prompt                                                                        |
 | -------------- | -------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
@@ -71,7 +69,7 @@ This file contains WebFetch URLs for fetching current information from platform.
 | Programmatic Tool Calling | `https://platform.claude.com/docs/en/agents-and-tools/tool-use/programmatic-tool-calling.md` | "Extract PTC setup, script execution model, and tool invocation from code"    |
 | Skills         | `https://platform.claude.com/docs/en/agents-and-tools/skills.md`                       | "Extract skill folder structure, SKILL.md format, and loading behavior"                  |
 
-### Advanced Features
+### Advanced Features.
 
 | Topic              | URL                                                                           | Extraction Prompt                                   |
 | ------------------ | ----------------------------------------------------------------------------- | --------------------------------------------------- |
@@ -81,9 +79,9 @@ This file contains WebFetch URLs for fetching current information from platform.
 | Citations          | `https://platform.claude.com/docs/en/build-with-claude/citations.md`          | "Extract citation format and implementation"        |
 | Context Windows    | `https://platform.claude.com/docs/en/build-with-claude/context-windows.md`    | "Extract context window sizes and token management" |
 
-### Managed Agents
+### Managed Agents.
 
-Use these when a managed-agents binding, behavior, or wire-level detail isn't covered in the cached `shared/managed-agents-*.md` concept files or in `{lang}/managed-agents/README.md`.
+Use these when a managed-agents binding, behavior, or wire-level detail is not covered in the cached `shared/managed-agents-*.md` concept files or in `{lang}/managed-agents/README.md`.
 
 | Topic                 | URL                                                                              | Extraction Prompt                                                                               |
 | --------------------- | -------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
@@ -94,7 +92,7 @@ Use these when a managed-agents binding, behavior, or wire-level detail isn't co
 | Sessions              | `https://platform.claude.com/docs/en/managed-agents/sessions.md`                 | "Extract session lifecycle, status transitions, idle/terminated semantics, and resume rules"    |
 | Environments          | `https://platform.claude.com/docs/en/managed-agents/environments.md`             | "Extract environment config (cloud/networking), management endpoints, and reuse model"          |
 | Self-Hosted Sandboxes | `https://platform.claude.com/docs/en/managed-agents/self-hosted-sandboxes.md`    | "Extract config:{type:self_hosted}, ANTHROPIC_ENVIRONMENT_KEY, EnvironmentWorker.run/run_one, beta_agent_toolset, ant beta:worker poll/run, webhook-driven wake" |
-| Self-Hosted Sandboxes — Security | `https://platform.claude.com/docs/en/managed-agents/self-hosted-sandboxes-security.md` | "Extract what the customer owns (hardening, egress, key custody, trust boundaries) vs what Anthropic cannot do" |
+| Self-Hosted Sandboxes. Security | `https://platform.claude.com/docs/en/managed-agents/self-hosted-sandboxes-security.md` | "Extract what the customer owns (hardening, egress, key custody, trust boundaries) vs what Anthropic cannot do" |
 | Events and Streaming  | `https://platform.claude.com/docs/en/managed-agents/events-and-streaming.md`     | "Extract event stream types, stream-first ordering, reconnect/dedupe, and steering patterns"    |
 | Tools                 | `https://platform.claude.com/docs/en/managed-agents/tools.md`                    | "Extract built-in toolset, custom tool definitions, and tool result wire format"                |
 | Files                 | `https://platform.claude.com/docs/en/managed-agents/files.md`                    | "Extract file upload, mount paths, session resources, and listing/downloading session outputs"  |
@@ -111,9 +109,9 @@ Use these when a managed-agents binding, behavior, or wire-level detail isn't co
 | Cloud Containers      | `https://platform.claude.com/docs/en/managed-agents/cloud-containers.md`         | "Extract cloud container runtime, image config, and network/storage knobs"                     |
 | Migration             | `https://platform.claude.com/docs/en/managed-agents/migration.md`                | "Extract migration paths from earlier APIs/preview shapes to GA managed agents"                 |
 
-### Anthropic CLI
+### Anthropic CLI.
 
-The `ant` CLI provides terminal access to the Claude API. Every API resource is exposed as a subcommand. It is the recommended way to create agents and environments from version-controlled YAML (`ant beta:agents create < agent.yaml` — see `shared/anthropic-cli.md`), and also exposes sessions and every other API resource for scripting and interactive inspection.
+The `ant` CLI provides terminal access to the Claude API. Every API resource is exposed as a subcommand. It is the recommended way to create agents and environments from version-controlled YAML (`ant beta:agents create < agent.yaml`. See `shared/anthropic-cli.md`), and also exposes sessions and every other API resource for scripting and interactive inspection.
 
 | Topic         | URL                                                     | Extraction Prompt                                                                                  |
 | ------------- | ------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
@@ -123,9 +121,9 @@ The `ant` CLI provides terminal access to the Claude API. Every API resource is 
 
 ---
 
-## Claude API SDK Repositories
+## Claude API SDK Repositories.
 
-WebFetch these when a binding (class, method, namespace, field) isn't covered in the cached `{lang}/` skill files or in the managed-agents docs above. The SDKs include beta managed-agents support for `/v1/agents`, `/v1/sessions`, `/v1/environments`, and related resources — search the repo for `BetaManagedAgents`, `beta.agents`, `beta.sessions`, or the equivalent namespace for that language.
+WebFetch these when a binding (class, method, namespace, field) is not covered in the cached `{lang}/` skill files or in the managed-agents docs above. The SDKs include beta managed-agents support for `/v1/agents`, `/v1/sessions`, `/v1/environments`, and related resources. Search the repo for `BetaManagedAgents`, `beta.agents`, `beta.sessions`, or the equivalent namespace for that language.
 
 | SDK        | URL                                                      | Extraction Prompt                                                                                                       |
 | ---------- | -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
@@ -137,14 +135,14 @@ WebFetch these when a binding (class, method, namespace, field) isn't covered in
 | C#         | `https://github.com/anthropics/anthropic-sdk-csharp`     | "Extract beta managed-agents classes and method signatures (NuGet package, `BetaManagedAgents*` types)"                 |
 | PHP        | `https://github.com/anthropics/anthropic-sdk-php`        | "Extract beta managed-agents classes and method signatures (`$client->beta->agents`, `BetaManagedAgents*` params)"      |
 
-Each SDK repo also ships runnable programs under `examples/` — including the refusal-fallback / `fallbacks` examples (client-side middleware registration, fallback state, server-side `fallbacks` param). Fetch those for exact per-language syntax instead of translating another language's example.
+Each SDK repo also ships runnable programs under `examples/`. Including the refusal-fallback / `fallbacks` examples (client-side middleware registration, fallback state, server-side `fallbacks` param). Fetch those for exact per-language syntax instead of translating another language's example.
 
 ---
 
-## Fallback Strategy
+## Fallback Strategy.
 
 If WebFetch fails (network issues, URL changed):
 
-1. Use cached content from the language-specific files (note the cache date)
-2. Inform user the data may be outdated
-3. Suggest they check platform.claude.com or the GitHub repos directly
+1. Use cached content from the language-specific files (note the cache date).
+2. Inform user the data can be outdated.
+3. Suggest they check platform.claude.com or the GitHub repos directly.

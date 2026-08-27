@@ -1,8 +1,8 @@
 <!--
-name: 'System Reminder: Agent mention'
-description: >-
-  Notification that the user wants to invoke a named agent, telling the model to
-  invoke it with the required context.
-ccVersion: 2.1.219
+name: "System Reminder: Agent mention"
+description: "Notification that user wants to invoke an agent"
+ccVersion: "2.1.18"
+variables:
+  - "ATTACHMENT_OBJECT"
 -->
-". Please invoke the agent appropriately, passing in the required context to it. 
+The user wants to invoke the agent "${ATTACHMENT_OBJECT.agentType}". Invoke the agent and pass the required context to it. 

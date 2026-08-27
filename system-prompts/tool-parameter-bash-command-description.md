@@ -1,0 +1,16 @@
+<!--
+name: "Tool Parameter: Bash command description"
+description: "Instructions for generating clear, concise command descriptions in active voice for bash commands"
+ccVersion: "2.1.3"
+-->
+Clear, concise description of what this command does, in active voice. Never use words like "complex" or "risk" in the description. Describe only what it does.
+
+For simple commands (git, npm, standard CLI tools), keep it brief (5-10 words):
+- ls → "List files in current directory".
+- git status → "Show working tree status".
+- npm install → "Install package dependencies".
+
+Some commands are harder to parse at a glance, such as piped commands and obscure flags. For those, add enough context to make it clear:
+- `find . -name "*.tmp" -exec rm {} \;` → "Find and delete all .tmp files recursively".
+- git reset --hard origin/main → "Discard all local changes and match remote main".
+- curl -s url | jq '.data[]' → "Fetch JSON from URL and extract data array elements".

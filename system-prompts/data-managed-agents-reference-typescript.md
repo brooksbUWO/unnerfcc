@@ -1,24 +1,21 @@
 <!--
-name: 'Data: Managed Agents reference — TypeScript'
-description: >-
-  Reference guide for using the Anthropic TypeScript SDK to create and manage
-  agents, sessions, environments, streaming, custom tools, file uploads, and MCP
-  server integration
-ccVersion: 2.1.205
+name: "Data: Managed Agents reference — TypeScript"
+description: "Reference guide for using the Anthropic TypeScript SDK to create and manage agents, sessions, environments, streaming, custom tools, file uploads, and MCP server integration"
+ccVersion: "2.1.235"
 -->
-# Managed Agents — TypeScript
+# Managed Agents — TypeScript.
 
-> **Bindings not shown here:** This README covers the most common managed-agents flows for TypeScript. If you need a class, method, namespace, field, or behavior that isn't shown, WebFetch the TypeScript SDK repo **or the relevant docs page** from `shared/live-sources.md` rather than guess. Do not extrapolate from cURL shapes or another language's SDK.
+> **Bindings not shown here:** This README covers the most common managed-agents flows for TypeScript. If you need a class, method, namespace, field, or behavior that is not shown, WebFetch the TypeScript SDK repo **or the relevant docs page** from `shared/live-sources.md` rather than guess. Do not extrapolate from cURL shapes or another language's SDK.
 
-> **Agents are persistent — create once, reference by ID.** Store the agent ID returned by `agents.create` and pass it to every subsequent `sessions.create`; do not call `agents.create` in the request path. **Recommended:** define agents and environments as version-controlled YAML applied with the `ant` CLI — see `shared/anthropic-cli.md` (its live-docs URL is in `shared/live-sources.md`). The CLI owns the control plane (create/update); your code owns the data plane (sessions with the stored ID). The examples below show in-code creation for when you must provision programmatically; in production the create call belongs in setup, not in the request path.
+> **Agents are persistent. Create once, reference by ID**. Store the agent ID returned by `agents.create` and pass it to every subsequent `sessions.create`. Do not call `agents.create` in the request path. **Recommended:** define agents and environments as version-controlled YAML applied with the `ant` CLI. See `shared/anthropic-cli.md` (its live-docs URL is in `shared/live-sources.md`). The CLI owns the control plane (create/update). Your code owns the data plane (sessions with the stored ID). The examples below show in-code creation for when you must provision programmatically. In production the create call belongs in setup, not in the request path.
 
-## Installation
+## Installation.
 
 ```bash
 npm install @anthropic-ai/sdk
 ```
 
-## Client Initialization
+## Client Initialization.
 
 ```typescript
 import Anthropic from "@anthropic-ai/sdk";
@@ -34,7 +31,7 @@ const client = new Anthropic({ apiKey: "your-api-key" });
 
 ---
 
-## Create an Environment
+## Create an Environment.
 
 ```typescript
 const environment = await client.beta.environments.create(
@@ -51,11 +48,11 @@ console.log(environment.id); // env_...
 
 ---
 
-## Create an Agent (required first step)
+## Create an Agent (required first step).
 
-> ⚠️ **There is no inline agent config.** `model`/`system`/`tools` live on the agent object, not the session. Always start with `agents.create()` — the session only takes `agent: { type: "agent", id: agent.id }`.
+> ⚠️ **There is no inline agent config**. `model`/`system`/`tools` live on the agent object, not the session. Always start with `agents.create()`. The session only takes `agent: { type: "agent", id: agent.id }`.
 
-### Minimal
+### Minimal.
 
 ```typescript
 // 1. Create the agent (reusable, versioned)
@@ -78,7 +75,7 @@ console.log(session.id, session.status);
 console.log(`Trace: https://platform.claude.com/workspaces/default/sessions/${session.id}`); // swap 'default' for your workspace ID if the API key is not in the Default workspace
 ```
 
-### With system prompt and custom tools
+### With system prompt and custom tools.
 
 ```typescript
 const agent = await client.beta.agents.create(
@@ -124,7 +121,7 @@ const session = await client.beta.sessions.create(
 
 ---
 
-## Send a User Message
+## Send a User Message.
 
 ```typescript
 await client.beta.sessions.events.send(
@@ -140,11 +137,11 @@ await client.beta.sessions.events.send(
 );
 ```
 
-> 💡 **Stream-first:** Open the stream *before* (or concurrently with) sending the message. The stream only delivers events that occur after it opens — stream-after-send means early events arrive buffered in one batch. See [Steering Patterns](../../shared/managed-agents-events.md#steering-patterns).
+> 💡 **Stream-first:** Open the stream *before* (or concurrently with) sending the message. The stream only delivers events that occur after it opens. Stream-after-send means early events arrive buffered in one batch. See [Steering Patterns](../../shared/managed-agents-events.md#steering-patterns).
 
 ---
 
-## Stream Events (SSE)
+## Stream Events (SSE).
 
 ```typescript
 // Stream-first: open stream and send concurrently
@@ -172,14 +169,17 @@ for await (const event of stream) {
       break;
     case "agent.custom_tool_use":
       // Custom tool invocation — session is now idle
-      console.log(`\nCustom tool call: ${event.name}`);
+      console.log(`\
+Custom tool call: ${event.name}`);
       console.log(`Input: ${JSON.stringify(event.input)}`);
       break;
     case "session.status_idle":
-      console.log("\n--- Agent idle ---");
+      console.log("\
+--- Agent idle ---");
       break;
     case "session.status_terminated":
-      console.log("\n--- Session terminated ---");
+      console.log("\
+--- Session terminated ---");
       break;
   }
 }
@@ -187,7 +187,7 @@ for await (const event of stream) {
 
 ---
 
-## Provide Custom Tool Result
+## Provide Custom Tool Result.
 
 ```typescript
 await client.beta.sessions.events.send(
@@ -206,7 +206,7 @@ await client.beta.sessions.events.send(
 
 ---
 
-## Poll Events
+## Poll Events.
 
 ```typescript
 const events = await client.beta.sessions.events.list(
@@ -219,7 +219,7 @@ for (const event of events.data) {
 
 ---
 
-## Full Streaming Loop with Custom Tools
+## Full Streaming Loop with Custom Tools.
 
 ```typescript
 function runCustomTool(toolName: string, toolInput: unknown): string {
@@ -273,7 +273,7 @@ async function runSession(client: Anthropic, sessionId: string) {
 
 ---
 
-## Upload a File
+## Upload a File.
 
 ```typescript
 import fs from "fs";
@@ -295,7 +295,7 @@ const session = await client.beta.sessions.create(
 
 ---
 
-## List and Download Session Files
+## List and Download Session Files.
 
 List files the agent wrote to `/mnt/session/outputs/` during a session, then download them.
 
@@ -317,11 +317,11 @@ for (const f of files.data) {
 }
 ```
 
-> 💡 There's a brief indexing lag (~1–3s) between `session.status_idle` and output files appearing in `files.list`. Retry once or twice if the list is empty.
+> 💡 There is a brief indexing lag (~1–3s) between `session.status_idle` and output files appearing in `files.list`. Retry once or twice if the list is empty.
 
 ---
 
-## Session Management
+## Session Management.
 
 ```typescript
 // Get session details
@@ -340,7 +340,7 @@ await client.beta.sessions.archive("sesn_011CZxAbc123Def456");
 
 ---
 
-## MCP Server Integration
+## MCP Server Integration.
 
 ```typescript
 // Agent declares MCP server (no auth here — auth goes in a vault)

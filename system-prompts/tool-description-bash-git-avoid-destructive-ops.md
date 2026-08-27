@@ -1,8 +1,6 @@
 <!--
-name: 'Tool Description: Bash (git — avoid destructive ops)'
-description: >-
-  Bash tool git instruction: consider safer alternatives to destructive
-  operations
-ccVersion: 2.1.53
+name: "Tool Description: Bash (git — avoid destructive ops)"
+description: "Bash tool git instruction: consider safer alternatives to destructive operations"
+ccVersion: "2.1.53"
 -->
-Before running destructive operations (e.g., git reset --hard, git push --force, git checkout --), consider whether there is a safer alternative that achieves the same goal. Only use destructive operations when they are truly the best approach.
+Destructive git operations include `git reset --hard`, `git push --force`, and `git checkout --`. Before you run one, look for a safer way to reach the same goal. Use a destructive operation only as a last resort.

@@ -1,24 +1,21 @@
 <!--
-name: 'Data: Managed Agents reference — Python'
-description: >-
-  Reference guide for using the Anthropic Python SDK to create and manage
-  agents, sessions, environments, streaming, custom tools, files, and MCP
-  servers
-ccVersion: 2.1.205
+name: "Data: Managed Agents reference — Python"
+description: "Reference guide for using the Anthropic Python SDK to create and manage agents, sessions, environments, streaming, custom tools, files, and MCP servers"
+ccVersion: "2.1.235"
 -->
-# Managed Agents — Python
+# Managed Agents — Python.
 
-> **Bindings not shown here:** This README covers the most common managed-agents flows for Python. If you need a class, method, namespace, field, or behavior that isn't shown, WebFetch the Python SDK repo **or the relevant docs page** from `shared/live-sources.md` rather than guess. Do not extrapolate from cURL shapes or another language's SDK.
+> **Bindings not shown here:** This README covers the most common managed-agents flows for Python. If you need a class, method, namespace, field, or behavior that is not shown, WebFetch the Python SDK repo **or the relevant docs page** from `shared/live-sources.md` rather than guess. Do not extrapolate from cURL shapes or another language's SDK.
 
-> **Agents are persistent — create once, reference by ID.** Store the agent ID returned by `agents.create` and pass it to every subsequent `sessions.create`; do not call `agents.create` in the request path. **Recommended:** define agents and environments as version-controlled YAML applied with the `ant` CLI — see `shared/anthropic-cli.md` (its live-docs URL is in `shared/live-sources.md`). The CLI owns the control plane (create/update); your code owns the data plane (sessions with the stored ID). The examples below show in-code creation for when you must provision programmatically; in production the create call belongs in setup, not in the request path.
+> **Agents are persistent. Create once, reference by ID**. Store the agent ID returned by `agents.create` and pass it to every subsequent `sessions.create`. Do not call `agents.create` in the request path. **Recommended:** define agents and environments as version-controlled YAML applied with the `ant` CLI. See `shared/anthropic-cli.md` (its live-docs URL is in `shared/live-sources.md`). The CLI owns the control plane (create/update). Your code owns the data plane (sessions with the stored ID). The examples below show in-code creation for when you must provision programmatically. In production the create call belongs in setup, not in the request path.
 
-## Installation
+## Installation.
 
 ```bash
 pip install anthropic
 ```
 
-## Client Initialization
+## Client Initialization.
 
 ```python
 import anthropic
@@ -34,7 +31,7 @@ client = anthropic.Anthropic(api_key="your-api-key")
 
 ---
 
-## Create an Environment
+## Create an Environment.
 
 ```python
 environment = client.beta.environments.create(
@@ -49,11 +46,11 @@ print(environment.id)  # env_...
 
 ---
 
-## Create an Agent (required first step)
+## Create an Agent (required first step).
 
-> ⚠️ **There is no inline agent config.** `model`/`system`/`tools` live on the agent object, not the session. Always start with `agents.create()` — the session only takes `agent={"type": "agent", "id": agent.id}`.
+> ⚠️ **There is no inline agent config**. `model`/`system`/`tools` live on the agent object, not the session. Always start with `agents.create()`. The session only takes `agent={"type": "agent", "id": agent.id}`.
 
-### Minimal
+### Minimal.
 
 ```python
 # 1. Create the agent (reusable, versioned)
@@ -72,7 +69,7 @@ print(session.id, session.status)
 print(f"Trace: https://platform.claude.com/workspaces/default/sessions/{session.id}")  # swap 'default' for your workspace ID if the API key is not in the Default workspace
 ```
 
-### With system prompt and custom tools
+### With system prompt and custom tools.
 
 ```python
 import os
@@ -116,7 +113,7 @@ session = client.beta.sessions.create(
 
 ---
 
-## Send a User Message
+## Send a User Message.
 
 ```python
 client.beta.sessions.events.send(
@@ -130,11 +127,11 @@ client.beta.sessions.events.send(
 )
 ```
 
-> 💡 **Stream-first:** Open the stream *before* (or concurrently with) sending the message. The stream only delivers events that occur after it opens — stream-after-send means early events arrive buffered in one batch. See [Steering Patterns](../../shared/managed-agents-events.md#steering-patterns).
+> 💡 **Stream-first:** Open the stream *before* (or concurrently with) sending the message. The stream only delivers events that occur after it opens. Stream-after-send means early events arrive buffered in one batch. See [Steering Patterns](../../shared/managed-agents-events.md#steering-patterns).
 
 ---
 
-## Stream Events (SSE)
+## Stream Events (SSE).
 
 ```python
 import json
@@ -161,19 +158,22 @@ with client.beta.sessions.events.stream(
                     print(block.text, end="", flush=True)
         elif event.type == "agent.custom_tool_use":
             # Custom tool invocation — session is now idle
-            print(f"\nCustom tool call: {event.name}")
+            print(f"\
+Custom tool call: {event.name}")
             print(f"Input: {json.dumps(event.input)}")
             # Send result back (see below)
         elif event.type == "session.status_idle":
-            print("\n--- Agent idle ---")
+            print("\
+--- Agent idle ---")
         elif event.type == "session.status_terminated":
-            print("\n--- Session terminated ---")
+            print("\
+--- Session terminated ---")
             break
 ```
 
 ---
 
-## Provide Custom Tool Result
+## Provide Custom Tool Result.
 
 ```python
 client.beta.sessions.events.send(
@@ -190,7 +190,7 @@ client.beta.sessions.events.send(
 
 ---
 
-## Poll Events
+## Poll Events.
 
 ```python
 events = client.beta.sessions.events.list(
@@ -200,11 +200,11 @@ for event in events.data:
     print(f"{event.type}: {event.id}")
 ```
 
-> ⚠️ **Prefer the SDK over raw `requests`/`httpx`.** If you hand-roll a poll loop, don't assume `timeout=(5, 60)` or `httpx.Timeout(120)` caps total call duration — both are **per-chunk** read timeouts (reset on every byte), so a trickling response can block forever. For a hard wall-clock deadline, track `time.monotonic()` at the loop level and bail explicitly, or wrap with `asyncio.wait_for()`. See [Receiving Events](../../shared/managed-agents-events.md#receiving-events).
+> ⚠️ **Prefer the SDK over raw `requests`/`httpx`**. If you hand-roll a poll loop, do not assume `timeout=(5, 60)` or `httpx.Timeout(120)` caps total call duration. Both are **per-chunk** read timeouts (reset on every byte), so a trickling response can block forever. For a hard wall-clock deadline, track `time.monotonic()` at the loop level and bail explicitly, or wrap with `asyncio.wait_for()`. See [Receiving Events](../../shared/managed-agents-events.md#receiving-events).
 
 ---
 
-## Full Streaming Loop with Custom Tools
+## Full Streaming Loop with Custom Tools.
 
 ```python
 import json
@@ -258,7 +258,7 @@ def run_session(client, session_id: str):
 
 ---
 
-## Upload a File
+## Upload a File.
 
 ```python
 with open("data.csv", "rb") as f:
@@ -276,7 +276,7 @@ session = client.beta.sessions.create(
 
 ---
 
-## List and Download Session Files
+## List and Download Session Files.
 
 List files the agent wrote to `/mnt/session/outputs/` during a session, then download them.
 
@@ -293,11 +293,11 @@ for f in files.data:
     file_content.write_to_file(f.filename)
 ```
 
-> 💡 There's a brief indexing lag (~1–3s) between `session.status_idle` and output files appearing in `files.list`. Retry once or twice if the list is empty.
+> 💡 There is a brief indexing lag (~1–3s) between `session.status_idle` and output files appearing in `files.list`. Retry once or twice if the list is empty.
 
 ---
 
-## Session Management
+## Session Management.
 
 ```python
 # Get session details
@@ -316,7 +316,7 @@ client.beta.sessions.archive(session_id="sesn_011CZxAbc123Def456")
 
 ---
 
-## MCP Server Integration
+## MCP Server Integration.
 
 ```python
 # Agent declares MCP server (no auth here — auth goes in a vault)

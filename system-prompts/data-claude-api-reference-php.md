@@ -1,19 +1,19 @@
 <!--
-name: 'Data: Claude API reference — PHP'
-description: PHP SDK reference
-ccVersion: 2.1.219
+name: "Data: Claude API reference — PHP"
+description: "PHP SDK reference"
+ccVersion: "2.1.219"
 -->
-# Claude API — PHP
+# Claude API — PHP.
 
 > **Note:** The PHP SDK is the official Anthropic SDK for PHP. A beta tool runner is available via `$client->beta->messages->toolRunner()`. Structured output helpers are supported via `StructuredOutputModel` classes. Agent SDK is not available. Bedrock, Vertex AI, and Foundry clients are supported.
 
-## Installation
+## Installation.
 
 ```bash
 composer require "anthropic-ai/sdk"
 ```
 
-## Client Initialization
+## Client Initialization.
 
 ```php
 use Anthropic\Client;
@@ -22,7 +22,7 @@ use Anthropic\Client;
 $client = new Client(apiKey: getenv("ANTHROPIC_API_KEY"));
 ```
 
-### Amazon Bedrock
+### Amazon Bedrock.
 
 ```php
 use Anthropic\Bedrock\MantleClient;
@@ -31,9 +31,9 @@ use Anthropic\Bedrock\MantleClient;
 $client = new MantleClient(awsRegion: 'us-east-1');
 ```
 
-Model IDs on Bedrock take an `anthropic.` prefix — e.g. `model: 'anthropic.{{OPUS_ID}}'`.
+Model IDs on Bedrock take an `anthropic.` prefix. For example `model: 'anthropic.{{OPUS_ID}}'`.
 
-### Google Vertex AI
+### Google Vertex AI.
 
 ```php
 use Anthropic\Vertex;
@@ -45,7 +45,7 @@ $client = Vertex\Client::fromEnvironment(
 );
 ```
 
-### Anthropic Foundry
+### Anthropic Foundry.
 
 ```php
 use Anthropic\Foundry;
@@ -59,7 +59,7 @@ $client = Foundry\Client::withCredentials(
 
 ---
 
-## Basic Message Request
+## Basic Message Request.
 
 ```php
 $message = $client->messages->create(
@@ -94,9 +94,9 @@ foreach ($message->content as $block) {
 
 ---
 
-## Extended Thinking
+## Extended Thinking.
 
-**Adaptive thinking is the recommended mode for Claude 4.6+ models.** Claude decides dynamically when and how much to think.
+**Adaptive thinking is the recommended mode for Claude 4.6+ models**. Claude decides dynamically when and how much to think.
 
 ```php
 use Anthropic\Messages\ThinkingBlock;
@@ -122,17 +122,17 @@ foreach ($message->content as $block) {
 }
 ```
 
-> **Fable 5, {{OPUS_NAME}}, Opus 4.8, Opus 4.7, Opus 4.6, and Sonnet 4.6:** Use adaptive thinking (above). `['type' => 'enabled', 'budgetTokens' => N]` is removed on Fable 5, {{OPUS_NAME}}, Opus 4.8, and 4.7 (400 if sent); deprecated on Opus 4.6 and Sonnet 4.6.
-> **{{OPUS_NAME}}:** thinking is on by default — omitting `thinking:` runs adaptive (`['type' => 'adaptive']` is equivalent), unlike Opus 4.8/4.7 where omitting it meant no thinking. `['type' => 'disabled']` is accepted only at effort `high` or lower; pairing it with `xhigh`/`max` returns a 400.
+> **Fable 5, {{OPUS_NAME}}, Opus 4.8, Opus 4.7, Opus 4.6, and Sonnet 4.6:** Use adaptive thinking (above). `['type' => 'enabled', 'budgetTokens' => N]` is removed on Fable 5, {{OPUS_NAME}}, Opus 4.8, and 4.7 (400 if sent). Deprecated on Opus 4.6 and Sonnet 4.6.
+> **{{OPUS_NAME}}:** thinking is on by default. Omitting `thinking:` runs adaptive (`['type' => 'adaptive']` is equivalent), unlike Opus 4.8/4.7 where omitting it meant no thinking. `['type' => 'disabled']` is accepted only at effort `high` or lower. Pairing it with `xhigh`/`max` returns a 400.
 > **Older models:** Use `thinking: ['type' => 'enabled', 'budgetTokens' => N]` (budget must be < `maxTokens`, min 1024).
 
-`$block->type === 'thinking'` also works for the check; `instanceof` narrows for PHPStan.
+`$block->type === 'thinking'` also works for the check. `instanceof` narrows for PHPStan.
 
 ---
 
-## Prompt Caching
+## Prompt Caching.
 
-`system:` takes an array of text blocks; set `cacheControl` on the last block. Array-shape syntax (camelCase keys) is idiomatic. For placement patterns and the silent-invalidator audit checklist, see `shared/prompt-caching.md`.
+`system:` takes an array of text blocks. Set `cacheControl` on the last block. Array-shape syntax (camelCase keys) is idiomatic. For placement patterns and the silent-invalidator audit checklist, see `shared/prompt-caching.md`.
 
 ```php
 $message = $client->messages->create(
@@ -145,13 +145,13 @@ $message = $client->messages->create(
 );
 ```
 
-For 1-hour TTL: `'cacheControl' => ['type' => 'ephemeral', 'ttl' => '1h']`. There's also a top-level `cacheControl:` on `messages->create(...)` that auto-places on the last cacheable block.
+For 1-hour TTL: `'cacheControl' => ['type' => 'ephemeral', 'ttl' => '1h']`. There is also a top-level `cacheControl:` on `messages->create(...)` that auto-places on the last cacheable block.
 
 Verify hits via `$message->usage->cacheCreationInputTokens` / `$message->usage->cacheReadInputTokens`.
 
 ---
 
-## Stop Details
+## Stop Details.
 
 When `stopReason` is `'refusal'`, the response includes structured `stopDetails`:
 
@@ -162,11 +162,11 @@ if ($message->stopReason === 'refusal' && $message->stopDetails !== null) {
 }
 ```
 
-**Refusal fallbacks ({{FABLE_NAME}}) — opt in by default.** Fallbacks are opt-in: without them a refused request simply stops. New `{{FABLE_ID}}` code should include the server-side `fallbacks` parameter (beta header `server-side-fallback-2026-06-01`, fallback model `{{PREV_OPUS_ID}}`, on the beta messages call) by default. The exact PHP binding (and the client-side middleware for providers without server-side support) is not documented here — WebFetch the PHP SDK repo's `examples/` from `shared/live-sources.md`; full semantics in `shared/model-migration.md` → Migrating to {{FABLE_NAME}} → `refusal` stop reason.
+**Refusal fallbacks ({{FABLE_NAME}}). Opt in by default**. Fallbacks are opt-in: without them a refused request simply stops. New `{{FABLE_ID}}` code must include the server-side `fallbacks` parameter (beta header `server-side-fallback-2026-06-01`, fallback model `{{PREV_OPUS_ID}}`, on the beta messages call) by default. The exact PHP binding (and the client-side middleware for providers without server-side support) is not documented here. WebFetch the PHP SDK repo's `examples/` from `shared/live-sources.md`. Full semantics in `shared/model-migration.md` → Migrating to {{FABLE_NAME}} → `refusal` stop reason.
 
 ---
 
-## Error Type
+## Error Type.
 
 `APIStatusException` exposes a `->type` property for programmatic error classification:
 

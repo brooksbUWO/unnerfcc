@@ -1,8 +1,8 @@
 <!--
-name: 'Tool Description: Bash (prefer dedicated tools bullet)'
-description: 'Bulleted warning to prefer dedicated tools over Bash for find, grep, cat, etc.'
-ccVersion: 2.1.133
+name: "Tool Description: Bash (prefer dedicated tools bullet)"
+description: "Bulleted warning to prefer dedicated tools over Bash for find, grep, cat, etc."
+ccVersion: "2.1.133"
 variables:
-  - READ_ONLY_SEARCHING_BASH_COMMANDS
+  - "READ_ONLY_SEARCHING_BASH_COMMANDS"
 -->
-- IMPORTANT: Avoid using this tool to run ${READ_ONLY_SEARCHING_BASH_COMMANDS} commands, unless explicitly instructed or after you have verified that a dedicated tool cannot accomplish your task. Instead, use the appropriate dedicated tool as this will provide a much better experience for the user.
+- IMPORTANT: Do not use this tool to run ${READ_ONLY_SEARCHING_BASH_COMMANDS} commands. There are two exceptions. The user gives you an explicit instruction to do so. Or you make sure first that no dedicated tool can do your task. In all other cases, use the correct dedicated tool. A dedicated tool gives a much better experience for the user.

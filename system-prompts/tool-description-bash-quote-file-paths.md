@@ -1,6 +1,6 @@
 <!--
-name: 'Tool Description: Bash (quote file paths)'
-description: 'Bash tool instruction: quote file paths containing spaces'
-ccVersion: 2.1.53
+name: "Tool Description: Bash (quote file paths)"
+description: "Bash tool instruction: quote file paths containing spaces"
+ccVersion: "2.1.53"
 -->
-Always quote file paths that contain spaces with double quotes in your command (e.g., cd "path with spaces/file.txt")
+In your command, put double quotes around file paths that contain spaces (for example, cd "path with spaces/file.txt").

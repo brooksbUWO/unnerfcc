@@ -1,12 +1,10 @@
 <!--
-name: 'Tool Description: Bash git commit and PR creation instructions'
-description: >-
-  Bash-tool git commit + PR creation instructions — the gh pr create heredoc
-  example, the forbidden todo/task tools, and returning the PR URL.
-ccVersion: 2.1.219
+name: "Tool Description: Bash git commit and PR creation instructions"
+description: "Git commit and PR creation guidance embedded in the Bash tool description"
+ccVersion: "2.1.235"
 variables:
-  - GET_TODO_TOOL_FN
-  - TASK_TOOL_NAME
+  - "GET_TODO_TOOL_FN"
+  - "TASK_TOOL_NAME"
 -->
 
 EOF

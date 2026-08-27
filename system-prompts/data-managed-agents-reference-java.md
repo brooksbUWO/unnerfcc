@@ -1,15 +1,15 @@
 <!--
-name: 'Data: Managed Agents reference — Java'
-description: Managed Agents API reference doc (Java bindings).
-ccVersion: 2.1.205
+name: "Data: Managed Agents reference — Java"
+description: "Reference guide for using the Anthropic Java SDK to create and manage agents, environments, and sessions"
+ccVersion: "2.1.235"
 -->
-# Managed Agents — Java
+# Managed Agents — Java.
 
-> **Bindings not shown here:** This README covers the most common managed-agents flows for Java. If you need a class, method, namespace, field, or behavior that isn't shown, WebFetch the Java SDK repo **or the relevant docs page** from `shared/live-sources.md` rather than guess. Do not extrapolate from cURL shapes or another language's SDK.
+> **Bindings not shown here:** This README covers the most common managed-agents flows for Java. If you need a class, method, namespace, field, or behavior that is not shown, WebFetch the Java SDK repo **or the relevant docs page** from `shared/live-sources.md` rather than guess. Do not extrapolate from cURL shapes or another language's SDK.
 
-> **Agents are persistent — create once, reference by ID.** Store the agent ID returned by `client.beta().agents().create` and pass it to every subsequent `client.beta().sessions().create`; do not call `agents().create` in the request path. **Recommended:** define agents and environments as version-controlled YAML applied with the `ant` CLI — see `shared/anthropic-cli.md` (its live-docs URL is in `shared/live-sources.md`). The CLI owns the control plane (create/update); your code owns the data plane (sessions with the stored ID). The examples below show in-code creation for when you must provision programmatically; in production the create call belongs in setup, not in the request path.
+> **Agents are persistent. Create once, reference by ID**. Store the agent ID returned by `client.beta().agents().create` and pass it to every subsequent `client.beta().sessions().create`. Do not call `agents().create` in the request path. **Recommended:** define agents and environments as version-controlled YAML applied with the `ant` CLI. See `shared/anthropic-cli.md` (its live-docs URL is in `shared/live-sources.md`). The CLI owns the control plane (create/update). Your code owns the data plane (sessions with the stored ID). The examples below show in-code creation for when you must provision programmatically. In production the create call belongs in setup, not in the request path.
 
-## Installation
+## Installation.
 
 ```xml
 <dependency>
@@ -18,7 +18,7 @@ ccVersion: 2.1.205
 </dependency>
 ```
 
-## Client Initialization
+## Client Initialization.
 
 ```java
 import com.anthropic.client.okhttp.AnthropicOkHttpClient;
@@ -29,7 +29,7 @@ var client = AnthropicOkHttpClient.fromEnv();
 
 ---
 
-## Create an Environment
+## Create an Environment.
 
 ```java
 import com.anthropic.models.beta.environments.BetaCloudConfigParams;
@@ -47,11 +47,11 @@ System.out.println("Environment ID: " + environment.id()); // env_...
 
 ---
 
-## Create an Agent (required first step)
+## Create an Agent (required first step).
 
-> ⚠️ **There is no inline agent config.** Model, system, and tools live on the agent object, not the session. Always start with `client.beta().agents().create()` — the session takes either `.agent(agent.id())` or the typed `BetaManagedAgentsAgentParams.builder()...build()`.
+> ⚠️ **There is no inline agent config**. Model, system, and tools live on the agent object, not the session. Always start with `client.beta().agents().create()`. The session takes either `.agent(agent.id())` or the typed `BetaManagedAgentsAgentParams.builder()...build()`.
 
-### Minimal
+### Minimal.
 
 ```java
 import com.anthropic.models.beta.agents.AgentCreateParams;
@@ -83,9 +83,9 @@ System.out.println("Session ID: " + session.id());
 System.out.println("Trace: https://platform.claude.com/workspaces/default/sessions/" + session.id()); // swap 'default' for your workspace ID if the API key is not in the Default workspace
 ```
 
-### Updating an Agent
+### Updating an Agent.
 
-Updates create new versions; the agent object is immutable per version.
+Updates create new versions. The agent object is immutable per version.
 
 ```java
 import com.anthropic.models.beta.agents.AgentUpdateParams;
@@ -108,7 +108,7 @@ System.out.println("Archived at: " + archived.archivedAt().orElseThrow());
 
 ---
 
-## Send a User Message
+## Send a User Message.
 
 ```java
 import com.anthropic.models.beta.sessions.events.BetaManagedAgentsUserMessageEventParams;
@@ -122,11 +122,11 @@ client.beta().sessions().events().send(session.id(), EventSendParams.builder()
     .build());
 ```
 
-> 💡 **Stream-first:** Open the stream *before* (or concurrently with) sending the message. The stream only delivers events that occur after it opens — stream-after-send means early events arrive buffered in one batch. See [Steering Patterns](../../shared/managed-agents-events.md#steering-patterns).
+> 💡 **Stream-first:** Open the stream *before* (or concurrently with) sending the message. The stream only delivers events that occur after it opens. Stream-after-send means early events arrive buffered in one batch. See [Steering Patterns](../../shared/managed-agents-events.md#steering-patterns).
 
 ---
 
-## Stream Events (SSE)
+## Stream Events (SSE).
 
 ```java
 import com.anthropic.models.beta.sessions.events.StreamEvents;
@@ -144,18 +144,20 @@ try (var stream = client.beta().sessions().events().streamStreaming(session.id()
         if (event.isAgentMessage()) {
             event.asAgentMessage().content().forEach(block -> System.out.print(block.text()));
         } else if (event.isAgentToolUse()) {
-            System.out.println("\n[Using tool: " + event.asAgentToolUse().name() + "]");
+            System.out.println("\
+[Using tool: " + event.asAgentToolUse().name() + "]");
         } else if (event.isSessionStatusIdle()) {
             break;
         } else if (event.isSessionError()) {
-            System.out.println("\n[Error]");
+            System.out.println("\
+[Error]");
             break;
         }
     }
 }
 ```
 
-### Reconnecting and Tailing
+### Reconnecting and Tailing.
 
 When reconnecting mid-session, list past events first to dedupe, then tail live events. The cross-variant `id` field is read from the raw `_json()` value:
 
@@ -188,13 +190,13 @@ try (var stream = client.beta().sessions().events().streamStreaming(session.id()
 
 ---
 
-## Provide Custom Tool Result
+## Provide Custom Tool Result.
 
 > ℹ️ The Java managed-agents bindings for `user.custom_tool_result` are not yet documented in this skill or in the apps source examples. Refer to `shared/managed-agents-events.md` for the wire format and the `anthropic-java` repository for the corresponding params types.
 
 ---
 
-## Poll Events
+## Poll Events.
 
 ```java
 for (var event : client.beta().sessions().events().list(session.id()).autoPager()) {
@@ -204,7 +206,7 @@ for (var event : client.beta().sessions().events().list(session.id()).autoPager(
 
 ---
 
-## Upload a File
+## Upload a File.
 
 ```java
 import com.anthropic.models.beta.files.FileUploadParams;
@@ -230,7 +232,7 @@ var session = client.beta().sessions().create(SessionCreateParams.builder()
     .build());
 ```
 
-### Add and Manage Resources on an Existing Session
+### Add and Manage Resources on an Existing Session.
 
 ```java
 import com.anthropic.models.beta.sessions.resources.ResourceAddParams;
@@ -265,13 +267,13 @@ client.beta().sessions().resources().delete(resource.id(), ResourceDeleteParams.
 
 ---
 
-## List and Download Session Files
+## List and Download Session Files.
 
 > ℹ️ Listing and downloading files an agent wrote during a session is not yet documented for Java in this skill or in the apps source examples. See `shared/managed-agents-events.md` and the `anthropic-java` repository for the file list/download bindings.
 
 ---
 
-## Session Management
+## Session Management.
 
 ```java
 // List environments
@@ -292,7 +294,7 @@ client.beta().sessions().delete(session.id());
 
 ---
 
-## MCP Server Integration
+## MCP Server Integration.
 
 ```java
 import com.anthropic.models.beta.agents.BetaManagedAgentsMcpToolsetParams;
@@ -332,7 +334,7 @@ See `shared/managed-agents-tools.md` §Vaults for creating vaults and adding cre
 
 ---
 
-## Vaults
+## Vaults.
 
 ```java
 import com.anthropic.core.JsonValue;
@@ -393,7 +395,7 @@ client.beta().vaults().archive(vault.id());
 
 ---
 
-## GitHub Repository Integration
+## GitHub Repository Integration.
 
 Mount a GitHub repository as a session resource (a vault holds the GitHub MCP credential):
 

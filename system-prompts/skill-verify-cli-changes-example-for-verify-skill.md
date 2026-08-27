@@ -1,37 +1,37 @@
 <!--
-name: 'Skill: Verify CLI changes (example for Verify skill)'
-description: 'Example workflow for verifying a CLI change, as part of the Verify skill.'
-ccVersion: 2.1.219
+name: "Skill: Verify CLI changes (example for Verify skill)"
+description: "Example workflow for verifying a CLI change, as part of the Verify skill."
+ccVersion: "2.1.83"
 -->
-# Verifying a CLI change
+# Verifying a CLI change.
 
 The handle is direct invocation. The evidence is stdout/stderr/exit code.
 
-## Pattern
+## Pattern.
 
-1. Build (if the CLI needs building)
-2. Run with arguments that exercise the changed code
-3. Capture output and exit code
-4. Compare to expected
+1. Build (if the CLI needs building).
+2. Run with arguments that exercise the changed code.
+3. Capture output and exit code.
+4. Compare to expected.
 
-CLIs are usually the simplest to verify — no lifecycle, no ports.
+CLIs are usually the simplest to verify. No lifecycle, no ports.
 
-## Worked example
+## Worked example.
 
 **Diff:** adds a `--json` flag to the `status` subcommand. New flag
 parsing in `cmd/status.go`, new output branch.
 
 **Claim (commit msg):** "machine-readable status output."
 
-**Inference:** `tool status --json` now exists, emits valid JSON with
+**Inference:** `tool status --json` now exists. It emits valid JSON with
 the same fields the human output shows. `tool status` without the flag
 is unchanged.
 
 **Plan:**
-1. Build
-2. `tool status` → human output, same as before (non-regression)
-3. `tool status --json` → valid JSON, parseable
-4. JSON fields match human output fields
+1. Build.
+2. `tool status` → human output, same as before (non-regression).
+3. `tool status --json` → valid JSON, parseable.
+4. JSON fields match human output fields.
 
 **Execute:**
 ```bash
@@ -55,19 +55,19 @@ echo $?
 
 **Verdict:** PASS — flag works, JSON is valid, fields line up.
 
-## What FAIL looks like
+## What FAIL looks like.
 
-- `unknown flag: --json` → not wired up, or you're running a stale build
-- Output isn't valid JSON (`jq` errors) → serialization bug
-- `tool status` (no flag) changed → regression; the diff touched more
-  than it should
+- `unknown flag: --json` → not wired up, or you are running a stale build.
+- Output is not valid JSON (`jq` errors) → serialization bug.
+- `tool status` (no flag) changed → regression. The diff touched more
+  than it must.
 - JSON has different field names than expected → claim/code mismatch,
-  might be fine, note it
+  can be fine, note it.
 
-## Reading from stdin, destructive commands
+## Reading from stdin, destructive commands.
 
 If the CLI reads stdin → pipe in test data.
-If it writes files / hits a network / deletes things → point it at a
-tmp dir / a mock / a dry-run flag. If there's no safe mode and the
-diff touches the destructive path, say so and verify what you can
+It can write files, hit a network, or delete things. Then point it at
+a tmp dir, a mock, or a dry-run flag. There can be no safe mode while the
+diff touches the destructive path. Then say so and verify what you can
 around it.

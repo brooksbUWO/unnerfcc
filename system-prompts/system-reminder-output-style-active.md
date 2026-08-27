@@ -1,8 +1,9 @@
 <!--
-name: 'System Reminder: Output style active'
-description: >-
-  Default per-turn reminder telling the model to follow the specific guidelines
-  of the active output style.
-ccVersion: 2.1.219
+name: "System Reminder: Output style active"
+description: "Notification that an output style is active"
+ccVersion: "2.1.235"
+variables:
+  - "OUTPUT_STYLE_CONFIG"
+  - "OUTPUT_STYLE_TURN_REMINDER"
 -->
-Remember to follow the specific guidelines for this style.
+${OUTPUT_STYLE_CONFIG.name} output style is active. ${OUTPUT_STYLE_TURN_REMINDER.turnReminder ?? "Remember to follow the specific guidelines for this style."}

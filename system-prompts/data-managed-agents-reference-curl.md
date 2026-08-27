@@ -1,15 +1,13 @@
 <!--
-name: 'Data: Managed Agents reference — cURL'
-description: >-
-  Provides cURL and raw HTTP request examples for the Managed Agents API
-  including environment, agent, and session lifecycle operations
-ccVersion: 2.1.231
+name: "Data: Managed Agents reference — cURL"
+description: "Provides cURL and raw HTTP request examples for the Managed Agents API including environment, agent, and session lifecycle operations"
+ccVersion: "2.1.224"
 -->
-# Managed Agents — cURL / Raw HTTP
+# Managed Agents. CURL / Raw HTTP.
 
 Use these examples when the user needs raw HTTP requests or is working without an SDK.
 
-## Setup
+## Setup.
 
 ```bash
 export ANTHROPIC_API_KEY="your-api-key"
@@ -25,7 +23,7 @@ HEADERS=(
 
 ---
 
-## Create an Environment
+## Create an Environment.
 
 ```bash
 curl -X POST https://api.anthropic.com/v1/environments \
@@ -39,7 +37,7 @@ curl -X POST https://api.anthropic.com/v1/environments \
   }'
 ```
 
-### With restricted networking
+### With restricted networking.
 
 ```bash
 curl -X POST https://api.anthropic.com/v1/environments \
@@ -60,11 +58,11 @@ curl -X POST https://api.anthropic.com/v1/environments \
 
 ---
 
-## Create an Agent (required first step)
+## Create an Agent (required first step).
 
-> ⚠️ **There is no inline agent config.** Under `managed-agents-2026-04-01`, `model`/`system`/`tools` are top-level fields on `POST /v1/agents`, not on the session. Always create the agent first — the session only takes `"agent": {"type": "agent", "id": "..."}`.
+> ⚠️ **There is no inline agent config**. Under `managed-agents-2026-04-01`, `model`/`system`/`tools` are top-level fields on `POST /v1/agents`, not on the session. Always create the agent first. The session only takes `"agent": {"type": "agent", "id": "..."}`.
 
-### Minimal
+### Minimal.
 
 ```bash
 # 1. Create the agent
@@ -88,7 +86,7 @@ curl -X POST https://api.anthropic.com/v1/sessions \
 # Trace: https://platform.claude.com/workspaces/default/sessions/sesn_abc123  (swap 'default' for your workspace ID if the API key is not in the Default workspace)
 ```
 
-### With system prompt, custom tools, and GitHub repo
+### With system prompt, custom tools, and GitHub repo.
 
 ```bash
 # 1. Create the agent
@@ -134,7 +132,7 @@ curl -X POST https://api.anthropic.com/v1/sessions \
   }'
 ```
 
-### With a session budget
+### With a session budget.
 
 ```bash
 # Create a session with a hard $25.00 spend cap (list-priced; USD only; create-only).
@@ -166,7 +164,7 @@ See `shared/managed-agents-core.md` § Session budgets for list-cost composition
 
 ---
 
-## Send a User Message
+## Send a User Message.
 
 ```bash
 curl -X POST https://api.anthropic.com/v1/sessions/$SESSION_ID/events \
@@ -183,7 +181,7 @@ curl -X POST https://api.anthropic.com/v1/sessions/$SESSION_ID/events \
 
 ---
 
-## Stream Events (SSE)
+## Stream Events (SSE).
 
 ```bash
 curl -N https://api.anthropic.com/v1/sessions/$SESSION_ID/events/stream \
@@ -205,7 +203,7 @@ data: {"type":"session.status_idle","id":"sevt_...","processed_at":"..."}
 
 ---
 
-## Poll Events
+## Poll Events.
 
 ```bash
 # Get all events
@@ -219,7 +217,7 @@ curl "https://api.anthropic.com/v1/sessions/$SESSION_ID/events?page=page_abc123"
 
 ---
 
-## Provide Custom Tool Result
+## Provide Custom Tool Result.
 
 When the agent calls a custom tool, send the result back:
 
@@ -239,7 +237,7 @@ curl -X POST https://api.anthropic.com/v1/sessions/$SESSION_ID/events \
 
 ---
 
-## Interrupt a Running Session
+## Interrupt a Running Session.
 
 ```bash
 curl -X POST https://api.anthropic.com/v1/sessions/$SESSION_ID/events \
@@ -255,7 +253,7 @@ curl -X POST https://api.anthropic.com/v1/sessions/$SESSION_ID/events \
 
 ---
 
-## Get Session Details
+## Get Session Details.
 
 ```bash
 curl https://api.anthropic.com/v1/sessions/$SESSION_ID \
@@ -264,7 +262,7 @@ curl https://api.anthropic.com/v1/sessions/$SESSION_ID \
 
 ---
 
-## List Sessions
+## List Sessions.
 
 ```bash
 curl https://api.anthropic.com/v1/sessions \
@@ -273,7 +271,7 @@ curl https://api.anthropic.com/v1/sessions \
 
 ---
 
-## Delete a Session
+## Delete a Session.
 
 ```bash
 curl -X DELETE https://api.anthropic.com/v1/sessions/$SESSION_ID \
@@ -282,7 +280,7 @@ curl -X DELETE https://api.anthropic.com/v1/sessions/$SESSION_ID \
 
 ---
 
-## Upload a File
+## Upload a File.
 
 ```bash
 curl -X POST https://api.anthropic.com/v1/files \
@@ -295,7 +293,7 @@ curl -X POST https://api.anthropic.com/v1/files \
 
 ---
 
-## List and Download Session Files
+## List and Download Session Files.
 
 List files the agent wrote to `/mnt/session/outputs/` during a session, then download them.
 
@@ -316,7 +314,7 @@ curl "https://api.anthropic.com/v1/files/$FILE_ID/content" \
 
 ---
 
-## List Agents
+## List Agents.
 
 ```bash
 curl https://api.anthropic.com/v1/agents \
@@ -325,7 +323,7 @@ curl https://api.anthropic.com/v1/agents \
 
 ---
 
-## MCP Server Integration
+## MCP Server Integration.
 
 ```bash
 # 1. Agent declares MCP server (no auth here — auth goes in a vault)
@@ -357,7 +355,7 @@ See `shared/managed-agents-tools.md` §Vaults for creating vaults and adding cre
 
 ---
 
-## Tool Configuration
+## Tool Configuration.
 
 ```bash
 curl -X POST https://api.anthropic.com/v1/agents \

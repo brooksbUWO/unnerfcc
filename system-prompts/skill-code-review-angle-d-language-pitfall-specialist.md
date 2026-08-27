@@ -1,14 +1,11 @@
 <!--
-name: 'Skill: Code Review (Angle D — language-pitfall specialist)'
-description: >-
-  The language-pitfall finder angle of the code-review skill — scan for the
-  classic footguns of the diff's language or framework and flag any instance the
-  diff introduces.
-ccVersion: 2.1.219
+name: "Skill: Code Review (Angle D — language-pitfall specialist)"
+description: "Code-review finder angle that hunts for the well-known traps of the diff's language or framework"
+ccVersion: "2.1.173"
 -->
-### Angle D — language-pitfall specialist
+### Angle D. Language-pitfall specialist.
 
-Scan for the classic pitfalls of the diff's language/framework — for example:
-JS falsy-zero, `==` coercion, closure-captured loop var; Python mutable default
-args, late-binding closures; Go nil-map write, range-var capture; SQL injection;
-timezone/DST drift; float equality. Flag any instance the diff introduces.
+Scan for the classic pitfalls of the diff's language/framework. For example:
+JS falsy-zero, `==` coercion, closure-captured loop var. Python mutable default
+args, late-binding closures. Go nil-map write, range-var capture. SQL injection.
+Timezone/DST drift. Float equality. Flag any instance the diff introduces.

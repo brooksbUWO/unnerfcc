@@ -1,14 +1,12 @@
 <!--
-name: 'System Reminder: File summary completeness disclosure'
-description: >-
-  Requires Claude to disclose how much file content was read before summarizing
-  and to stop retrying after repeated read failures
-ccVersion: 2.1.219
+name: "System Reminder: File summary completeness disclosure"
+description: "Requires Claude to disclose how much file content was read before summarizing and to stop retrying after repeated read failures"
+ccVersion: "2.1.235"
 variables:
-  - FILE_PATH
-  - CHUNK_READING_INSTRUCTIONS
-  - ADDITIONAL_READ_GUIDANCE
+  - "FILE_PATH"
+  - "CHUNK_READING_INSTRUCTIONS"
+  - "ADDITIONAL_READ_GUIDANCE"
 -->
 - You MUST read the content from the file at ${FILE_PATH} in sequential chunks until 100% of the content has been read.
-${CHUNK_READING_INSTRUCTIONS}${ADDITIONAL_READ_GUIDANCE}- Before producing ANY summary or analysis, you MUST explicitly describe what portion of the content you have read. ***If you did not read the entire content, you MUST explicitly state this.***
-- If you genuinely cannot read the file after exhausting the available approaches — varying Read's offset/limit window, using shell tools where you have shell access, and trying any alternative readers — stop retrying (this is the case when the file is not found, or its lines are too long for Read's offset/limit and you have no shell access). Summarize what you were able to read, explicitly state which portion you could not read and why, and proceed.
+${CHUNK_READING_INSTRUCTIONS}- Before you summarize or analyze content, state what portion of it you read. If you did not read all of it, say so explicitly.
+- If a few read attempts fail (file not found, lines too long for Read's offset/limit, no shell access), stop retrying. Summarize what you read, state which portion you were unable to read and why, and proceed.${ADDITIONAL_READ_GUIDANCE}

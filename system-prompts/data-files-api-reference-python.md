@@ -1,29 +1,27 @@
 <!--
-name: 'Data: Files API reference — Python'
-description: >-
-  Python Files API reference including file upload, listing, deletion, and usage
-  in messages
-ccVersion: 2.1.219
+name: "Data: Files API reference — Python"
+description: "Python Files API reference including file upload, listing, deletion, and usage in messages"
+ccVersion: "2.1.118"
 -->
-# Files API — Python
+# Files API — Python.
 
 The Files API uploads files for use in Messages API requests. Reference files via `file_id` in content blocks, avoiding re-uploads across multiple API calls.
 
 **Beta:** Pass `betas=["files-api-2025-04-14"]` in your API calls (the SDK sets the required header automatically).
 
-## Key Facts
+## Key Facts.
 
-- Maximum file size: 500 MB
-- Total storage: 100 GB per organization
-- Files persist until deleted
-- File operations (upload, list, delete) are free; content used in messages is billed as input tokens
-- Not available on Amazon Bedrock or Google Vertex AI
+- Maximum file size: 500 MB.
+- Total storage: 100 GB per organization.
+- Files persist until deleted.
+- File operations (upload, list, delete) are free. Content used in messages is billed as input tokens.
+- Not available on Amazon Bedrock or Google Vertex AI.
 
 ---
 
-## Upload a File
+## Upload a File.
 
-The `file` argument accepts a `(filename, content, content_type)` tuple, a `pathlib.Path` (or any `PathLike` — read for you, async-safe with `AsyncAnthropic`), or an open binary file object.
+The `file` argument accepts a `(filename, content, content_type)` tuple, a `pathlib.Path` (or any `PathLike`. Read for you, async-safe with `AsyncAnthropic`), or an open binary file object.
 
 ```python
 import anthropic
@@ -41,9 +39,9 @@ print(f"Size: {uploaded.size_bytes} bytes")
 
 ---
 
-## Use a File in Messages
+## Use a File in Messages.
 
-### PDF / Text Document
+### PDF / Text Document.
 
 ```python
 response = client.beta.messages.create(
@@ -68,7 +66,7 @@ for block in response.content:
         print(block.text)
 ```
 
-### Image
+### Image.
 
 ```python
 image_file = client.beta.files.upload(
@@ -94,18 +92,18 @@ response = client.beta.messages.create(
 
 ---
 
-## Manage Files
+## Manage Files.
 
-### List Files
+### List Files.
 
-Iterate the list result directly — the SDK auto-paginates across all pages. Only use `.data` if you want the first page only.
+Iterate the list result directly. The SDK auto-paginates across all pages. Only use `.data` if you want the first page only.
 
 ```python
 for f in client.beta.files.list():
     print(f"{f.id}: {f.filename} ({f.size_bytes} bytes)")
 ```
 
-### Get File Metadata
+### Get File Metadata.
 
 ```python
 file_info = client.beta.files.retrieve_metadata("file_011CNha8iCJcU1wXNR6q4V8w")
@@ -113,13 +111,13 @@ print(f"Filename: {file_info.filename}")
 print(f"MIME type: {file_info.mime_type}")
 ```
 
-### Delete a File
+### Delete a File.
 
 ```python
 client.beta.files.delete("file_011CNha8iCJcU1wXNR6q4V8w")
 ```
 
-### Download a File
+### Download a File.
 
 Only files created by the code execution tool or skills can be downloaded (not user-uploaded files).
 
@@ -130,7 +128,7 @@ file_content.write_to_file("output.txt")
 
 ---
 
-## Full End-to-End Example
+## Full End-to-End Example.
 
 Upload a document once, ask multiple questions about it:
 

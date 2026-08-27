@@ -1,9 +1,9 @@
 <!--
-name: 'Skill: update-config settings-file-locations section'
-description: Where Claude Code stores settings.json across scopes
-ccVersion: 2.1.219
+name: "Skill: Update config settings file locations"
+description: "Where Claude Code stores settings.json across scopes"
+ccVersion: "2.1.210"
 -->
-## Settings File Locations
+## Settings File Locations.
 
 Choose the appropriate file based on scope:
 
@@ -15,9 +15,9 @@ Choose the appropriate file based on scope:
 
 Settings load in order: user → project → local (later overrides earlier).
 
-## Settings Schema Reference
+## Settings Schema Reference.
 
-### Permissions
+### Permissions.
 ```json
 {
   "permissions": {
@@ -31,11 +31,11 @@ Settings load in order: user → project → local (later overrides earlier).
 ```
 
 **Permission Rule Syntax:**
-- Exact match: `"Bash(npm run test)"`
-- Prefix wildcard: `"Bash(git *)"` - matches `git`, `git status`, `git commit`, etc.
-- Tool only: `"Read"` - allows all Read operations
+- Exact match: `"Bash(npm run test)"`.
+- Prefix wildcard: `"Bash(git *)"` - matches `git`, `git status`, `git commit`, and more.
+- Tool only: `"Read"` - allows all Read operations.
 
-### Environment Variables
+### Environment Variables.
 ```json
 {
   "env": {
@@ -45,7 +45,7 @@ Settings load in order: user → project → local (later overrides earlier).
 }
 ```
 
-### Model & Agent
+### Model & Agent.
 ```json
 {
   "model": "sonnet",  // or "fable", "opus", "haiku", full model ID
@@ -54,7 +54,7 @@ Settings load in order: user → project → local (later overrides earlier).
 }
 ```
 
-### Attribution (Commits & PRs)
+### Attribution (Commits & PRs).
 ```json
 {
   "attribution": {
@@ -65,7 +65,7 @@ Settings load in order: user → project → local (later overrides earlier).
 ```
 Set `commit` or `pr` to empty string `""` to hide that attribution.
 
-### MCP Server Management
+### MCP Server Management.
 ```json
 {
   "enableAllProjectMcpServers": true,
@@ -74,7 +74,7 @@ Set `commit` or `pr` to empty string `""` to hide that attribution.
 }
 ```
 
-### Plugins
+### Plugins.
 ```json
 {
   "enabledPlugins": {
@@ -84,11 +84,11 @@ Set `commit` or `pr` to empty string `""` to hide that attribution.
 ```
 Plugin syntax: `plugin-name@source` where source is `claude-code-marketplace`, `claude-plugins-official`, or `builtin`.
 
-### Other Settings
-- `language`: Preferred response language (e.g., "japanese")
-- `cleanupPeriodDays`: Days to keep transcripts before automatic cleanup (default: 30; minimum 1)
-- `respectGitignore`: Whether to respect .gitignore (default: true)
-- `spinnerTipsEnabled`: Show tips in spinner
-- `spinnerVerbs`: Customize spinner verbs (`{ "mode": "append" | "replace", "verbs": [...] }`)
-- `spinnerTipsOverride`: Override spinner tips (`{ "excludeDefault": true, "tips": ["Custom tip"] }`)
-- `syntaxHighlightingDisabled`: Disable diff highlighting
+### Other Settings.
+- `language`: Preferred response language (for example "japanese").
+- `cleanupPeriodDays`: Days to keep transcripts before automatic cleanup (default: 30. Minimum 1).
+- `respectGitignore`: Whether to respect .gitignore (default: true).
+- `spinnerTipsEnabled`: Show tips in spinner.
+- `spinnerVerbs`: Customize spinner verbs (`{ "mode": "append" | "replace", "verbs": [...] }`).
+- `spinnerTipsOverride`: Override spinner tips (`{ "excludeDefault": true, "tips": ["Custom tip"] }`).
+- `syntaxHighlightingDisabled`: Disable diff highlighting.

@@ -1,24 +1,22 @@
 <!--
-name: 'Skill: Verify server/API changes (example for Verify skill)'
-description: >-
-  Example workflow for verifying a server/API change, as part of the Verify
-  skill.
-ccVersion: 2.1.219
+name: "Skill: Verify server/API changes (example for Verify skill)"
+description: "Example workflow for verifying a server/API change, as part of the Verify skill."
+ccVersion: "2.1.83"
 -->
-# Verifying a server/API change
+# Verifying a server/API change.
 
 The handle is `curl` (or equivalent). The evidence is the response.
 
-## Pattern
+## Pattern.
 
-1. Start the server (background, with a readiness poll — see below)
-2. `curl` the route the diff touches, with inputs that hit the changed branch
-3. Capture the full response (status + headers + body)
-4. Compare to expected
+1. Start the server (background, with a readiness poll. See below).
+2. `curl` the route the diff touches, with inputs that hit the changed branch.
+3. Capture the full response (status + headers + body).
+4. Compare to expected.
 
-## Lifecycle
+## Lifecycle.
 
-If there's a run-skill it handles this. If not:
+If there is a run-skill it handles this. If not:
 
 ```bash
 <start-command> &> /tmp/server.log &
@@ -28,22 +26,22 @@ for i in {1..30}; do curl -sf localhost:PORT/health >/dev/null && break; sleep 1
 kill $SERVER_PID
 ```
 
-No readiness endpoint? Poll the route you're about to test until it
+No readiness endpoint? Poll the route you are about to test until it
 stops returning connection-refused, then add a beat.
 
-## Worked example
+## Worked example.
 
 **Diff:** adds a `Retry-After` header to 429 responses in `rateLimit.ts`.
-**Claim (PR body):** "clients can now back off correctly."
+**Claim (PR body):** "clients can now back off correctly".
 
-**Inference:** hitting the rate limit should now return `Retry-After: <n>`
-in the response headers. It didn't before.
+**Inference:** a rate-limit hit must now return `Retry-After: <n>`
+in the response headers. It did not before.
 
 **Plan:**
-1. Start server
-2. Hit the rate-limited endpoint enough times to trigger 429
-3. Check the 429 response has `Retry-After` header
-4. Check the value is a positive integer
+1. Start server.
+2. Hit the rate-limited endpoint enough times to trigger 429.
+3. Check the 429 response has `Retry-After` header.
+4. Check the value is a positive integer.
 
 **Execute:**
 ```bash
@@ -60,11 +58,11 @@ curl -si localhost:3000/api/thing | head -20
 
 **Verdict:** PASS — `Retry-After: 12` present, positive integer.
 
-## What FAIL looks like
+## What FAIL looks like.
 
-- Header absent → the diff didn't take effect, or you're not actually
-  hitting the 429 path (check the status code first)
+- Header absent → the diff did not take effect, or you are not actually
+  hitting the 429 path. Look at the status code first.
 - Header present but value is `NaN` / `undefined` / negative → the
-  logic is wrong
+  logic is wrong.
 - You got 200s all the way through → you never triggered the changed
   path. Tighten the request burst or check the rate limit config.

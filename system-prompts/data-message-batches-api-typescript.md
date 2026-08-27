@@ -1,23 +1,23 @@
 <!--
-name: 'Data: Message Batches API — TypeScript'
-description: TypeScript reference for the Message Batches API
-ccVersion: 2.1.219
+name: "Data: Message Batches API — TypeScript"
+description: "TypeScript usage guide for Claude's asynchronous Message Batches endpoint"
+ccVersion: "2.1.173"
 -->
-# Message Batches API — TypeScript
+# Message Batches API — TypeScript.
 
 The Batches API (`POST /v1/messages/batches`) processes Messages API requests asynchronously at 50% of standard prices.
 
-## Key Facts
+## Key Facts.
 
-- Up to 100,000 requests or 256 MB per batch
-- Most batches complete within 1 hour; maximum 24 hours
-- Results available for 29 days after creation
-- 50% cost reduction on all token usage
-- All Messages API features supported (vision, tools, caching, etc.)
+- Up to 100,000 requests or 256 MB per batch.
+- Most batches complete within 1 hour. Maximum 24 hours.
+- Results available for 29 days after creation.
+- 50% cost reduction on all token usage.
+- All Messages API features supported (vision, tools, caching, and more).
 
 ---
 
-## Create a Batch
+## Create a Batch.
 
 ```typescript
 import Anthropic from "@anthropic-ai/sdk";
@@ -55,7 +55,7 @@ console.log(`Status: ${messageBatch.processing_status}`);
 
 ---
 
-## Poll for Completion
+## Poll for Completion.
 
 ```typescript
 let batch;
@@ -75,7 +75,7 @@ console.log(`Errored: ${batch.request_counts.errored}`);
 
 ---
 
-## Retrieve Results
+## Retrieve Results.
 
 ```typescript
 for await (const result of await client.messages.batches.results(
@@ -103,7 +103,7 @@ for await (const result of await client.messages.batches.results(
 
 ---
 
-## Cancel a Batch
+## Cancel a Batch.
 
 ```typescript
 const cancelled = await client.messages.batches.cancel(messageBatch.id);

@@ -1,13 +1,11 @@
 <!--
-name: 'Data: Streaming reference — Python'
-description: >-
-  Python streaming reference including sync/async streaming and handling
-  different content types
-ccVersion: 2.1.219
+name: "Data: Streaming reference — Python"
+description: "Python streaming reference including sync/async streaming and handling different content types"
+ccVersion: "2.1.219"
 -->
-# Streaming — Python
+# Streaming — Python.
 
-## Quick Start
+## Quick Start.
 
 ```python
 with client.messages.stream(
@@ -19,7 +17,7 @@ with client.messages.stream(
         print(text, end="", flush=True)
 ```
 
-### Async
+### Async.
 
 ```python
 async with async_client.messages.stream(
@@ -31,9 +29,9 @@ async with async_client.messages.stream(
         print(text, end="", flush=True)
 ```
 
-### Low-level: `stream=True`
+### Low-level: `stream=True`.
 
-`messages.stream()` (above) is the recommended helper — it accumulates state and exposes `text_stream` / `get_final_message()`. If you only need the raw event iterator and want lower memory use, pass `stream=True` to `messages.create()` instead:
+`messages.stream()` (above) is the recommended helper. It accumulates state and exposes `text_stream` / `get_final_message()`. If you only need the raw event iterator and want lower memory use, pass `stream=True` to `messages.create()` instead:
 
 ```python
 for event in client.messages.create(
@@ -49,9 +47,9 @@ No final-message accumulation is done for you in this form.
 
 ---
 
-## Handling Different Content Types
+## Handling Different Content Types.
 
-Claude may return text, thinking blocks, or tool use. Handle each appropriately:
+Claude can return text, thinking blocks, or tool use. Handle each appropriately:
 
 > **Fable 5 / {{OPUS_NAME}} / Opus 4.8 / Opus 4.7 / Opus 4.6:** Use `thinking: {type: "adaptive"}`. On {{OPUS_NAME}} adaptive is also what you get by omitting `thinking` entirely. On older models, use `thinking: {type: "enabled", budget_tokens: N}` instead.
 
@@ -78,9 +76,9 @@ with client.messages.stream(
 
 ---
 
-## Streaming with Tool Use
+## Streaming with Tool Use.
 
-The Python tool runner supports streaming: pass `stream=True` to `client.beta.messages.tool_runner(...)` and each iteration yields a stream you consume event-by-event, with `get_final_message()` for the accumulated message per turn (see `shared/tool-use-concepts.md` → Tool Runner vs Manual Loop). Use the manual-loop pattern below only when you're not using the tool runner and need per-token streaming with tools:
+The Python tool runner supports streaming: pass `stream=True` to `client.beta.messages.tool_runner(...)` and each iteration yields a stream you consume event-by-event, with `get_final_message()` for the accumulated message per turn (see `shared/tool-use-concepts.md` → Tool Runner vs Manual Loop). Use the manual-loop pattern below only when you are not using the tool runner and need per-token streaming with tools:
 
 ```python
 with client.messages.stream(
@@ -98,7 +96,7 @@ with client.messages.stream(
 
 ---
 
-## Getting the Final Message
+## Getting the Final Message.
 
 ```python
 with client.messages.stream(
@@ -116,7 +114,7 @@ with client.messages.stream(
 
 ---
 
-## Streaming with Progress Updates
+## Streaming with Progress Updates.
 
 ```python
 def stream_with_progress(client, **kwargs):
@@ -144,7 +142,7 @@ def stream_with_progress(client, **kwargs):
 
 ---
 
-## Error Handling in Streams
+## Error Handling in Streams.
 
 ```python
 try:
@@ -165,7 +163,7 @@ except anthropic.APIStatusError as e:
 
 ---
 
-## Stream Event Types
+## Stream Event Types.
 
 | Event Type            | Description                 | When it fires                     |
 | --------------------- | --------------------------- | --------------------------------- |
@@ -176,11 +174,11 @@ except anthropic.APIStatusError as e:
 | `message_delta`       | Message-level updates       | Contains `stop_reason`, usage     |
 | `message_stop`        | Message complete            | Once at the end                   |
 
-## Best Practices
+## Best Practices.
 
-1. **Always flush output** — Use `flush=True` to show tokens immediately
-2. **Handle partial responses** — If the stream is interrupted, you may have incomplete content
-3. **Track token usage** — The `message_delta` event contains usage information
-4. **Use timeouts** — Set appropriate timeouts for your application
-5. **Default to streaming** — Use `.get_final_message()` to get the complete response even when streaming, giving you timeout protection without needing to handle individual events
-6. **Large `max_tokens` without streaming raises `ValueError`** — The SDK refuses non-streaming requests it estimates will exceed ~10 minutes (idle connections drop). Pass `stream=True` / use `messages.stream()`, or explicitly override `timeout`, to suppress the guard.
+1. **Always flush output**. Use `flush=True` to show tokens immediately.
+2. **Handle partial responses**. If the stream is interrupted, you can have incomplete content.
+3. **Track token usage**. The `message_delta` event contains usage information.
+4. **Use timeouts**. Set appropriate timeouts for your application.
+5. **Default to streaming**. Use `.get_final_message()` to get the complete response even when streaming, giving you timeout protection without needing to handle individual events.
+6. **Large `max_tokens` without streaming raises `ValueError`**. The SDK refuses non-streaming requests it estimates will exceed ~10 minutes (idle connections drop). Pass `stream=True` / use `messages.stream()`, or explicitly override `timeout`, to suppress the guard.

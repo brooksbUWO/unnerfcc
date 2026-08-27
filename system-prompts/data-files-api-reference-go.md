@@ -1,13 +1,13 @@
 <!--
-name: 'Data: Files API reference — Go'
-description: Files API reference doc (Go bindings).
-ccVersion: 2.1.183
+name: "Data: Files API reference — Go"
+description: "Go Files API reference including file upload, listing, deletion, and usage in messages"
+ccVersion: "2.1.182"
 -->
-# Files API — Go
+# Files API — Go.
 
-## Files API (Beta)
+## Files API (Beta).
 
-Under `client.Beta.Files`. Method is **`Upload`** (NOT `New`/`Create`), params struct is `BetaFileUploadParams`. The `File` field takes an `io.Reader`; use `anthropic.File()` to attach a filename + content-type for the multipart encoding.
+Under `client.Beta.Files`. Method is **`Upload`** (NOT `New`/`Create`), params struct is `BetaFileUploadParams`. The `File` field takes an `io.Reader`. Use `anthropic.File()` to attach a filename + content-type for the multipart encoding.
 
 ```go
 f, _ := os.Open("./upload_me.txt")

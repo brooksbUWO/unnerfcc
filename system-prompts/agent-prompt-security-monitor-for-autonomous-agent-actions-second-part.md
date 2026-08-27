@@ -1,11 +1,7 @@
 <!--
-name: 'Agent Prompt: Security Monitor Environment (Part 2)'
-description: >-
-  Environment/trust-slot section of the autonomous-agent security monitor system
-  prompt (three slot kinds — context, trust, sensitivity — plus the
-  user_environment / user_hard_deny / user_soft_deny / user_allow replaceable
-  blocks).
-ccVersion: 2.1.232
+name: "Agent Prompt: Security monitor for autonomous agent actions (second part)"
+description: "Defines the environment context, block rules, and allow exceptions that govern which tool actions the agent may or may not perform"
+ccVersion: "2.1.232"
 -->
 ## Environment
 

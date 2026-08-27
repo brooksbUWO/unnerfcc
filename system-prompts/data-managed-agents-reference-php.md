@@ -1,21 +1,21 @@
 <!--
-name: 'Data: Managed Agents reference — PHP'
-description: Managed Agents API reference doc (PHP bindings).
-ccVersion: 2.1.205
+name: "Data: Managed Agents reference — PHP"
+description: "Reference guide for using the Anthropic PHP SDK to create and manage agents, environments, and sessions"
+ccVersion: "2.1.203"
 -->
-# Managed Agents — PHP
+# Managed Agents — PHP.
 
-> **Bindings not shown here:** This README covers the most common managed-agents flows for PHP. If you need a class, method, namespace, field, or behavior that isn't shown, WebFetch the PHP SDK repo **or the relevant docs page** from `shared/live-sources.md` rather than guess. Do not extrapolate from cURL shapes or another language's SDK.
+> **Bindings not shown here:** This README covers the most common managed-agents flows for PHP. If you need a class, method, namespace, field, or behavior that is not shown, WebFetch the PHP SDK repo **or the relevant docs page** from `shared/live-sources.md` rather than guess. Do not extrapolate from cURL shapes or another language's SDK.
 
-> **Agents are persistent — create once, reference by ID.** Store the agent ID returned by `$client->beta->agents->create` and pass it to every subsequent `->sessions->create`; do not call `agents->create` in the request path. **Recommended:** define agents and environments as version-controlled YAML applied with the `ant` CLI — see `shared/anthropic-cli.md` (its live-docs URL is in `shared/live-sources.md`). The CLI owns the control plane (create/update); your code owns the data plane (sessions with the stored ID). The examples below show in-code creation for when you must provision programmatically; in production the create call belongs in setup, not in the request path.
+> **Agents are persistent. Create once, reference by ID**. Store the agent ID returned by `$client->beta->agents->create` and pass it to every subsequent `->sessions->create`. Do not call `agents->create` in the request path. **Recommended:** define agents and environments as version-controlled YAML applied with the `ant` CLI. See `shared/anthropic-cli.md` (its live-docs URL is in `shared/live-sources.md`). The CLI owns the control plane (create/update). Your code owns the data plane (sessions with the stored ID). The examples below show in-code creation for when you must provision programmatically. In production the create call belongs in setup, not in the request path.
 
-## Installation
+## Installation.
 
 ```bash
 composer require "anthropic-ai/sdk" "guzzlehttp/guzzle:^7"
 ```
 
-## Client Initialization
+## Client Initialization.
 
 ```php
 use Anthropic\Client;
@@ -29,23 +29,24 @@ $client = new Client(apiKey: 'your-api-key');
 
 ---
 
-## Create an Environment
+## Create an Environment.
 
 ```php
 $environment = $client->beta->environments->create(
     name: 'my-dev-env',
     config: ['type' => 'cloud', 'networking' => ['type' => 'unrestricted']],
 );
-echo "Environment ID: {$environment->id}\n"; // env_...
+echo "Environment ID: {$environment->id}\
+"; // env_...
 ```
 
 ---
 
-## Create an Agent (required first step)
+## Create an Agent (required first step).
 
-> ⚠️ **There is no inline agent config.** `model`/`system`/`tools` live on the agent object, not the session. Always start with `$client->beta->agents->create()` — the session takes either `agent: $agent->id` or the typed `BetaManagedAgentsAgentParams::with(type: 'agent', id: $agent->id, version: $agent->version)`.
+> ⚠️ **There is no inline agent config**. `model`/`system`/`tools` live on the agent object, not the session. Always start with `$client->beta->agents->create()`. The session takes either `agent: $agent->id` or the typed `BetaManagedAgentsAgentParams::with(type: 'agent', id: $agent->id, version: $agent->version)`.
 
-### Minimal
+### Minimal.
 
 ```php
 use Anthropic\Beta\Agents\BetaManagedAgentsAgentToolset20260401Params;
@@ -68,13 +69,15 @@ $session = $client->beta->sessions->create(
     environmentID: $environment->id,
     title: 'Quickstart session',
 );
-echo "Session ID: {$session->id}\n";
-echo "Trace: https://platform.claude.com/workspaces/default/sessions/{$session->id}\n"; // swap 'default' for your workspace ID if the API key is not in the Default workspace
+echo "Session ID: {$session->id}\
+";
+echo "Trace: https://platform.claude.com/workspaces/default/sessions/{$session->id}\
+"; // swap 'default' for your workspace ID if the API key is not in the Default workspace
 ```
 
-### Updating an Agent
+### Updating an Agent.
 
-Updates create new versions; the agent object is immutable per version.
+Updates create new versions. The agent object is immutable per version.
 
 ```php
 $updatedAgent = $client->beta->agents->update(
@@ -82,21 +85,24 @@ $updatedAgent = $client->beta->agents->update(
     version: $agent->version,
     system: 'You are a helpful coding agent. Always write tests.',
 );
-echo "New version: {$updatedAgent->version}\n";
+echo "New version: {$updatedAgent->version}\
+";
 
 // List all versions
 foreach ($client->beta->agents->versions->list($agent->id)->pagingEachItem() as $version) {
-    echo "Version {$version->version}: {$version->updatedAt->format(DateTimeInterface::ATOM)}\n";
+    echo "Version {$version->version}: {$version->updatedAt->format(DateTimeInterface::ATOM)}\
+";
 }
 
 // Archive the agent
 $archived = $client->beta->agents->archive($agent->id);
-echo "Archived at: {$archived->archivedAt->format(DateTimeInterface::ATOM)}\n";
+echo "Archived at: {$archived->archivedAt->format(DateTimeInterface::ATOM)}\
+";
 ```
 
 ---
 
-## Send a User Message
+## Send a User Message.
 
 ```php
 $client->beta->sessions->events->send(
@@ -110,13 +116,13 @@ $client->beta->sessions->events->send(
 );
 ```
 
-> 💡 **Stream-first:** Open the stream *before* (or concurrently with) sending the message. The stream only delivers events that occur after it opens — stream-after-send means early events arrive buffered in one batch. See [Steering Patterns](../../shared/managed-agents-events.md#steering-patterns).
+> 💡 **Stream-first:** Open the stream *before* (or concurrently with) sending the message. The stream only delivers events that occur after it opens. Stream-after-send means early events arrive buffered in one batch. See [Steering Patterns](../../shared/managed-agents-events.md#steering-patterns).
 
 ---
 
-## Stream Events (SSE)
+## Stream Events (SSE).
 
-> ℹ️ **Streaming transporter:** PHP's default buffered PSR-18 client never returns for the open-ended session event stream. Use a streaming Guzzle transporter for `streamStream()` calls — other calls keep the default client.
+> ℹ️ **Streaming transporter:** PHP's default buffered PSR-18 client never returns for the open-ended session event stream. Use a streaming Guzzle transporter for `streamStream()` calls. Other calls keep the default client.
 
 ```php
 $streamingClient = new GuzzleHttp\Client(['stream' => true]);
@@ -142,8 +148,11 @@ foreach ($stream as $event) {
             $event->content,
             static fn($block) => $block->type === 'text' ? print($block->text) : null,
         ),
-        'agent.tool_use' => print("\n[Using tool: {$event->name}]\n"),
-        'session.error' => printf("\n[Error: %s]", $event->error?->message ?? 'unknown'),
+        'agent.tool_use' => print("\
+[Using tool: {$event->name}]\
+"),
+        'session.error' => printf("\
+[Error: %s]", $event->error?->message ?? 'unknown'),
         default => null,
     };
     if ($event->type === 'session.status_idle' || $event->type === 'session.error') {
@@ -153,7 +162,7 @@ foreach ($stream as $event) {
 $stream->close();
 ```
 
-### Reconnecting and Tailing
+### Reconnecting and Tailing.
 
 When reconnecting mid-session, list past events first to dedupe, then tail live events:
 
@@ -191,25 +200,26 @@ $stream->close();
 
 ---
 
-## Provide Custom Tool Result
+## Provide Custom Tool Result.
 
 > ℹ️ The PHP managed-agents bindings for `user.custom_tool_result` are not yet documented in this skill or in the apps source examples. Refer to `shared/managed-agents-events.md` for the wire format and the `anthropic-ai/sdk` PHP repository for the corresponding params.
 
 ---
 
-## Poll Events
+## Poll Events.
 
 ```php
 foreach ($client->beta->sessions->events->list($session->id)->pagingEachItem() as $event) {
-    echo "{$event->type}: {$event->id}\n";
+    echo "{$event->type}: {$event->id}\
+";
 }
 ```
 
 ---
 
-## Upload a File
+## Upload a File.
 
-> ℹ️ **PHP file upload:** The PHP SDK's beta managed-agents file upload binding is not shown in the apps source examples; the canonical PHP example uses raw cURL against `POST /v1/files`. If your codebase prefers the SDK, WebFetch the `anthropic-ai/sdk` PHP repository for the latest binding before writing code.
+> ℹ️ **PHP file upload:** The PHP SDK's beta managed-agents file upload binding is not shown in the apps source examples. The canonical PHP example uses raw cURL against `POST /v1/files`. If your codebase prefers the SDK, WebFetch the `anthropic-ai/sdk` PHP repository for the latest binding before writing code.
 
 ```php
 use Anthropic\Beta\Sessions\BetaManagedAgentsFileResourceParams;
@@ -228,7 +238,8 @@ curl_setopt_array($ch, [
     CURLOPT_POSTFIELDS => ['file' => new CURLFile($csvPath, 'text/csv', 'data.csv')],
 ]);
 $file = json_decode(curl_exec($ch));
-echo "File ID: {$file->id}\n";
+echo "File ID: {$file->id}\
+";
 
 // Mount in a session
 $session = $client->beta->sessions->create(
@@ -244,7 +255,7 @@ $session = $client->beta->sessions->create(
 );
 ```
 
-### Add and Manage Resources on an Existing Session
+### Add and Manage Resources on an Existing Session.
 
 ```php
 // Attach an additional file to an open session
@@ -253,12 +264,14 @@ $resource = $client->beta->sessions->resources->add(
     type: 'file',
     fileID: $file->id,
 );
-echo "{$resource->id}\n"; // "sesrsc_01ABC..."
+echo "{$resource->id}\
+"; // "sesrsc_01ABC..."
 
 // List resources on the session
 $listed = $client->beta->sessions->resources->list($session->id);
 foreach ($listed->data as $entry) {
-    echo "{$entry->id} {$entry->type}\n";
+    echo "{$entry->id} {$entry->type}\
+";
 }
 
 // Detach a resource
@@ -267,7 +280,7 @@ $client->beta->sessions->resources->delete($resource->id, sessionID: $session->i
 
 ---
 
-## List and Download Session Files
+## List and Download Session Files.
 
 ```php
 $files = $client->beta->files->list(
@@ -280,7 +293,7 @@ file_put_contents('output.txt', $content);
 
 ---
 
-## Session Management
+## Session Management.
 
 ```php
 // List environments
@@ -301,7 +314,7 @@ $client->beta->sessions->delete($session->id);
 
 ---
 
-## MCP Server Integration
+## MCP Server Integration.
 
 ```php
 use Anthropic\Beta\Agents\BetaManagedAgentsAgentToolset20260401Params;
@@ -345,7 +358,7 @@ See `shared/managed-agents-tools.md` §Vaults for creating vaults and adding cre
 
 ---
 
-## Vaults
+## Vaults.
 
 ```php
 // Create a vault
@@ -353,7 +366,8 @@ $vault = $client->beta->vaults->create(
     displayName: 'Alice',
     metadata: ['external_user_id' => 'usr_abc123'],
 );
-echo $vault->id . "\n"; // "vlt_01ABC..."
+echo $vault->id . "\
+"; // "vlt_01ABC..."
 
 // Add an OAuth credential
 $credential = $client->beta->vaults->credentials->create(
@@ -395,7 +409,7 @@ $client->beta->vaults->archive($vault->id);
 
 ---
 
-## GitHub Repository Integration
+## GitHub Repository Integration.
 
 Mount a GitHub repository as a session resource (a vault holds the GitHub MCP credential):
 

@@ -1,14 +1,12 @@
 <!--
-name: 'Tool Description: SearchPlugins'
-description: >-
-  Describes the SearchPlugins tool for finding relevant claude.ai org catalog
-  plugins by keyword and suggesting install cards when results fit
-ccVersion: 2.1.222
+name: "Tool Description: SearchPlugins"
+description: "Describes the SearchPlugins tool for finding relevant claude.ai org catalog plugins by keyword and suggesting install cards when results fit"
+ccVersion: "2.1.221"
 -->
-Search the user's claude.ai plugin catalog by keyword. Call this when a plugin (slash command, skill bundle, hook, or agent) from the user's org catalog might help complete the task.
+Search the claude.ai plugin catalog of the user by keyword. A plugin can be a slash command, a skill bundle, a hook, or an agent. When a plugin from the org catalog of the user can help complete the task, call this tool.
 
 Examples:
-- "use the deploy plugin" → keywords ["deploy"]
-- "is there something for linting?" → keywords ["lint", "format", "code quality"]
+- "use the deploy plugin" → keywords ["deploy"].
+- "is there something for linting?" → keywords ["lint", "format", "code quality"].
 
-Returns a ranked list with id, name, description, and whether the plugin is already enabled. When results fit and SuggestPluginInstall is among your tools, call it to render the install card; otherwise relay the relevant results in text instead. If nothing relevant, proceed without mentioning that you searched.
+This tool returns a ranked list with id, name, description, and whether the plugin is enabled. If the results fit and SuggestPluginInstall is one of your tools, call it to show the install card. If not, relay the relevant results in text. If nothing is relevant, continue and do not mention the search.

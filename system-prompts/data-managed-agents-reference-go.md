@@ -1,21 +1,21 @@
 <!--
-name: 'Data: Managed Agents reference — Go'
-description: Managed Agents API reference doc (Go bindings).
-ccVersion: 2.1.205
+name: "Data: Managed Agents reference — Go"
+description: "Reference guide for using the Anthropic Go SDK to create and manage agents, environments, sessions, and tools"
+ccVersion: "2.1.235"
 -->
-# Managed Agents — Go
+# Managed Agents — Go.
 
-> **Bindings not shown here:** This README covers the most common managed-agents flows for Go. If you need a class, method, namespace, field, or behavior that isn't shown, WebFetch the Go SDK repo **or the relevant docs page** from `shared/live-sources.md` rather than guess. Do not extrapolate from cURL shapes or another language's SDK.
+> **Bindings not shown here:** This README covers the most common managed-agents flows for Go. If you need a class, method, namespace, field, or behavior that is not shown, WebFetch the Go SDK repo **or the relevant docs page** from `shared/live-sources.md` rather than guess. Do not extrapolate from cURL shapes or another language's SDK.
 
-> **Agents are persistent — create once, reference by ID.** Store the agent ID returned by `agents.New` and pass it to every subsequent `sessions.New`; do not call `agents.New` in the request path. **Recommended:** define agents and environments as version-controlled YAML applied with the `ant` CLI — see `shared/anthropic-cli.md` (its live-docs URL is in `shared/live-sources.md`). The CLI owns the control plane (create/update); your code owns the data plane (sessions with the stored ID). The examples below show in-code creation for when you must provision programmatically; in production the create call belongs in setup, not in the request path.
+> **Agents are persistent. Create once, reference by ID**. Store the agent ID returned by `agents.New` and pass it to every subsequent `sessions.New`. Do not call `agents.New` in the request path. **Recommended:** define agents and environments as version-controlled YAML applied with the `ant` CLI. See `shared/anthropic-cli.md` (its live-docs URL is in `shared/live-sources.md`). The CLI owns the control plane (create/update). Your code owns the data plane (sessions with the stored ID). The examples below show in-code creation for when you must provision programmatically. In production the create call belongs in setup, not in the request path.
 
-## Installation
+## Installation.
 
 ```bash
 go get github.com/anthropics/anthropic-sdk-go
 ```
 
-## Client Initialization
+## Client Initialization.
 
 ```go
 import (
@@ -38,7 +38,7 @@ ctx := context.Background()
 
 ---
 
-## Create an Environment
+## Create an Environment.
 
 ```go
 environment, err := client.Beta.Environments.New(ctx, anthropic.BetaEnvironmentNewParams{
@@ -59,11 +59,11 @@ fmt.Println(environment.ID) // env_...
 
 ---
 
-## Create an Agent (required first step)
+## Create an Agent (required first step).
 
-> ⚠️ **There is no inline agent config.** `Model`/`System`/`Tools` live on the agent object, not the session. Always start with `Beta.Agents.New()` — the session only takes `Agent: anthropic.BetaSessionNewParamsAgentUnion{OfString: anthropic.String(agent.ID)}` (or the typed `OfBetaManagedAgentsAgents` variant when you need a specific version).
+> ⚠️ **There is no inline agent config**. `Model`/`System`/`Tools` live on the agent object, not the session. Always start with `Beta.Agents.New()`. The session only takes `Agent: anthropic.BetaSessionNewParamsAgentUnion{OfString: anthropic.String(agent.ID)}` (or the typed `OfBetaManagedAgentsAgents` variant when you need a specific version).
 
-### Minimal
+### Minimal.
 
 ```go
 // 1. Create the agent (reusable, versioned)
@@ -99,13 +99,15 @@ session, err := client.Beta.Sessions.New(ctx, anthropic.BetaSessionNewParams{
 if err != nil {
     panic(err)
 }
-fmt.Printf("Session ID: %s, status: %s\n", session.ID, session.Status)
-fmt.Printf("Trace: https://platform.claude.com/workspaces/default/sessions/%s\n", session.ID) // swap 'default' for your workspace ID if the API key is not in the Default workspace
+fmt.Printf("Session ID: %s, status: %s\
+", session.ID, session.Status)
+fmt.Printf("Trace: https://platform.claude.com/workspaces/default/sessions/%s\
+", session.ID) // swap 'default' for your workspace ID if the API key is not in the Default workspace
 ```
 
-### Updating an Agent
+### Updating an Agent.
 
-Updates create new versions; the agent object is immutable per version.
+Updates create new versions. The agent object is immutable per version.
 
 ```go
 updatedAgent, err := client.Beta.Agents.Update(ctx, agent.ID, anthropic.BetaAgentUpdateParams{
@@ -115,13 +117,15 @@ updatedAgent, err := client.Beta.Agents.Update(ctx, agent.ID, anthropic.BetaAgen
 if err != nil {
     panic(err)
 }
-fmt.Printf("New version: %d\n", updatedAgent.Version)
+fmt.Printf("New version: %d\
+", updatedAgent.Version)
 
 // List all versions
 iter := client.Beta.Agents.Versions.ListAutoPaging(ctx, agent.ID, anthropic.BetaAgentVersionListParams{})
 for iter.Next() {
     version := iter.Current()
-    fmt.Printf("Version %d: %s\n", version.Version, version.UpdatedAt.Format(time.RFC3339))
+    fmt.Printf("Version %d: %s\
+", version.Version, version.UpdatedAt.Format(time.RFC3339))
 }
 if err := iter.Err(); err != nil {
     panic(err)
@@ -136,7 +140,7 @@ if err != nil {
 
 ---
 
-## Send a User Message
+## Send a User Message.
 
 ```go
 _, err = client.Beta.Sessions.Events.Send(ctx, session.ID, anthropic.BetaSessionEventSendParams{
@@ -157,11 +161,11 @@ if err != nil {
 }
 ```
 
-> 💡 **Stream-first:** Open the stream *before* (or concurrently with) sending the message. The stream only delivers events that occur after it opens — stream-after-send means early events arrive buffered in one batch. See [Steering Patterns](../../shared/managed-agents-events.md#steering-patterns).
+> 💡 **Stream-first:** Open the stream *before* (or concurrently with) sending the message. The stream only delivers events that occur after it opens. Stream-after-send means early events arrive buffered in one batch. See [Steering Patterns](../../shared/managed-agents-events.md#steering-patterns).
 
 ---
 
-## Stream Events (SSE)
+## Stream Events (SSE).
 
 ```go
 // Open the stream first, then send the user message
@@ -192,11 +196,15 @@ for stream.Next() {
             fmt.Print(block.Text)
         }
     case anthropic.BetaManagedAgentsAgentToolUseEvent:
-        fmt.Printf("\n[Using tool: %s]\n", event.Name)
+        fmt.Printf("\
+[Using tool: %s]\
+", event.Name)
     case anthropic.BetaManagedAgentsSessionStatusIdleEvent:
         break events
     case anthropic.BetaManagedAgentsSessionErrorEvent:
-        fmt.Printf("\n[Error: %s]\n", event.Error.Message)
+        fmt.Printf("\
+[Error: %s]\
+", event.Error.Message)
         break events
     }
 }
@@ -205,7 +213,7 @@ if err := stream.Err(); err != nil {
 }
 ```
 
-### Reconnecting and Tailing
+### Reconnecting and Tailing.
 
 When reconnecting mid-session, list past events first to dedupe, then tail live events:
 
@@ -247,20 +255,21 @@ if err := stream.Err(); err != nil {
 
 ---
 
-## Provide Custom Tool Result
+## Provide Custom Tool Result.
 
 > ℹ️ The Go managed-agents bindings for `user.custom_tool_result` are not yet documented in this skill or in the apps source examples. Refer to `shared/managed-agents-events.md` for the wire format and the `github.com/anthropics/anthropic-sdk-go` repository for the corresponding Go params types.
 
 ---
 
-## Poll Events
+## Poll Events.
 
 ```go
 // Auto-paginating iterator
 iter := client.Beta.Sessions.Events.ListAutoPaging(ctx, session.ID, anthropic.BetaSessionEventListParams{})
 for iter.Next() {
     event := iter.Current()
-    fmt.Printf("%s: %s\n", event.Type, event.ID)
+    fmt.Printf("%s: %s\
+", event.Type, event.ID)
 }
 if err := iter.Err(); err != nil {
     panic(err)
@@ -269,7 +278,7 @@ if err := iter.Err(); err != nil {
 
 ---
 
-## Upload a File
+## Upload a File.
 
 ```go
 csvFile, err := os.Open("data.csv")
@@ -284,7 +293,8 @@ file, err := client.Beta.Files.Upload(ctx, anthropic.BetaFileUploadParams{
 if err != nil {
     panic(err)
 }
-fmt.Printf("File ID: %s\n", file.ID)
+fmt.Printf("File ID: %s\
+", file.ID)
 
 // Mount in a session
 session, err := client.Beta.Sessions.New(ctx, anthropic.BetaSessionNewParams{
@@ -305,7 +315,7 @@ if err != nil {
 }
 ```
 
-### Add and Manage Resources on an Existing Session
+### Add and Manage Resources on an Existing Session.
 
 ```go
 // Attach an additional file to an open session
@@ -339,13 +349,13 @@ if _, err := client.Beta.Sessions.Resources.Delete(ctx, resource.ID, anthropic.B
 
 ---
 
-## List and Download Session Files
+## List and Download Session Files.
 
 > ℹ️ Listing and downloading files an agent wrote during a session is not yet documented for Go in this skill or in the apps source examples. See `shared/managed-agents-events.md` and the `github.com/anthropics/anthropic-sdk-go` repository for the `Beta.Files.List` and `Beta.Files.Download` Go params types.
 
 ---
 
-## Session Management
+## Session Management.
 
 ```go
 // List environments
@@ -381,7 +391,7 @@ if err != nil {
 
 ---
 
-## MCP Server Integration
+## MCP Server Integration.
 
 ```go
 // Agent declares MCP server (no auth here — auth goes in a vault)
@@ -435,7 +445,7 @@ See `shared/managed-agents-tools.md` §Vaults for creating vaults and adding cre
 
 ---
 
-## Vaults
+## Vaults.
 
 ```go
 // Create a vault
@@ -502,7 +512,7 @@ if err != nil {
 
 ---
 
-## GitHub Repository Integration
+## GitHub Repository Integration.
 
 Mount a GitHub repository as a session resource (a vault holds the GitHub MCP credential):
 

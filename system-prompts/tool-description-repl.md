@@ -1,11 +1,9 @@
 <!--
-name: 'Tool Description: REPL'
-description: >-
-  Describes the REPL tool, a JavaScript programming interface for looping,
-  branching, and composing Claude Code tool calls as async functions
-ccVersion: 2.1.219
+name: "Tool Description: REPL"
+description: "Describes the REPL tool, a JavaScript programming interface for looping, branching, and composing Claude Code tool calls as async functions"
+ccVersion: "2.1.235"
 variables:
-  - BASH_TOOL_NAME
+  - "BASH_TOOL_NAME"
 -->
 
 REPL is your programming interface to Claude Code's tools. Use it to loop, branch, and compose tool calls with code.
@@ -23,7 +21,7 @@ for (const f of filenames) {
 }
 ```
 
-**IMPORTANT: Batch ALL operations into ONE REPL call.** Don't make multiple separate REPL calls - write a complete script that does everything.
+**IMPORTANT: Batch ALL operations into ONE REPL call.** Do not make multiple separate REPL calls. Write one complete script that does everything.
 
 ## Available Tools
 

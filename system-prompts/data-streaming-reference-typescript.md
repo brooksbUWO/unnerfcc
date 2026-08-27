@@ -1,13 +1,11 @@
 <!--
-name: 'Data: Streaming reference — TypeScript'
-description: >-
-  TypeScript streaming reference including basic streaming and handling
-  different content types
-ccVersion: 2.1.219
+name: "Data: Streaming reference — TypeScript"
+description: "TypeScript streaming reference including basic streaming and handling different content types"
+ccVersion: "2.1.219"
 -->
-# Streaming — TypeScript
+# Streaming — TypeScript.
 
-## Quick Start
+## Quick Start.
 
 ```typescript
 const stream = client.messages.stream({
@@ -28,7 +26,7 @@ for await (const event of stream) {
 
 ---
 
-## Handling Different Content Types
+## Handling Different Content Types.
 
 > **Fable 5 / {{OPUS_NAME}} / Opus 4.8 / Opus 4.7 / Opus 4.6:** Use `thinking: {type: "adaptive"}`. On {{OPUS_NAME}} adaptive is also what you get by omitting `thinking` entirely. On older models, use `thinking: {type: "enabled", budget_tokens: N}` instead.
 
@@ -68,7 +66,7 @@ for await (const event of stream) {
 
 ---
 
-## Streaming with Tool Use (Tool Runner)
+## Streaming with Tool Use (Tool Runner).
 
 Use the tool runner with `stream: true`. The outer loop iterates over tool runner iterations (messages), the inner loop processes stream events:
 
@@ -120,7 +118,7 @@ for await (const messageStream of runner) {
 
 ---
 
-## Getting the Final Message
+## Getting the Final Message.
 
 ```typescript
 const stream = client.messages.stream({
@@ -139,7 +137,7 @@ console.log(`Tokens used: ${finalMessage.usage.output_tokens}`);
 
 ---
 
-## Stream Event Types
+## Stream Event Types.
 
 | Event Type            | Description                 | When it fires                     |
 | --------------------- | --------------------------- | --------------------------------- |
@@ -150,17 +148,17 @@ console.log(`Tokens used: ${finalMessage.usage.output_tokens}`);
 | `message_delta`       | Message-level updates       | Contains `stop_reason`, usage     |
 | `message_stop`        | Message complete            | Once at the end                   |
 
-## Best Practices
+## Best Practices.
 
-1. **Always flush output** — Use `process.stdout.write()` for immediate display
-2. **Handle partial responses** — If the stream is interrupted, you may have incomplete content
-3. **Track token usage** — The `message_delta` event contains usage information
-4. **Use `finalMessage()`** — Get the complete `Anthropic.Message` object even when streaming. Don't wrap `.on()` events in `new Promise()` — `finalMessage()` handles all completion/error/abort states internally
-5. **Buffer for web UIs** — Consider buffering a few tokens before rendering to avoid excessive DOM updates
-6. **Use `stream.on("text", ...)` for deltas** — The `text` event provides just the delta string, simpler than manually filtering `content_block_delta` events
-7. **For agentic loops with streaming** — See the [Streaming Manual Loop](./tool-use.md#streaming-manual-loop) section in tool-use.md for combining `stream()` + `finalMessage()` with a tool-use loop
+1. **Always flush output**. Use `process.stdout.write()` for immediate display.
+2. **Handle partial responses**. If the stream is interrupted, you can have incomplete content.
+3. **Track token usage**. The `message_delta` event contains usage information.
+4. **Use `finalMessage()`**. Get the complete `Anthropic.Message` object even when streaming. Do not wrap `.on()` events in `new Promise()` — `finalMessage()` handles all completion/error/abort states internally.
+5. **Buffer for web UIs**. Consider buffering a few tokens before rendering to avoid excessive DOM updates.
+6. **Use `stream.on("text", ...)` for deltas**. The `text` event provides just the delta string, simpler than manually filtering `content_block_delta` events.
+7. **For agentic loops with streaming**. See the [Streaming Manual Loop](./tool-use.md#streaming-manual-loop) section in tool-use.md for combining `stream()` + `finalMessage()` with a tool-use loop.
 
-## Raw SSE Format
+## Raw SSE Format.
 
 If using raw HTTP (not SDKs), the stream returns Server-Sent Events:
 

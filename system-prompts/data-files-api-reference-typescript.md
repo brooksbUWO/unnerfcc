@@ -1,27 +1,25 @@
 <!--
-name: 'Data: Files API reference — TypeScript'
-description: >-
-  TypeScript Files API reference including file upload, listing, deletion, and
-  usage in messages
-ccVersion: 2.1.219
+name: "Data: Files API reference — TypeScript"
+description: "TypeScript Files API reference including file upload, listing, deletion, and usage in messages"
+ccVersion: "2.1.78"
 -->
-# Files API — TypeScript
+# Files API — TypeScript.
 
 The Files API uploads files for use in Messages API requests. Reference files via `file_id` in content blocks, avoiding re-uploads across multiple API calls.
 
 **Beta:** Pass `betas: ["files-api-2025-04-14"]` in your API calls (the SDK sets the required header automatically).
 
-## Key Facts
+## Key Facts.
 
-- Maximum file size: 500 MB
-- Total storage: 100 GB per organization
-- Files persist until deleted
-- File operations (upload, list, delete) are free; content used in messages is billed as input tokens
-- Not available on Amazon Bedrock or Google Vertex AI
+- Maximum file size: 500 MB.
+- Total storage: 100 GB per organization.
+- Files persist until deleted.
+- File operations (upload, list, delete) are free. Content used in messages is billed as input tokens.
+- Not available on Amazon Bedrock or Google Vertex AI.
 
 ---
 
-## Upload a File
+## Upload a File.
 
 ```typescript
 import Anthropic, { toFile } from "@anthropic-ai/sdk";
@@ -42,9 +40,9 @@ console.log(`Size: ${uploaded.size_bytes} bytes`);
 
 ---
 
-## Use a File in Messages
+## Use a File in Messages.
 
-### PDF / Text Document
+### PDF / Text Document.
 
 ```typescript
 const response = await client.beta.messages.create({
@@ -72,9 +70,9 @@ console.log(response.content[0].text);
 
 ---
 
-## Manage Files
+## Manage Files.
 
-### List Files
+### List Files.
 
 ```typescript
 const files = await client.beta.files.list({
@@ -85,7 +83,7 @@ for (const f of files.data) {
 }
 ```
 
-### Delete a File
+### Delete a File.
 
 ```typescript
 await client.beta.files.delete("file_011CNha8iCJcU1wXNR6q4V8w", {
@@ -93,7 +91,7 @@ await client.beta.files.delete("file_011CNha8iCJcU1wXNR6q4V8w", {
 });
 ```
 
-### Download a File
+### Download a File.
 
 ```typescript
 const response = await client.beta.files.download(

@@ -1,15 +1,13 @@
 <!--
-name: 'Data: Tool use reference — Python'
-description: >-
-  Python tool use reference including tool runner, manual agentic loop, code
-  execution, and structured outputs
-ccVersion: 2.1.219
+name: "Data: Tool use reference — Python"
+description: "Python tool use reference including tool runner, manual agentic loop, code execution, and structured outputs"
+ccVersion: "2.1.203"
 -->
-# Tool Use — Python
+# Tool Use — Python.
 
 For conceptual overview (tool definitions, tool choice, tips), see [shared/tool-use-concepts.md](../../shared/tool-use-concepts.md).
 
-## Tool Runner (Recommended)
+## Tool Runner (Recommended).
 
 **Beta:** The tool runner is in beta in the Python SDK.
 
@@ -49,16 +47,16 @@ For async usage, use `@beta_async_tool` with `async def` functions.
 
 **Key benefits of the tool runner:**
 
-- No manual loop — the SDK handles calling tools and feeding results back
-- Type-safe tool inputs via decorators
-- Tool schemas are generated automatically from function signatures
-- Iteration stops automatically when Claude has no more tool calls
+- No manual loop. The SDK handles calling tools and feeding results back.
+- Type-safe tool inputs via decorators.
+- Tool schemas are generated automatically from function signatures.
+- Iteration stops automatically when Claude has no more tool calls.
 
-### Server tools with the tool runner
+### Server tools with the tool runner.
 
-The runner's `tools` list accepts raw server-tool definitions (`web_search_20260209`, `web_fetch_20260209`, code execution) alongside decorated tools — pass the literal tool dict; server tools run on Anthropic's servers, so there is no function to implement.
+The runner's `tools` list accepts raw server-tool definitions (`web_search_20260209`, `web_fetch_20260209`, code execution) alongside decorated tools. Pass the literal tool dict. Server tools run on Anthropic's servers, so there is no function to implement.
 
-**Caution — the runner does not auto-resume `pause_turn` (as of `anthropic` 0.116.0).** A long-running server-tool turn can stop with `stop_reason: "pause_turn"`. The runner only continues after a client tool produces a result, so a paused turn ends the loop and is returned as the final message — no error, no warning, just a silently truncated answer. Unlike the TypeScript runner, the Python runner cannot be resumed mid-loop: it exits unconditionally when no client tool ran, and `runner.append_messages(...)` does not prevent the exit. To handle `pause_turn`, mirror the conversation history as you iterate, then restart the runner with the paused turn appended:
+**Caution — the runner does not auto-resume `pause_turn` (as of `anthropic` 0.116.0)**. A long-running server-tool turn can stop with `stop_reason: "pause_turn"`. The runner only continues after a client tool produces a result, so a paused turn ends the loop and is returned as the final message. No error, no warning, just a silently truncated answer. Unlike the TypeScript runner, the Python runner cannot be resumed mid-loop: it exits unconditionally when no client tool ran, and `runner.append_messages(...)` does not prevent the exit. To handle `pause_turn`, mirror the conversation history as you iterate, then restart the runner with the paused turn appended:
 
 ```python
 messages = [{"role": "user", "content": user_input}]
@@ -93,13 +91,13 @@ Alternatively, use the manual loop below, which handles `pause_turn` explicitly.
 
 ---
 
-## MCP Tool Conversion Helpers
+## MCP Tool Conversion Helpers.
 
-**Beta.** Convert [MCP (Model Context Protocol)](https://modelcontextprotocol.io/) tools, prompts, and resources to Anthropic API types for use with the tool runner. Requires `pip install anthropic[mcp]` (Python 3.10+).
+**Beta**. Convert [MCP (Model Context Protocol)](https://modelcontextprotocol.io/) tools, prompts, and resources to Anthropic API types for use with the tool runner. Requires `pip install anthropic[mcp]` (Python 3.10+).
 
 > **Note:** The Claude API also supports an `mcp_servers` parameter that lets Claude connect directly to remote MCP servers. Use these helpers instead when you need local MCP servers, prompts, resources, or more control over the MCP connection.
 
-### MCP Tools with Tool Runner
+### MCP Tools with Tool Runner.
 
 ```python
 from anthropic import AsyncAnthropic
@@ -127,7 +125,7 @@ async with stdio_client(StdioServerParameters(command="mcp-server")) as (read, w
 
 For sync usage, use `mcp_tool` instead of `async_mcp_tool`.
 
-### MCP Prompts
+### MCP Prompts.
 
 ```python
 from anthropic.lib.tools.mcp import mcp_message
@@ -140,7 +138,7 @@ response = await client.beta.messages.create(
 )
 ```
 
-### MCP Resources as Content
+### MCP Resources as Content.
 
 ```python
 from anthropic.lib.tools.mcp import mcp_resource_to_content
@@ -159,7 +157,7 @@ response = await client.beta.messages.create(
 )
 ```
 
-### Upload MCP Resources as Files
+### Upload MCP Resources as Files.
 
 ```python
 from anthropic.lib.tools.mcp import mcp_resource_to_file
@@ -168,13 +166,13 @@ resource = await mcp_client.read_resource(uri="file:///path/to/data.json")
 uploaded = await client.beta.files.upload(file=mcp_resource_to_file(resource))
 ```
 
-Conversion functions raise `UnsupportedMCPValueError` if an MCP value cannot be converted (e.g., unsupported content types like audio, unsupported MIME types).
+Conversion functions raise `UnsupportedMCPValueError` if an MCP value cannot be converted (for example unsupported content types like audio, unsupported MIME types).
 
 ---
 
-## Manual Agentic Loop
+## Manual Agentic Loop.
 
-Prefer the tool runner above. Drop to a manual loop only when you need control the runner does not expose (e.g., a custom transport, request shapes the SDK cannot build, or avoiding a beta dependency — the runner is beta). Human-in-the-loop approval does *not* require a manual loop — gate inside the tool function (return a "user declined" result) or inspect pending `tool_use` blocks in the `for message in runner:` body and call `runner.set_messages_params()`.
+Prefer the tool runner above. Drop to a manual loop only when you need control the runner does not expose (for example a custom transport, request shapes the SDK cannot build, or avoiding a beta dependency. The runner is beta). Human-in-the-loop approval does *not* require a manual loop. Gate inside the tool function (return a "user declined" result) or inspect pending `tool_use` blocks in the `for message in runner:` body and call `runner.set_messages_params()`.
 
 If you do need a manual loop:
 
@@ -231,7 +229,7 @@ final_text = next(b.text for b in response.content if b.type == "text")
 
 ---
 
-## Handling Tool Results
+## Handling Tool Results.
 
 ```python
 response = client.messages.create(
@@ -270,7 +268,7 @@ for block in response.content:
 
 ---
 
-## Multiple Tool Calls
+## Multiple Tool Calls.
 
 ```python
 tool_results = []
@@ -300,7 +298,7 @@ if tool_results:
 
 ---
 
-## Error Handling in Tool Results
+## Error Handling in Tool Results.
 
 ```python
 tool_result = {
@@ -313,7 +311,7 @@ tool_result = {
 
 ---
 
-## Tool Choice
+## Tool Choice.
 
 ```python
 response = client.messages.create(
@@ -327,9 +325,9 @@ response = client.messages.create(
 
 ---
 
-## Code Execution
+## Code Execution.
 
-### Basic Usage
+### Basic Usage.
 
 ```python
 import anthropic
@@ -356,7 +354,7 @@ for block in response.content:
         print(f"stdout: {block.content.stdout}")
 ```
 
-### Upload Files for Analysis
+### Upload Files for Analysis.
 
 ```python
 # 1. Upload a file
@@ -379,7 +377,7 @@ response = client.messages.create(
 )
 ```
 
-### Retrieve Generated Files
+### Retrieve Generated Files.
 
 ```python
 import os
@@ -405,7 +403,7 @@ for block in response.content:
                     print(f"Saved: {output_path}")
 ```
 
-### Container Reuse
+### Container Reuse.
 
 ```python
 # First request: set up environment
@@ -429,7 +427,7 @@ response2 = client.messages.create(
 )
 ```
 
-### Response Structure
+### Response Structure.
 
 ```python
 for block in response.content:
@@ -452,9 +450,9 @@ for block in response.content:
 
 ---
 
-## Memory Tool
+## Memory Tool.
 
-### Basic Usage
+### Basic Usage.
 
 ```python
 import anthropic
@@ -469,7 +467,7 @@ response = client.messages.create(
 )
 ```
 
-### SDK Memory Helper
+### SDK Memory Helper.
 
 Subclass `BetaAbstractMemoryTool`:
 
@@ -500,13 +498,13 @@ for message in runner:
 
 For full implementation examples, use WebFetch:
 
-- `https://github.com/anthropics/anthropic-sdk-python/blob/main/examples/memory/basic.py`
+- `https://github.com/anthropics/anthropic-sdk-python/blob/main/examples/memory/basic.py`.
 
 ---
 
-## Structured Outputs
+## Structured Outputs.
 
-### JSON Outputs (Pydantic — Recommended)
+### JSON Outputs (Pydantic — Recommended).
 
 ```python
 from pydantic import BaseModel
@@ -538,7 +536,7 @@ print(contact.name)           # "Jane Doe"
 print(contact.interests)      # ["API", "SDKs"]
 ```
 
-### Raw Schema
+### Raw Schema.
 
 ```python
 response = client.messages.create(
@@ -572,7 +570,7 @@ text = next(b.text for b in response.content if b.type == "text")
 data = json.loads(text)
 ```
 
-### Strict Tool Use
+### Strict Tool Use.
 
 ```python
 response = client.messages.create(
@@ -597,7 +595,7 @@ response = client.messages.create(
 )
 ```
 
-### Using Both Together
+### Using Both Together.
 
 ```python
 response = client.messages.create(

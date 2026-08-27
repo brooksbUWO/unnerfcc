@@ -1,13 +1,11 @@
 <!--
-name: 'Tool Description: ListMcpResourcesTool'
-description: >-
-  Tool description for listing available MCP resources from all configured
-  servers or a specific server
-ccVersion: 2.1.219
+name: "Tool Description: ListMcpResourcesTool"
+description: "Tool description for listing available MCP resources from all configured servers or a specific server"
+ccVersion: "2.1.173"
 -->
 
 Lists available resources from configured MCP servers.
-Each resource object includes a 'server' field indicating which server it's from.
+Each resource object includes a 'server' field. This field names the source server of the resource.
 
 Usage examples:
 - List all resources from all servers: `listMcpResources`

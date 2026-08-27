@@ -1,15 +1,15 @@
 <!--
-name: 'Data: Tool use reference — Go'
-description: Tool-use API reference doc (Go bindings).
-ccVersion: 2.1.219
+name: "Data: Tool use reference — Go"
+description: "Go tool use reference including the beta tool runner with automatic schema generation and the manual agentic loop"
+ccVersion: "2.1.203"
 -->
-# Tool Use — Go
+# Tool Use — Go.
 
 For conceptual overview (tool definitions, tool choice, tips), see [shared/tool-use-concepts.md](../../shared/tool-use-concepts.md).
 
-## Tool Use
+## Tool Use.
 
-### Tool Runner (Beta — Recommended)
+### Tool Runner (Beta — Recommended).
 
 **Beta:** The Go SDK provides `BetaToolRunner` for automatic tool use loops via the `toolrunner` package.
 
@@ -78,15 +78,15 @@ for _, block := range message.Content {
 
 **Key features of the Go tool runner:**
 
-- Automatic schema generation from Go structs via `jsonschema` tags
-- `RunToCompletion()` for simple one-shot usage
-- `All()` iterator for processing each message in the conversation
-- `NextMessage()` for step-by-step iteration
-- Streaming variant via `NewToolRunnerStreaming()` with `AllStreaming()`
+- Automatic schema generation from Go structs via `jsonschema` tags.
+- `RunToCompletion()` for simple one-shot usage.
+- `All()` iterator for processing each message in the conversation.
+- `NextMessage()` for step-by-step iteration.
+- Streaming variant via `NewToolRunnerStreaming()` with `AllStreaming()`.
 
-### Manual Loop
+### Manual Loop.
 
-Prefer the tool runner above. For interception, validation, logging, or human-in-the-loop approval, gate inside the tool's run function or step the runner with `NextMessage()`/`All()` and inspect each message (the runner's public `Params` field lets you adjust the next request) — a manual loop is not required. Drop to a manual loop only when you need control the runner does not expose: define tools with `ToolParam`, check `StopReason`, execute tools yourself, and feed `tool_result` blocks back.
+Prefer the tool runner above. For interception, validation, logging, or human-in-the-loop approval, gate inside the tool's run function or step the runner with `NextMessage()`/`All()` and inspect each message (the runner's public `Params` field lets you adjust the next request). A manual loop is not required. Drop to a manual loop only when you need control the runner does not expose: define tools with `ToolParam`, check `StopReason`, execute tools yourself, and feed `tool_result` blocks back.
 
 Derived from `anthropic-sdk-go/examples/tools/main.go`.
 
@@ -188,9 +188,9 @@ func main() {
 
 ---
 
-## Anthropic-Defined Tools
+## Anthropic-Defined Tools.
 
-Version-suffixed struct names with `Param` suffix. `Name`/`Type` are `constant.*` types — zero value marshals correctly, so `{}` works. Wrap in `ToolUnionParam` with the matching `Of*` field. Web search and code execution are server-executed; bash and text editor are client-executed (you handle the `tool_use` locally — see `shared/tool-use-concepts.md`).
+Version-suffixed struct names with `Param` suffix. `Name`/`Type` are `constant.*` types. Zero value marshals correctly, so `{}` works. Wrap in `ToolUnionParam` with the matching `Of*` field. Web search and code execution are server-executed. Bash and text editor are client-executed (you handle the `tool_use` locally. See `shared/tool-use-concepts.md`).
 
 ```go
 Tools: []anthropic.ToolUnionParam{
@@ -203,9 +203,9 @@ Tools: []anthropic.ToolUnionParam{
 
 Also available: `WebFetchTool20260209Param`, `ToolSearchToolBm25_20251119Param`, `ToolSearchToolRegex20251119Param`. For the advisor and memory tools, use `BetaAdvisorTool20260301Param` / `BetaMemoryTool20250818Param` in the beta namespace on `client.Beta.Messages.New`.
 
-### Advisor tool (beta)
+### Advisor tool (beta).
 
-Server-side — no tool_result round-trip. The advisor model must be ≥ the executor (top-level) model; invalid pairs return 400.
+Server-side — no tool_result round-trip. The advisor model must be ≥ the executor (top-level) model. Invalid pairs return 400.
 
 ```go
 response, err := client.Beta.Messages.New(ctx, anthropic.BetaMessageNewParams{

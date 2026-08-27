@@ -1,6 +1,6 @@
 <!--
-name: 'Tool Description: claude-in-chrome find'
-description: claude-in-chrome find element tool description
-ccVersion: 2.1.141
+name: "Tool Description: Claude in Chrome find"
+description: "Describes the Claude in Chrome find tool for locating page elements by natural language or text content"
+ccVersion: "2.1.173"
 -->
-Find elements on the page using natural language. Can search for elements by their purpose (e.g., "search bar", "login button") or by text content (e.g., "organic mango product"). Returns up to 20 matching elements with references that can be used with other tools. If more than 20 matches exist, you'll be notified to use a more specific query. If you don't have a valid tab ID, use tabs_context_mcp first to get available tabs.
+Find elements on the page with natural language. You can search by purpose (for example, "search bar" or "login button"). You can also search by text content (for example, "organic mango product"). The tool returns up to 20 matching elements with references for other tools. If more than 20 matches exist, the tool tells you to use a more specific query. If you do not have a valid tab ID, call the browser-occ connection tool first. It gives the available tabs.

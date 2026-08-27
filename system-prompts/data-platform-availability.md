@@ -1,11 +1,11 @@
 <!--
-name: 'Data: Platform Availability'
-description: Provider-platform feature-availability table the model consults.
-ccVersion: 2.1.219
+name: "Data: Platform availability"
+description: "Feature availability matrix across Claude API provider platforms (first-party, Claude Platform on AWS, Bedrock, Vertex, and Foundry)"
+ccVersion: "2.1.219"
 -->
-# Platform Availability
+# Platform Availability.
 
-Which features work on which provider platform. **This table is the single source of truth in this skill** — per-feature sections elsewhere point here instead of restating availability. When writing code for a third-party platform (Bedrock, Vertex, Foundry) or Claude Platform on AWS, check this table first; a feature not supported there means use the first-party Claude API surface or a different approach.
+Which features work on which provider platform. **This table is the single source of truth in this skill**. Per-feature sections elsewhere point here instead of restating availability. When writing code for a third-party platform (Bedrock, Vertex, Foundry) or Claude Platform on AWS, check this table first. A feature not supported there means use the first-party Claude API surface or a different approach.
 
 Columns: **1P** = first-party Claude API, **P-AWS** = Claude Platform on AWS (Anthropic-operated, same-day parity), **Bedrock** = Amazon Bedrock, **Vertex** = Google Cloud Vertex AI, **Foundry** = Microsoft Foundry. ✅ = GA, β = beta, ❌ = not supported.
 
@@ -40,28 +40,28 @@ Columns: **1P** = first-party Claude API, **P-AWS** = Claude Platform on AWS (An
 | &nbsp;&nbsp;Programmatic tool calling | ✅ | ✅ | ❌ | ❌ | β | |
 | &nbsp;&nbsp;MCP connector | β | β | ❌ | ❌ | β | |
 | &nbsp;&nbsp;Managed Agents | β | β | ❌ | ❌ | ❌ | Foundry ❌ inferred (not in Foundry docs either way) |
-| &nbsp;&nbsp;Self-hosted sandboxes | β | β | ❌ | ❌ | ❌ | P-AWS: `GET /v1/environments/{id}/work` list endpoint not supported; other work endpoints OK |
+| &nbsp;&nbsp;Self-hosted sandboxes | β | β | ❌ | ❌ | ❌ | P-AWS: `GET /v1/environments/{id}/work` list endpoint not supported. Other work endpoints OK |
 | **API endpoints** | | | | | | |
 | &nbsp;&nbsp;Message Batches | ✅ | ✅ | ❌ | ❌ | ❌ | |
 | &nbsp;&nbsp;Files API | β | β | ❌ | ❌ | β | |
 | &nbsp;&nbsp;Models API | ✅ | ✅ | ❌ | ❌ | ❌ | |
 | **Other** | | | | | | |
-| &nbsp;&nbsp;Mid-conversation system messages | ✅ | ✅ | ❌ | ❌ | ❌ | {{OPUS_NAME}}, {{PREV_OPUS_NAME}}, {{FABLE_NAME}}, {{MYTHOS_NAME}}; not {{SONNET_NAME}} |
+| &nbsp;&nbsp;Mid-conversation system messages | ✅ | ✅ | ❌ | ❌ | ❌ | {{OPUS_NAME}}, {{PREV_OPUS_NAME}}, {{FABLE_NAME}}, {{MYTHOS_NAME}}. Not {{SONNET_NAME}} |
 | &nbsp;&nbsp;Fast mode | β | ❌ | ❌ | ❌ | ❌ | Research preview, beta `fast-mode-2026-02-01`, first-party API only |
 | &nbsp;&nbsp;Cache diagnostics | β | ❌ | ❌ | ❌ | ❌ | First-party API only |
-| &nbsp;&nbsp;Task budgets | β | β | ❌ | ❌ | ❌ | Beta header `task-budgets-2026-03-13`; 3P availability not documented — assume unsupported |
+| &nbsp;&nbsp;Task budgets | β | β | ❌ | ❌ | ❌ | Beta header `task-budgets-2026-03-13`. 3P availability not documented. Assume unsupported |
 
 <!--
-GROUNDING (reviewer-only; stripped at runtime by processSkillMarkdown).
+GROUNDING (reviewer-only. Stripped at runtime by processSkillMarkdown).
 All paths are under docker_eval/resources/cdp-skill/public-docs/.
 
 Primary source: build-with-claude/overview.mdx <PlatformAvailability> props
 (claudeApi→1P, claudePlatformAws→P-AWS, bedrock→Bedrock, vertexAi→Vertex,
-azureAi→Foundry; *Beta suffix→β; prop absent→❌). Per-row citations:
+azureAi→Foundry; *Beta suffix→β. Prop absent→❌). Per-row citations:
 
   Context windows          ov:44
   Adaptive thinking        ov:45
-  Batch / Message Batches  ov:46; bed:360; vtx:381; fdy:507
+  Batch / Message Batches  ov:46. Bed:360. Vtx:381. Fdy:507
   Citations                ov:47
   inference_geo            ov:48
   Effort                   ov:49
@@ -72,30 +72,30 @@ azureAi→Foundry; *Beta suffix→β; prop absent→❌). Per-row citations:
   Advisor tool             ov:63
   Code execution           ov:64
   Web fetch                ov:65
-  Web search               ov:66; agents-and-tools/tool-use/web-search-tool.mdx:41
+  Web search               ov:66. Agents-and-tools/tool-use/web-search-tool.mdx:41
   Bash/text-editor/memory  ov:72,75,74
   Computer use             ov:73
   Agent Skills             ov:83
   Fine-grained streaming   ov:84
-  MCP connector            ov:85; agents-and-tools/mcp-connector.mdx:36
+  MCP connector            ov:85. Agents-and-tools/mcp-connector.mdx:36
   Programmatic tool call   ov:86
-  Tool search              ov:87; agents-and-tools/tool-use/tool-search-tool.mdx:24-30
+  Tool search              ov:87. Agents-and-tools/tool-use/tool-search-tool.mdx:24-30
   Compaction               ov:95
   Context editing          ov:96
   Automatic caching        ov:97
   Prompt caching 5m/1h     ov:98,99
   Token counting           ov:100
-  Files API                ov:108; build-with-claude/files.mdx:17
-  Managed Agents           managed-agents/overview.mdx:11,70-72; bed:360; vtx:381
+  Files API                ov:108. Build-with-claude/files.mdx:17
+  Managed Agents           managed-agents/overview.mdx:11,70-72. Bed:360. Vtx:381
   Self-hosted sandboxes    build-with-claude/claude-platform-on-aws.mdx:525,547
   Mid-convo system msgs    build-with-claude/mid-conversation-system-messages.mdx:15
   Fast mode                build-with-claude/fast-mode.mdx:23
   Cache diagnostics        build-with-claude/cache-diagnostics.mdx:15,1379
   Task budgets             build-with-claude/task-budgets.mdx:15
-  Models API               bed:360; vtx:381; fdy:506
+  Models API               bed:360. Vtx:381. Fdy:506.
 
   ov  = build-with-claude/overview.mdx
   bed = build-with-claude/claude-in-amazon-bedrock.mdx
   vtx = build-with-claude/claude-on-vertex-ai.mdx
-  fdy = build-with-claude/claude-in-microsoft-foundry.mdx
--->
+  fdy = build-with-claude/claude-in-microsoft-foundry.mdx.
+-->.

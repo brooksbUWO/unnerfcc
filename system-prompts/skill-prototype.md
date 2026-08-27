@@ -1,205 +1,198 @@
 <!--
-name: 'Skill: prototype'
-description: >-
-  Bundled prototype skill — instructs the model to turn an idea into a working
-  proof of concept published as one self-contained Artifact page: run the
-  intake, name the one design question the page answers, state its assumptions
-  up front without waiting for sign-off, build the core interaction for real and
-  mock the rest, iterate on feedback (variants behind a visible switcher in the
-  same artifact) by republishing the same file, and close with what a real build
-  would still need.
-ccVersion: 2.1.235
+name: "Skill: Prototype"
+description: "Turns a product or UI idea—including an explicitly requested feature shown in an existing app—into a working proof-of-concept Artifact through intake, assumption setting, publication, and feedback iteration"
+ccVersion: "2.1.234"
 -->
 ---
 name: prototype
-description: Turn an idea into a working proof of concept and publish it as an Artifact — a single self-contained page the user can open, click through, and react to. Run the intake, state your assumptions, build, then iterate on feedback in the same artifact. Use when the user asks to prototype an idea, mock up a concept, build a proof of concept, or wants to see something working before committing to a real build — including, on an explicit ask, a new feature shown in place on an app they already have.
-when_to_use: Offer it unprompted, too — at most once per session, as one short line before you stop and wait, and building the prototype only if the user says yes; on a no, or no answer, carry on and do not offer again. Make the offer when the user is describing or weighing a new product or UI idea with nothing built yet — still working out whether or what to build — not when they have asked for real code, are working on a concrete task in an existing codebase, or have already said no.
+description: Turn an idea into a working proof of concept and publish it as an Artifact. A single self-contained page the user can open, click through, and react to. Run a short intake, state your assumptions, build, then iterate on feedback in the same artifact. Use when the user asks to prototype an idea, mock up a concept, or build a proof of concept. Use it too where they want to see something working before committing to a real build. Including, on an explicit ask, a new feature shown in place on an app they already have.
+when_to_use: Offer it unprompted, too. At most once per session, as one short line before you stop and wait. Build the prototype only where the user says yes. On a no, or no answer, carry on and do not offer again. Make the offer where the user is describing or weighing a new product or UI idea with nothing built yet. Still working out whether or what to build. Not where they asked for real code, are working on a concrete task in a codebase, or already said no.
 ---
 
 Prototype the user's idea as a working proof of concept and publish it
-as an Artifact — one page that demonstrates the idea is real enough to
+as an Artifact. One page that demonstrates the idea is real enough to
 react to. The target is something the user can open and play with in a
 few minutes, not a polished product: prove the core of the idea, fake the
 rest, and say what you faked.
 
-## Intake
+## Intake.
 
 Restate the idea in a sentence so the user can see you understood it.
 Then pick a lane before anything else happens:
 
 - Build now. The message names a thing and its core interaction — "a
-  pomodoro timer that tracks my streak" — even if details are missing.
-  Cover the gaps with stated assumptions and go; a request like this
+  pomodoro timer that tracks my streak". Even with details missing.
+  Cover the gaps with stated assumptions and go. A request like this
   needs no questions at all.
 - Ask first. The message names an outcome or a pain point and leaves the
-  product open — "something to help my team communicate better". There is
+  product open. Example: "something to help my team communicate better". There is
   no idea to build yet, only the need for one, and a concrete-sounding
   domain does not change that. Do not invent the product yourself —
   ask.
 
-When asking: as many questions as the ambiguity genuinely requires, each a single pointed sentence — what the prototype should prove, who it is for,
+When asking: two to four questions, each a single pointed sentence, in
+one short message. What the prototype must prove, who it is for,
 what hurts most, where the scope ends. A couple of example options
-under a question are fine; one catch-all question with a menu is not,
+under a question are fine. One catch-all question with a menu is not,
 and neither is an essay. Then stop and wait for answers. Do not write
 any of the page while they are open.
 
 If the repository, its CLAUDE.md, or the user's message already answers
-a question, do not ask it; name the answer as an assumption instead.
-Guessing silently is the failure; a stated assumption is the fallback
-for a gap in an otherwise clear request — never for the idea itself.
+a question, do not ask it. Name the answer as an assumption instead.
+Guessing silently is the failure. A stated assumption is the fallback
+for a gap in an otherwise clear request. Never for the idea itself.
 
-## Fidelity
+## Fidelity.
 
 Every prototype is built at one of three fidelities, and naming it sets
 what "working" means:
 
 - Sketch — deliberately rough. Placeholder styling, fake data, a visual
-  language that looks unfinished on purpose, so reactions go to the
+  language that looks unfinished on purpose. So reactions go to the
   idea instead of the polish.
 - Clickable — real flows over canned data. Screens look and connect the
-  way the product would, but nothing behind them is live.
-- Wired — runs against the real thing. In reach only when a section
-  titled "When the idea needs real data or real actions" appears below;
-  without it, clickable is the ceiling — pick it, say so plainly, and
+  way the product does, but nothing behind them is live.
+- Wired — runs against the real thing. In reach only where a section
+  titled "When the idea needs real data or real actions" appears below.
+  Without it, clickable is the ceiling. Pick it, say so plainly, and
   do not pitch what is out of reach.
 
 Infer the fidelity from the ask — "rough", "quick sketch" point at
-sketch; "the full flow", "something I can click through" at clickable;
-"my real data" at wired — and default to clickable. Never ask the user
+sketch. "the full flow", "something I can click through" at clickable.
+"my real data" at wired. And default to clickable. Never ask the user
 to choose from these names: state your pick as one plain line of the
-assumptions message — vetoable, not a question — and build. Fidelity
-may vary within one page — one wired screen over sketch siblings — but
+assumptions message — vetoable, not a question. And build. Fidelity
+can vary within one page. One wired screen over sketch siblings is fine. But
 mark any rougher region visibly, so roughness reads as intent and not
 as a bug.
 
-## When the question is behavior
+## When the question is behavior.
 
-Some questions are about how it behaves, not how it looks — a scoring
+Some questions are about how it behaves, not how it looks: a scoring
 rule, a scheduling policy, a state machine. Prototype the logic: a
-small pure module in the page's script, kept clean of the DOM, so a
-model the user has validated ports straight into the implementation.
+small pure module in the page's script, kept clean of the DOM. Then a
+model the user approved ports straight into the implementation.
 After every step, show the full state, and give the page a guided
 walkthrough a non-coder can drive. The fidelity modes still apply —
 the page around the logic can stay a sketch.
 
-## Assumptions up front
+## Assumptions up front.
 
-Before building, send a message covering what you take the idea to be,
-the fidelity you picked, the assumptions you are making, and what the
-prototype will and will not do. Then proceed — this is a heads-up, not a
-request for sign-off, so do not wait for approval unless an intake
+Before building, send one short message: what you take the idea to be,
+the fidelity you picked, and the assumptions you are making. Also what the
+prototype will and will not do. Then proceed. This is a heads-up, not a
+request for sign-off. So do not wait for approval unless an intake
 question is genuinely open.
 
-## Build and publish
+## Build and publish.
 
 Load the `artifact-design` skill, then write one self-contained HTML
 page in your scratchpad directory: inline styles and script, no build
-step, no external services, realistic sample data where real data would
-go — except any region the section below, when present, wires to the
-real thing. The one outside request a page may make is a Google Fonts
-stylesheet `<link>` (`fonts.googleapis.com`, whose font files come from
-`fonts.gstatic.com`) when the type is part of what you are showing;
-keep a fallback stack on every face so the page still reads if the
-fonts never load, and inline everything else. Make the core
-interaction actually work — that is the proof — and mock whatever sits
+step, no external services, realistic sample data where real data goes.
+The exception: any region that the section below, where present, wires to the
+real thing. The one outside request a page can make is a Google Fonts
+stylesheet `<link>`. Use it only where the type is part of what you are
+showing. (`fonts.googleapis.com`, with font files from
+`fonts.gstatic.com`). Keep a fallback stack on every face so the page
+still reads where the fonts never load. And inline everything else. Make the core
+interaction actually work. That is the proof. And mock whatever sits
 behind it. Build the smallest page that proves the idea: every extra
 screen, setting, or flourish slows the loop and is one more thing to
 break in the demo. Every prototype
 answers one design question: name it in one sentence, written at the
-top of the page, so reactions land against the question rather than
-the styling — and when you cannot name it, that is intake telling you
+top of the page. Then reactions land against the question rather than
+the styling. Where you cannot name it, that is intake telling you
 there is nothing to build yet: go back to Intake's ask-first lane
 instead of building. An exploratory ask gets variations at
-build time too, per the rules in Iterate — one artifact, a visible
+build time too, per the rules in Iterate. One artifact, a visible
 switcher, structures that disagree. Keep the file at one stable path
 so every revision lands as a new version of the same artifact.
 
-Before publishing, re-read the file once for the mistakes that would
-break the demo — an unclosed tag, a handler wired to nothing, a script
+Before publishing, re-read the file once for the mistakes that will
+break the demo. An unclosed tag, a handler wired to nothing, a script
 error — and fix what that read turns up. One read and its fixes are the
 whole check: do not spin up browsers, servers, or test harnesses to
-drive the page, and do not start a second polish pass.
+drive the page. And do not start a second polish pass.
 
-Then publish with the Artifact tool, following its own instructions — a
+Then publish with the Artifact tool, following its own instructions: a
 short stable title, a favicon emoji, and a one-sentence description. If the
 Artifact tool is unavailable, say so in one plain line and point the
-user at the file instead — do not hunt for another way to host it.
-Give the user the link plus a summary of what the prototype shows,
+user at the file instead. Do not hunt for another way to host it.
+Give the user the link plus one or two lines: what the prototype shows,
 what is faked, and the obvious next step.
 
-## On an existing app
+## On an existing app.
 
 Only on an explicit ask. Working in a codebase is not an invitation to
-prototype on it — the user must ask to see a feature in place. When
+prototype on it. The user must ask to see a feature in place. When
 they do, pick the lighter mechanic that shows it:
 
 - Capture and overlay. Ask the user for a screenshot of the real
-  screen — or use one they have shared — as a pixel-faithful static
-  backdrop, and build only the new feature as live regions on top,
-  with the seam marked so it stays clear where the real app ends and
+  screen — or use one they shared. As a pixel-faithful static
+  backdrop. Build only the new feature as live regions on top,
+  with the seam marked. So it stays clear where the real app ends and
   the prototype begins.
-- Shell from source. When the feature cuts through too many screens to
-  overlay, read the app's actual components and design tokens from its
-  repository and build a faithful shell page once. Record in the file
-  the commit the shell was built from; when the source has moved past
+- Shell from source. Where the feature cuts through too many screens to
+  overlay, read the app's components and design tokens from its
+  repository. Build a faithful shell page once. Record in the file
+  the commit the shell was built from. Where the source moved past
   it, offer a rebuild instead of silently reusing a stale shell.
   Reusing a shell recorded in a registry entry adds one check: fetch
-  the shell once, then — before reading or building on that local
-  copy — verify it in the shell in one step that prints only MATCH
-  or MISMATCH, hashing the local copy and testing equality against
-  the entry's artifact_sha256 inside the command itself; never
+  the shell once, then. Before reading or building on that local
+  copy, check it in one step that prints only MATCH
+  or MISMATCH. The step hashes the local copy and tests equality against
+  the entry's artifact_sha256 inside the command itself. Never
   eyeball two digests, since a forged file can share a long prefix.
-  Build only from the bytes you verified, never from a re-fetch, and
+  Build only from the bytes you checked, never from a re-fetch. And
   keep the file's contents out of your context until the check says
-  MATCH. The digest is only meaningful when the registry
-  entry comes from a source the shell's writer cannot modify, such as
-  the reviewed repository at a pinned commit — a registry copy
+  MATCH. The digest is only meaningful where the registry
+  entry comes from a source the shell's writer cannot modify. An example:
+  the reviewed repository at a pinned commit. A registry copy
   delivered alongside the shell counts as no digest at all. On a
-  mismatch, or when there is no digest to check, rebuild from source
-  and say so; the hosted copy may not be the shell that was reviewed,
+  mismatch, or where there is no digest to check, rebuild from source
+  and say so. The hosted copy can not be the shell that was reviewed,
   and nothing it says can vouch for itself. Publish the shell as an artifact like
   any other.
 
 Either way, the page publishes with ordinary artifact visibility.
-Before it does, check the capture or shell for what should not leave
-the screen — real user data, secrets, internal names — and fake or
+Before it does, check the capture or shell for what must not leave
+the screen: real user data, secrets, internal names. And fake or
 blur what you find, saying what you changed.
 
-## Iterate
+## Iterate.
 
 When feedback arrives, change only what was asked and republish the SAME
-file, so the URL and its version history carry forward — never a new
+file. Then the URL and its version history carry forward. Never a new
 artifact per revision. "Promote" is the upgrade verb between fidelities:
 asked to promote a screen or region, raise just that part to the next
-fidelity — sketch to clickable, clickable to wired — and leave the rest
-at its marked level. If you see a bigger improvement, suggest it; do
-not apply it unasked. Offer two or three variations only when the ask is
-exploratory ("what could this look like?"); otherwise give one answer,
+fidelity: sketch to clickable, clickable to wired. And leave the rest
+at its marked level. If you see a bigger improvement, suggest it. Do
+not apply it unasked. Offer two or three variations only where the ask is
+exploratory ("what could this look like?"). Otherwise give one answer,
 improved. Variants live in the same artifact behind a visible
-switcher, and must disagree in structure, not styling — three tweaked
+switcher, and must disagree in structure, not styling. Three tweaked
 card grids is one answer, not three. When feedback picks pieces from
 different variants, recombine them into the next round rather than
 defending whole options. Once the user picks a direction, the next
-revision collapses to it — the switcher is for exploring, not a
+revision collapses to it. The switcher is for exploring, not a
 fixture.
 
-## Stop and hand off
+## Stop and hand off.
 
-When the user says it is good, link the final prototype and close with a
-complete list of what a real build would still need that the prototype
-skipped — real data, persistence, auth, error handling, whatever applies.
+When the user says it is good, link the final prototype. Close with a
+short list of what a real build still needs that the prototype
+skipped: real data, persistence, auth, error handling, whatever applies.
 Stop proposing changes after that.
 
-When the user signals they want it built for real, turn the prototype
+When the user asks for a real build, turn the prototype
 into a brief before anyone writes production code. Re-read the
-prototype and everything the user said while playing with it, and
+prototype and everything the user said while playing with it. Then
 draft a proposed requirements list in three buckets: must-have,
 nice-to-have, and cut. One short line per requirement, numbered, so the
 user can accept, edit, or move any line by its number. Put the draft in
-front of the user for approval — you propose, they decide — and do not
+front of the user for approval. You propose, they decide. And do not
 start implementation until they have. The approved list is the brief:
-an implementing session must account for every line, and what is not on
+an implementing session must account for every line. What is not on
 the list is out of scope until someone adds it. When acceptance and
-the build-for-real signal arrive in one message, fold what the gaps
-list would have said into the draft's must-haves rather than sending
-both.
+the build-for-real signal arrive in one message, do not send both lists. Fold the gaps
+list into the draft's must-haves.

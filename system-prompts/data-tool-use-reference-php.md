@@ -1,17 +1,17 @@
 <!--
-name: 'Data: Tool use reference — PHP'
-description: Tool-use API reference doc (PHP bindings).
-ccVersion: 2.1.219
+name: "Data: Tool use reference — PHP"
+description: "PHP tool use reference including the beta tool runner and the manual agentic loop with camelCase keys"
+ccVersion: "2.1.182"
 -->
-# Tool Use — PHP
+# Tool Use — PHP.
 
 For conceptual overview (tool definitions, tool choice, tips), see [shared/tool-use-concepts.md](../../shared/tool-use-concepts.md).
 
-## Tool Use
+## Tool Use.
 
-### Tool Runner (Beta)
+### Tool Runner (Beta).
 
-**Beta:** The PHP SDK provides a tool runner via `$client->beta->messages->toolRunner()`. Define tools with `BetaRunnableTool` — a definition array plus a `run` closure:
+**Beta:** The PHP SDK provides a tool runner via `$client->beta->messages->toolRunner()`. Define tools with `BetaRunnableTool`. A definition array plus a `run` closure:
 
 ```php
 use Anthropic\Lib\Tools\BetaRunnableTool;
@@ -49,9 +49,9 @@ foreach ($runner as $message) {
 }
 ```
 
-### Manual Loop
+### Manual Loop.
 
-Tools are passed as arrays. **The SDK uses camelCase keys** (`inputSchema`, `toolUseID`, `stopReason`) and auto-maps to the API's snake_case on the wire — since v0.5.0. See [shared tool use concepts](../../shared/tool-use-concepts.md) for the loop pattern.
+Tools are passed as arrays. **The SDK uses camelCase keys** (`inputSchema`, `toolUseID`, `stopReason`) and auto-maps to the API's snake_case on the wire. Since v0.5.0. See [shared tool use concepts](../../shared/tool-use-concepts.md) for the loop pattern.
 
 ```php
 use Anthropic\Messages\ToolUseBlock;
@@ -115,14 +115,14 @@ foreach ($response->content as $block) {
 }
 ```
 
-`$block->type === 'tool_use'` also works; `instanceof ToolUseBlock` narrows for PHPStan.
+`$block->type === 'tool_use'` also works. `instanceof ToolUseBlock` narrows for PHPStan.
 
 
 ---
 
-## Structured Outputs
+## Structured Outputs.
 
-### Using StructuredOutputModel (Recommended)
+### Using StructuredOutputModel (Recommended).
 
 Define a PHP class implementing `StructuredOutputModel` and pass it as `outputConfig`:
 
@@ -156,7 +156,7 @@ echo $person->name;
 
 Types are inferred from PHP type hints. Use `#[Constrained(description: '...')]` to add descriptions. Nullable properties (`?string`) become optional fields.
 
-### Raw Schema
+### Raw Schema.
 
 ```php
 $message = $client->messages->create(
@@ -191,9 +191,9 @@ foreach ($message->content as $block) {
 
 ---
 
-## Beta Features & Anthropic-Defined Tools
+## Beta Features & Anthropic-Defined Tools.
 
-**`betas:` is NOT a param on `$client->messages->create()`** — it only exists on the beta namespace. Use it for features that need an explicit opt-in header:
+**`betas:` is NOT a param on `$client->messages->create()`**. It only exists on the beta namespace. Use it for features that need an explicit opt-in header:
 
 ```php
 use Anthropic\Beta\Messages\BetaRequestMCPServerURLDefinition;
@@ -212,7 +212,7 @@ $response = $client->beta->messages->create(
 );
 ```
 
-### Task budgets
+### Task budgets.
 
 ```php
 $response = $client->beta->messages->create(
@@ -225,9 +225,9 @@ $response = $client->beta->messages->create(
 );
 ```
 
-### Cache diagnostics
+### Cache diagnostics.
 
-Pass the previous response's `id` on the next request; print the `diagnostics` object on the response:
+Pass the previous response's `id` on the next request. Print the `diagnostics` object on the response:
 
 ```php
 $r2 = $client->beta->messages->create(
@@ -238,9 +238,9 @@ $r2 = $client->beta->messages->create(
 );
 ```
 
-**Anthropic-defined tools** (bash, web_search, text_editor, code_execution) are GA and work on both paths. Of these, web_search and code_execution are server-executed; bash and text_editor are client-executed (you handle the `tool_use` locally) — `Anthropic\Messages\ToolBash20250124` / `WebSearchTool20260209` / `ToolTextEditor20250728` / `CodeExecutionTool20260120` for non-beta, `Anthropic\Beta\Messages\BetaToolBash20250124` / `BetaWebSearchTool20260209` / `BetaToolTextEditor20250728` / `BetaCodeExecutionTool20260120` for beta. No `betas:` header needed for these.
+**Anthropic-defined tools** (bash, web_search, text_editor, code_execution) are GA and work on both paths. Of these, web_search and code_execution are server-executed. Bash and text_editor are client-executed (you handle the `tool_use` locally) — `Anthropic\Messages\ToolBash20250124` / `WebSearchTool20260209` / `ToolTextEditor20250728` / `CodeExecutionTool20260120` for non-beta, `Anthropic\Beta\Messages\BetaToolBash20250124` / `BetaWebSearchTool20260209` / `BetaToolTextEditor20250728` / `BetaCodeExecutionTool20260120` for beta. No `betas:` header needed for these.
 
-### Tool search (non-beta, server-side)
+### Tool search (non-beta, server-side).
 
 ```php
 tools: [
@@ -250,9 +250,9 @@ tools: [
 ],
 ```
 
-### Memory tool (non-beta, client-executed)
+### Memory tool (non-beta, client-executed).
 
-Declare `['type' => 'memory_20250818', 'name' => 'memory']`. Handle the `tool_use` by reading/writing files under a fixed `/memories` directory. **Validate every model-supplied path**: resolve to its canonical form and verify it remains within the memory directory; reject traversal (`..`, symlinks) — see `shared/tool-use-concepts.md` § Client-Side Tools.
+Declare `['type' => 'memory_20250818', 'name' => 'memory']`. Handle the `tool_use` by reading/writing files under a fixed `/memories` directory. **Validate every model-supplied path**: resolve to its canonical form and verify it remains within the memory directory. Reject traversal (`..`, symlinks). See `shared/tool-use-concepts.md` § Client-Side Tools.
 
 ---
 

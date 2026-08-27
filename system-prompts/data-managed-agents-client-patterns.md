@@ -1,20 +1,17 @@
 <!--
-name: 'Data: Managed Agents client patterns'
-description: >-
-  Reference guide of common client-side patterns for driving Managed Agent
-  sessions, including stream reconnection, idle-break gating, tool
-  confirmations, interrupts, and custom tools
-ccVersion: 2.1.231
+name: "Data: Managed Agents client patterns"
+description: "Reference guide of common client-side patterns for driving Managed Agent sessions, including stream reconnection, idle-break gating, tool confirmations, interrupts, and custom tools"
+ccVersion: "2.1.224"
 -->
-# Managed Agents — Common Client Patterns
+# Managed Agents. Common Client Patterns.
 
-Patterns you'll write on the client side when driving a Managed Agent session, grounded in working SDK examples.
+Patterns you will write on the client side when driving a Managed Agent session, grounded in working SDK examples.
 
-Code samples are TypeScript — other languages follow the same shape; see `{lang}/managed-agents/README.md` (cURL and C#: `curl/managed-agents.md`) for equivalents.
+Code samples are TypeScript. Other languages follow the same shape. See `{lang}/managed-agents/README.md` (cURL and C#: `curl/managed-agents.md`) for equivalents.
 
 ---
 
-## 1. Lossless stream reconnect
+## 1. Lossless stream reconnect.
 
 **Problem:** SSE has no replay. If the connection drops mid-session, a naive reconnect re-opens the stream from "now" and you silently miss every event emitted in between.
 
@@ -45,11 +42,11 @@ for await (const event of stream) {
 
 ---
 
-## 2. `processed_at` — queued vs processed
+## 2. `processed_at`. Queued vs processed.
 
-Every event on the stream carries `processed_at` (ISO 8601), set when the event finishes processing. For client-sent events (`user.message`, `user.interrupt`, `user.tool_confirmation`) it's `null` while the event is queued behind earlier ones, and populated once the agent processes it — so the same event appears on the stream twice, once with `null` and once with a timestamp. (Exception: a `user.interrupt` sent while the session is paused at its budget is accepted and ignored — it never appears at all; see `shared/managed-agents-events.md` § Reaching a session budget.)
+Every event on the stream carries `processed_at` (ISO 8601), set when the event finishes processing. For client-sent events (`user.message`, `user.interrupt`, `user.tool_confirmation`) it is `null` while the event is queued behind earlier ones, and populated once the agent processes it. So the same event appears on the stream twice, once with `null` and once with a timestamp. (Exception: a `user.interrupt` sent while the session is paused at its budget is accepted and ignored. It never appears at all. See `shared/managed-agents-events.md` § Reaching a session budget.)
 
-**Three event types skip the queued phase:** `user.define_outcome`, `user.custom_tool_result`, and `user.tool_result` are processed on receipt and echoed back with `processed_at` already populated. A pending → acknowledged UI that assumes "first sighting is always `null`" will never clear for these — treat a populated `processed_at` on first sighting as immediately acknowledged.
+**Three event types skip the queued phase:** `user.define_outcome`, `user.custom_tool_result`, and `user.tool_result` are processed on receipt and echoed back with `processed_at` already populated. A pending → acknowledged UI that assumes "first sighting is always `null`" will never clear for these. Treat a populated `processed_at` on first sighting as immediately acknowledged.
 
 ```ts
 for await (const event of stream) {
@@ -64,7 +61,7 @@ Use this to drive pending → acknowledged UI state for anything you send. How y
 
 ---
 
-## 3. Interrupt a running session
+## 3. Interrupt a running session.
 
 Send `user.interrupt` as a normal event. The session keeps running until it reaches a safe boundary, then goes idle.
 
@@ -87,7 +84,7 @@ Reference: `interrupt.ts` — sends the interrupt the moment it sees `span.model
 
 ---
 
-## 4. `tool_confirmation` round-trip
+## 4. `tool_confirmation` round-trip.
 
 When the agent has `permission_policy: { type: 'always_ask' }`, any call to that tool fires an `agent.tool_use` event with `evaluated_permission === 'ask'` and the session goes idle waiting for a decision. Respond with `user.tool_confirmation`.
 
@@ -108,16 +105,16 @@ for await (const event of stream) {
 
 Key points:
 - `tool_use_id` is `event.id` (typically `sevt_...`), **not** a `toolu_...` ID.
-- `result` is `'allow' | 'deny'`. Use `deny_message` to tell the model *why* you denied — it gets surfaced back to the agent.
+- `result` is `'allow' | 'deny'`. Use `deny_message` to tell the model *why* you denied. It gets surfaced back to the agent.
 - Multiple pending tools: respond once per `agent.tool_use` event with `evaluated_permission === 'ask'`.
 
 Reference: `tool-permissions.ts`.
 
 ---
 
-## 5. Correct idle-break gate
+## 5. Correct idle-break gate.
 
-Do not break on `session.status_idle` alone. The session goes idle transiently — e.g. between parallel tool executions, while waiting for a `user.tool_confirmation`, or while awaiting a `user.custom_tool_result`. Break when idle with a non-`requires_action` `stop_reason` (terminal, or `budget_reached` — resumable only by a budget update, so break unless you intend to change or remove the budget), or on `session.status_terminated`.
+Do not break on `session.status_idle` alone. The session goes idle transiently. For example between parallel tool executions, while waiting for a `user.tool_confirmation`, or while awaiting a `user.custom_tool_result`. Break when idle with a non-`requires_action` `stop_reason` (terminal, or `budget_reached`. Resumable only by a budget update, so break unless you intend to change or remove the budget), or on `session.status_terminated`.
 
 ```ts
 for await (const event of stream) {
@@ -131,14 +128,14 @@ for await (const event of stream) {
 ```
 
 `stop_reason.type` values on `session.status_idle`:
-- `requires_action` — agent is waiting on a client-side event (tool confirmation, custom tool result). Handle it, don't break.
+- `requires_action` — agent is waiting on a client-side event (tool confirmation, custom tool result). Handle it, do not break.
 - `retries_exhausted` — terminal failure. Break, then check `sessions.retrieve()` for the error state.
 - `end_turn` — normal completion.
 - `budget_reached` — the session hit its spend cap and paused. Not terminal and not resumable by any event: change (typically raise) or remove the session's `budget` to resume, or treat it as done. A `session.usage` event with the final cost immediately precedes this idle. See `shared/managed-agents-core.md` § Session budgets.
 
 ---
 
-## 6. Post-idle status-write race
+## 6. Post-idle status-write race.
 
 The SSE stream emits `session.status_idle` slightly before the session's queryable status reflects it. Clients that break on idle and immediately call `sessions.delete()` or `sessions.archive()` will intermittently 400 with "cannot delete/archive while running."
 
@@ -158,9 +155,9 @@ if (s?.status !== 'running') {
 
 ---
 
-## 7. Stream-first, then send
+## 7. Stream-first, then send.
 
-Always open the stream **before** sending the kickoff event. Otherwise the agent may process the event and emit the first events before your consumer is attached, and you'll miss them.
+Always open the stream **before** sending the kickoff event. Otherwise the agent can process the event and emit the first events before your consumer is attached, and you will miss them.
 
 ```ts
 const stream = await client.beta.sessions.events.stream(session.id)
@@ -170,13 +167,13 @@ await client.beta.sessions.events.send(session.id, {
 for await (const event of stream) { /* ... */ }
 ```
 
-The `Promise.all([stream, send])` shape works too, but stream-first is simpler and has the same effect — the stream starts buffering the moment it's opened.
+The `Promise.all([stream, send])` shape works too, but stream-first is simpler and has the same effect. The stream starts buffering the moment it is opened.
 
 ---
 
-## 8. File-mount gotchas
+## 8. File-mount gotchas.
 
-**The mounted resource has a different `file_id` than the file you uploaded.** Session creation makes a session-scoped copy.
+**The mounted resource has a different `file_id` than the file you uploaded**. Session creation makes a session-scoped copy.
 
 ```ts
 const uploaded = await client.beta.files.upload({ file, purpose: 'agent_resource' })
@@ -188,17 +185,17 @@ const session = await client.beta.sessions.create({
 // session.resources[0].file_id !== uploaded.id  ← different IDs
 ```
 
-Delete the original via `files.delete(uploaded.id)`; the session-scoped copy is garbage-collected with the session. `mount_path` must be absolute — see `shared/managed-agents-environments.md`.
+Delete the original via `files.delete(uploaded.id)`. The session-scoped copy is garbage-collected with the session. `mount_path` must be absolute. See `shared/managed-agents-environments.md`.
 
 ---
 
-## 9. Secrets for non-MCP APIs and CLIs — keep them host-side via custom tools
+## 9. Secrets for non-MCP APIs and CLIs. Keep them host-side via custom tools.
 
-**Problem:** you want the agent to call a third-party API or run a CLI that needs a secret (API key, token, service-account credential), but you can't or don't want to hand the secret to a vault.
+**Problem:** you want the agent to call a third-party API or run a CLI that needs a secret (API key, token, service-account credential), but you cannot or do not want to hand the secret to a vault.
 
-**First check:** for cloud environments, the first-class answer is now a vault `environment_variable` credential — the agent's shell sees an opaque placeholder and the real secret is substituted at egress. See `shared/managed-agents-tools.md` → Vaults. Use this pattern instead when that doesn't fit: **self-hosted sandboxes** (env-var credentials not yet supported there), clients that reject the placeholder via local format validation, secrets that must never leave your infrastructure, or calls that need host-side binaries.
+**First check:** for cloud environments, the first-class answer is now a vault `environment_variable` credential. The agent's shell sees an opaque placeholder and the real secret is substituted at egress. See `shared/managed-agents-tools.md` → Vaults. Use this pattern instead when that does not fit: **self-hosted sandboxes** (env-var credentials not yet supported there), clients that reject the placeholder via local format validation, secrets that must never leave your infrastructure, or calls that need host-side binaries.
 
-**Solution:** move the authenticated call to your side. Declare a custom tool on the agent; when the agent emits `agent.custom_tool_use`, your orchestrator (the process reading the SSE stream) executes the call with its own credentials and responds with `user.custom_tool_result`. The container never sees the key.
+**Solution:** move the authenticated call to your side. Declare a custom tool on the agent. When the agent emits `agent.custom_tool_use`, your orchestrator (the process reading the SSE stream) executes the call with its own credentials and responds with `user.custom_tool_result`. The container never sees the key.
 
 ```ts
 // Agent template: declare the tool, no credentials
@@ -221,6 +218,6 @@ for await (const event of stream) {
 
 Same shape works for `gh` CLI, local eval scripts, or anything else that needs host-side auth or binaries.
 
-**Security note:** this does not expose a public endpoint. `agent.custom_tool_use` arrives on the SSE stream your orchestrator already holds open with your Anthropic API key, and `user.custom_tool_result` goes back via `events.send()` under the same key. Your orchestrator is a client, not a server — nothing unauthenticated is listening.
+**Security note:** this does not expose a public endpoint. `agent.custom_tool_use` arrives on the SSE stream your orchestrator already holds open with your Anthropic API key, and `user.custom_tool_result` goes back via `events.send()` under the same key. Your orchestrator is a client, not a server. Nothing unauthenticated is listening.
 
-**Do not embed API keys in the system prompt or user messages as a workaround.** Prompts and messages are stored in the session's event history, returned by `events.list()`, and included in compaction summaries — a secret placed there is durably persisted and readable via the API for the life of the session.
+**Do not embed API keys in the system prompt or user messages as a workaround**. Prompts and messages are stored in the session's event history, returned by `events.list()`, and included in compaction summaries. A secret placed there is durably persisted and readable via the API for the life of the session.

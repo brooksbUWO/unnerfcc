@@ -1,18 +1,15 @@
 <!--
-name: 'Data: Anthropic CLI'
-description: >-
-  Reference documentation for the ant CLI covering installation, authentication,
-  command structure, input and output shaping, managed agents workflows, and
-  scripting patterns
-ccVersion: 2.1.169
+name: "Data: Anthropic CLI"
+description: "Reference documentation for the ant CLI covering installation, authentication, command structure, input and output shaping, managed agents workflows, and scripting patterns"
+ccVersion: "2.1.235"
 -->
-# Anthropic CLI (`ant`)
+# Anthropic CLI (`ant`).
 
-The `ant` CLI exposes every Claude API resource as a shell subcommand. Compared to `curl`: request bodies are built from typed flags or piped YAML instead of hand-written JSON, `@path` inlines file contents into any string field, `--transform` extracts fields with a GJSON path (no `jq`), list endpoints auto-paginate (cap total results with `--max-items N`; `--limit` only sets the server page size), and the `beta:` prefix auto-sets the right `anthropic-beta` header.
+The `ant` CLI exposes every Claude API resource as a shell subcommand. Compared to `curl`: request bodies are built from typed flags or piped YAML instead of hand-written JSON, `@path` inlines file contents into any string field, `--transform` extracts fields with a GJSON path (no `jq`), list endpoints auto-paginate (cap total results with `--max-items N`. `--limit` only sets the server page size), and the `beta:` prefix auto-sets the right `anthropic-beta` header.
 
-## When to use the CLI vs the SDK
+## When to use the CLI vs the SDK.
 
-**CLI for the control plane, SDK for the data plane.** Agents and environments are relatively static resources you define, configure, and debug with `ant` — check the YAML into your repo, apply from CI, inspect from a terminal. Sessions are dynamic and driven by your application through the SDK — create per task, stream events, react to tool calls, integrate into your product. Both hit the same API; the split is about where the call lives, not what's possible.
+**CLI for the control plane, SDK for the data plane**. Agents and environments are relatively static resources you define, configure, and debug with `ant`. Check the YAML into your repo, apply from CI, inspect from a terminal. Sessions are dynamic and driven by your application through the SDK. Create per task, stream events, react to tool calls, integrate into your product. Both hit the same API. The split is about where the call lives, not what is possible.
 
 | | Control plane → `ant` | Data plane → SDK |
 |---|---|---|
@@ -21,7 +18,7 @@ The `ant` CLI exposes every Claude API resource as a shell subcommand. Compared 
 | Lives in | `*.yaml` in your repo + CI + terminal | Application code |
 | Typical calls | `create < agent.yaml`, `update --version N`, `list`, `retrieve`, `archive`, `--debug` | `sessions.create()`, `events.stream()`, `events.send()` |
 
-## Install and auth
+## Install and auth.
 
 ```sh
 # macOS
@@ -39,10 +36,10 @@ go install github.com/anthropics/anthropic-cli/cmd/ant@latest
 **Auth** — the CLI resolves credentials the same way the SDKs do (first match wins): explicit flags, then `ANTHROPIC_API_KEY`, then `ANTHROPIC_AUTH_TOKEN`, then the `ANTHROPIC_PROFILE`-selected or active profile, then Workload Identity Federation env vars, then the default profile on disk. Override the host with `ANTHROPIC_BASE_URL` or `--base-url`.
 
 - **API key**: set `ANTHROPIC_API_KEY` in the environment.
-- **OAuth profile** (no static key to manage): `ant auth login` opens a browser, exchanges for a short-lived token, and stores a profile under `$ANTHROPIC_CONFIG_DIR` (default `~/.config/anthropic/` on Linux/macOS, `%APPDATA%\Anthropic` on Windows — `configs/<profile>.json` for settings, `credentials/<profile>.json` for tokens). Subsequent `ant` (and SDK) calls pick it up automatically — a bare `Anthropic()` client works after login, but scripts that read `ANTHROPIC_API_KEY` directly do not. Claude Code and the Claude Agent SDK honor the same profile resolution. `ant auth status` shows which credential source and profile won (it reports status only — don't script against its exit code as a health check); `ant auth logout` clears the active profile (`--all` for every profile). On a remote host without a browser, `ant auth login --no-browser` prints the authorize URL and accepts the code back in the terminal.
-- **Non-interactive workloads** (CI, servers, containers): interactive login is for development on your own machine — use Workload Identity Federation instead (see the authentication docs via `shared/live-sources.md`).
+- **OAuth profile** (no static key to manage): `ant auth login` opens a browser, exchanges for a short-lived token, and stores a profile under `$ANTHROPIC_CONFIG_DIR` (default `~/.config/anthropic/` on Linux/macOS, `%APPDATA%\Anthropic` on Windows — `configs/<profile>.json` for settings, `credentials/<profile>.json` for tokens). Subsequent `ant` (and SDK) calls pick it up automatically. A bare `Anthropic()` client works after login, but scripts that read `ANTHROPIC_API_KEY` directly do not. Claude Code and the Claude Agent SDK honor the same profile resolution. `ant auth status` shows which credential source and profile won (it reports status only. Do not script against its exit code as a health check). `ant auth logout` clears the active profile (`--all` for every profile). On a remote host without a browser, `ant auth login --no-browser` prints the authorize URL and accepts the code back in the terminal.
+- **Non-interactive workloads** (CI, servers, containers): interactive login is for development on your own machine. Use Workload Identity Federation instead (see the authentication docs via `shared/live-sources.md`).
 
-> **The #1 auth trap:** profiles are only consulted when no API key is set. A stale exported `ANTHROPIC_API_KEY` silently overrides every profile — requests hit whatever org/workspace that key is scoped to. `ant auth status` shows which source won; unset the key (or per-command: `env -u ANTHROPIC_API_KEY ant …`) before relying on a profile. Truly **unset** it — an empty `ANTHROPIC_API_KEY=""` still wins its precedence slot and authenticates with an empty key. The same shadowing applies in reverse to Claude Code: after `ant auth login`, Claude Code may warn about an auth conflict between the profile and its own `/login` credential — keep one (use the profile and `/logout` in Claude Code, or `ant auth logout` to keep Claude Code's own login).
+> **The #1 auth trap:** profiles are only consulted when no API key is set. A stale exported `ANTHROPIC_API_KEY` silently overrides every profile. Requests hit whatever org/workspace that key is scoped to. `ant auth status` shows which source won. Unset the key (or per-command: `env -u ANTHROPIC_API_KEY ant …`) before relying on a profile. Truly **unset** it. An empty `ANTHROPIC_API_KEY=""` still wins its precedence slot and authenticates with an empty key. The same shadowing applies in reverse to Claude Code: after `ant auth login`, Claude Code can warn about an auth conflict between the profile and its own `/login` credential. Keep one (use the profile and `/logout` in Claude Code, or `ant auth logout` to keep Claude Code's own login).
 
 **Named profiles** — an interactive-login token is bound to a single org+workspace, and the API only shows resources belonging to that workspace. If an agent, session, or file you created "disappears", the usual cause is a token scoped to a different workspace than the one that created it (`ant auth status` shows the active workspace). Multi-workspace work means one profile per workspace:
 
@@ -55,9 +52,9 @@ ant profile list                                 # inspect
 ant profile set workspace_id wrkspc_01... --profile <name>    # edit config keys (workspace_id, base_url, organization_id, …)
 ```
 
-`ant profile set` edits an existing profile's config — it never creates one, and it does **not** rebind already-issued credentials; run `ant auth login` again under that profile to mint a token for the new target. Pointing `ANTHROPIC_PROFILE` at a profile that doesn't exist is an error, not a fall-through. Refresh tokens eventually hard-expire (they don't slide with use) — when a previously working profile starts failing auth, re-run `ant auth login` before debugging anything else.
+`ant profile set` edits an existing profile's config. It never creates one, and it does **not** rebind already-issued credentials. Run `ant auth login` again under that profile to mint a token for the new target. Pointing `ANTHROPIC_PROFILE` at a profile that does not exist is an error, not a fall-through. Refresh tokens eventually hard-expire (they do not slide with use). When a previously working profile starts failing auth, re-run `ant auth login` before debugging anything else.
 
-**Scopes** — a profile's OAuth scope set is requested at login (`--scope`) and persists on the profile (`scope` is also a `profile set` config key; like other config edits, changing it requires a fresh `ant auth login` to take effect). Privileged scopes — e.g. `org:admin` for organization-administration endpoints — are **not** in the default scope set: pass the full set you want explicitly (`ant auth login --profile admin --scope "... org:admin"`), and the server grants a privileged scope only if your role actually has it. Because the scope set rides on every token the profile mints, keep privileged work on a dedicated profile (`admin` vs `default`) and do day-to-day inference on the unprivileged one, switching with `--profile`/`ANTHROPIC_PROFILE`. Check `ant auth login --help` for the current scope list, and `ant auth status` to see what the active token carries.
+**Scopes** — a profile's OAuth scope set is requested at login (`--scope`) and persists on the profile (`scope` is also a `profile set` config key. Like other config edits, changing it requires a fresh `ant auth login` to take effect). Privileged scopes. For example `org:admin` for organization-administration endpoints. Are **not** in the default scope set: pass the full set you want explicitly (`ant auth login --profile admin --scope "... org:admin"`), and the server grants a privileged scope only if your role actually has it. Because the scope set rides on every token the profile mints, keep privileged work on a dedicated profile (`admin` vs `default`) and do day-to-day inference on the unprivileged one, switching with `--profile`/`ANTHROPIC_PROFILE`. Check `ant auth login --help` for the current scope list, and `ant auth status` to see what the active token carries.
 
 To hand the active credential to a subprocess or raw-HTTP script:
 
@@ -76,17 +73,17 @@ set -a; eval "$(ant auth print-credentials --env)"; set +a
 python my_script.py   # SDK picks up ANTHROPIC_AUTH_TOKEN
 ```
 
-OAuth tokens go on `Authorization: Bearer` (not `x-api-key:`) **plus the `anthropic-beta: oauth-2025-04-20` header** — converting a raw curl/httpx script from an API key is a header change, not a key swap. The beta header requirement is endpoint-dependent (some endpoints happen to work without it; `/v1/messages` does not) — always send it so requests don't break when you switch endpoints. The token is short-lived and not auto-refreshed when passed via env var, so re-run `print-credentials` before it expires for long-running scripts (`print-credentials` itself refreshes the token if needed). If both `ANTHROPIC_API_KEY` and `ANTHROPIC_AUTH_TOKEN` are set, the SDKs send both and the API rejects the request — unset `ANTHROPIC_API_KEY` before `eval`ing the `--env` output.
+OAuth tokens go on `Authorization: Bearer` (not `x-api-key:`) **plus the `anthropic-beta: oauth-2025-04-20` header**. Converting a raw curl/httpx script from an API key is a header change, not a key swap. The beta header requirement is endpoint-dependent (some endpoints happen to work without it. `/v1/messages` does not). Always send it so requests do not break when you switch endpoints. The token is short-lived and not auto-refreshed when passed via env var, so re-run `print-credentials` before it expires for long-running scripts (`print-credentials` itself refreshes the token if needed). If both `ANTHROPIC_API_KEY` and `ANTHROPIC_AUTH_TOKEN` are set, the SDKs send both and the API rejects the request. Unset `ANTHROPIC_API_KEY` before `eval`ing the `--env` output.
 
-**Foot-gun:** `ant auth print-credentials` with **no flags** prints the entire credentials JSON, not the bare token — putting that in an `Authorization` header yields an empty response or HTTP/2 protocol error. Always use `--access-token` for headers (it always reads the named/active profile; a set `ANTHROPIC_API_KEY` doesn't override credential printing).
+**Foot-gun:** `ant auth print-credentials` with **no flags** prints the entire credentials JSON, not the bare token. Putting that in an `Authorization` header yields an empty response or HTTP/2 protocol error. Always use `--access-token` for headers (it always reads the named/active profile. A set `ANTHROPIC_API_KEY` does not override credential printing).
 
-## Command structure
+## Command structure.
 
 ```
 ant <resource>[:<subresource>] <action> [flags]
 ```
 
-Beta resources (agents, sessions, environments, deployments, skills, vaults, memory stores) live under `beta:` — the CLI auto-sends the right `anthropic-beta` header, so don't pass it yourself unless overriding with `--beta <header>`. For self-hosted environments, `ant beta:worker poll/run` and `ant beta:environments:work stats/stop` drive and monitor the work queue — see `shared/managed-agents-self-hosted-sandboxes.md`.
+Beta resources (agents, sessions, environments, deployments, skills, vaults, memory stores) live under `beta:`. The CLI auto-sends the right `anthropic-beta` header, so do not pass it yourself unless overriding with `--beta <header>`. For self-hosted environments, `ant beta:worker poll/run` and `ant beta:environments:work stats/stop` drive and monitor the work queue. See `shared/managed-agents-self-hosted-sandboxes.md`.
 
 ```sh
 ant models list
@@ -95,9 +92,9 @@ ant beta:agents retrieve --agent-id agent_01...
 ant beta:sessions:events list --session-id session_01...
 ```
 
-`ant --help` lists resources; append `--help` to any subcommand for its flags.
+`ant --help` lists resources. Append `--help` to any subcommand for its flags.
 
-## Global flags
+## Global flags.
 
 | Flag | Purpose |
 | --- | --- |
@@ -105,11 +102,11 @@ ant beta:sessions:events list --session-id session_01...
 | `--transform` | GJSON path applied to the response (per-item on list endpoints). Not applied when `--format raw`. |
 | `-r`, `--raw-output` | If the transformed result is a string, print it without quotes (jq semantics). Pair with `--transform` for scalar capture. |
 | `--max-items` | Cap total results returned from auto-paginating list endpoints (distinct from `--limit`, which is the server page size). |
-| `--format-error` / `--transform-error` | Same as `--format`/`--transform`, applied to error responses. `-r` does not apply to the error path — use `--format-error yaml` for unquoted error scalars. |
+| `--format-error` / `--transform-error` | Same as `--format`/`--transform`, applied to error responses. `-r` does not apply to the error path. Use `--format-error yaml` for unquoted error scalars. |
 | `--base-url` | Override API host |
 | `--debug` | Print full HTTP request + response to stderr (API key redacted) |
 
-## Output — `--transform` + `--format`
+## Output — `--transform` + `--format`.
 
 `--transform` takes a [GJSON path](https://github.com/tidwall/gjson/blob/master/SYNTAX.md). On list endpoints it runs **per item**, not on the envelope.
 
@@ -117,14 +114,14 @@ ant beta:sessions:events list --session-id session_01...
 ant beta:agents list --transform '{id,name,model}' --format jsonl
 ```
 
-**Extract a scalar for shell use:** pair `--transform` with `-r` (`--raw-output` — prints strings unquoted, jq-style):
+**Extract a scalar for shell use:** pair `--transform` with `-r` (`--raw-output`. Prints strings unquoted, jq-style):
 
 ```sh
 AGENT_ID=$(ant beta:agents create --name "My Agent" --model '{id: {{SONNET_ID}}}' \
   --transform id -r)
 ```
 
-## Input — flags, stdin, `@file`
+## Input — flags, stdin, `@file`.
 
 **Flags** — scalar fields map directly. Structured fields accept relaxed-YAML syntax (unquoted keys) or strict JSON. Repeatable flags build arrays (each `--tool`, `--event`, `--message` appends one element):
 
@@ -136,7 +133,7 @@ ant beta:agents create \
   --tool '{type: custom, name: search_docs, input_schema: {type: object, properties: {query: {type: string}}}}'
 ```
 
-**Stdin** — pipe a full JSON or YAML body. Merged with flags; flags win on conflict (for array fields, any flag **replaces** the stdin array entirely — it does not append). Quote the heredoc delimiter (`<<'YAML'`) to disable shell expansion inside the body:
+**Stdin** — pipe a full JSON or YAML body. Merged with flags. Flags win on conflict (for array fields, any flag **replaces** the stdin array entirely. It does not append). Quote the heredoc delimiter (`<<'YAML'`) to disable shell expansion inside the body:
 
 ```sh
 ant beta:agents create <<'YAML'
@@ -149,7 +146,7 @@ tools:
 YAML
 ```
 
-**`@file` references** — inline a file's contents into any string-valued field. Inside structured flag values, quote the path. Binary files are auto-base64'd; force with `@file://` (text) or `@data://` (base64). Escape a literal leading `@` as `\@`.
+**`@file` references** — inline a file's contents into any string-valued field. Inside structured flag values, quote the path. Binary files are auto-base64'd. Force with `@file://` (text) or `@data://` (base64). Escape a literal leading `@` as `\@`.
 
 ```sh
 ant beta:agents create --name "Researcher" --model '{id: {{SONNET_ID}}}' --system @./prompts/researcher.txt
@@ -162,11 +159,11 @@ ant messages create --model {{OPUS_ID}} --max-tokens 1024 \
   --transform 'content.0.text' -r
 ```
 
-Flags that natively take a file path (e.g. `--file` on `beta:files upload`) accept a bare path without `@`.
+Flags that natively take a file path (for example `--file` on `beta:files upload`) accept a bare path without `@`.
 
-## Version-controlled Managed Agents resources
+## Version-controlled Managed Agents resources.
 
-This is the recommended flow for defining agents and environments — check the YAML into your repo and sync via `create` (first time) / `update` (thereafter). See `shared/managed-agents-core.md` for the field reference.
+This is the recommended flow for defining agents and environments. Check the YAML into your repo and sync via `create` (first time) / `update` (thereafter). See `shared/managed-agents-core.md` for the field reference.
 
 ```yaml
 # summarizer.agent.yaml
@@ -196,9 +193,9 @@ ant beta:sessions:events list --session-id "$SID" --transform 'content.0.text' -
 ant beta:sessions:events stream --session-id "$SID"   # live event stream
 ```
 
-### Interactive session loop (stream-before-send)
+### Interactive session loop (stream-before-send).
 
-`ant beta:sessions:events stream` only delivers events emitted *after* the stream opens — so open it **before** sending the kickoff to avoid missing early events. Use process substitution to hold the stream on a file descriptor, send, then read:
+`ant beta:sessions:events stream` only delivers events emitted *after* the stream opens. So open it **before** sending the kickoff to avoid missing early events. Use process substitution to hold the stream on a file descriptor, send, then read:
 
 ```sh
 exec {stream}< <(ant beta:sessions:events stream --session-id "$SID" \
@@ -219,31 +216,34 @@ while IFS= read -r -u "$stream" line; do
     type:\ session.error)
       IFS= read -r -u "$stream" next || next=
       case "$next" in err:\ *) msg=${next#err: } ;; *) msg=unknown ;; esac
-      printf '\n[Error: %s]\n' "$msg"; break ;;
+      printf '\
+[Error: %s]\
+' "$msg"; break ;;
     type:\ *) type=${line#type: } ;;
     text:*)
       [[ $type == agent.message ]] || continue
       val=${line#text: }
       case "$val" in '|-'|'|') ;; *) printf '%s' "$val" ;; esac ;;
     \ \ *)
-      if [[ $type == agent.message ]]; then printf '%s\n' "${line#  }"; fi ;;
+      if [[ $type == agent.message ]]; then printf '%s\
+' "${line#  }"; fi ;;
   esac
 done
 exec {stream}<&-
 ```
 
-This works for interactive exploration and demos. For application code that needs to react to `agent.tool_use` / `agent.custom_tool_use` events, reconnect after drops, or dedup against `events.list`, use the SDK — see `shared/managed-agents-client-patterns.md`.
+This works for interactive exploration and demos. For application code that needs to react to `agent.tool_use` / `agent.custom_tool_use` events, reconnect after drops, or dedup against `events.list`, use the SDK. See `shared/managed-agents-client-patterns.md`.
 
-## Scripting patterns
+## Scripting patterns.
 
-`--transform id -r` on a list endpoint emits one bare ID per line — compose with `xargs`, or use `--max-items N` to bound the result set without piping through `head`:
+`--transform id -r` on a list endpoint emits one bare ID per line. Compose with `xargs`, or use `--max-items N` to bound the result set without piping through `head`:
 
 ```sh
 FIRST=$(ant beta:agents list --transform id -r --max-items 1)
 ant beta:agents:versions list --agent-id "$FIRST" --transform '{version,created_at}' --format jsonl
 ```
 
-Error shaping mirrors the success path (note: `-r` does not apply to error output — use `--format-error yaml` for an unquoted scalar here):
+Error shaping mirrors the success path (note: `-r` does not apply to error output. Use `--format-error yaml` for an unquoted scalar here):
 
 ```sh
 ant beta:agents retrieve --agent-id bogus --transform-error error.message --format-error yaml 2>&1

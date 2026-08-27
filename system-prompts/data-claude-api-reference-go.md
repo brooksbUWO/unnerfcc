@@ -1,19 +1,19 @@
 <!--
-name: 'Data: Claude API reference — Go'
-description: Go SDK reference
-ccVersion: 2.1.219
+name: "Data: Claude API reference — Go"
+description: "Go SDK reference"
+ccVersion: "2.1.219"
 -->
-# Claude API — Go
+# Claude API — Go.
 
 > **Note:** The Go SDK supports the Claude API and beta tool use with `BetaToolRunner`. Agent SDK is not yet available for Go.
 
-## Installation
+## Installation.
 
 ```bash
 go get github.com/anthropics/anthropic-sdk-go
 ```
 
-## Client Initialization
+## Client Initialization.
 
 ```go
 import (
@@ -32,15 +32,15 @@ client := anthropic.NewClient(
 
 ---
 
-## Model Constants
+## Model Constants.
 
-The Go SDK provides typed model constants: `anthropic.ModelClaudeFable5`, `anthropic.ModelClaudeOpus4_8`, `anthropic.ModelClaudeOpus4_7`, `anthropic.ModelClaudeSonnet4_6`, `anthropic.ModelClaudeHaiku4_5_20251001`. Default to {{OPUS_NAME}} unless the user specifies otherwise; if they ask for Fable or the most powerful model, use `anthropic.ModelClaudeFable5` (see `shared/models.md` for the full resolution table).
+The Go SDK provides typed model constants: `anthropic.ModelClaudeFable5`, `anthropic.ModelClaudeOpus4_8`, `anthropic.ModelClaudeOpus4_7`, `anthropic.ModelClaudeSonnet4_6`, `anthropic.ModelClaudeHaiku4_5_20251001`. Default to {{OPUS_NAME}} unless the user specifies otherwise. If they ask for Fable or the most powerful model, use `anthropic.ModelClaudeFable5` (see `shared/models.md` for the full resolution table).
 
-`anthropic.Model` is an alias for `string`, so a model with no typed constant yet — including {{OPUS_NAME}} — is passed as the plain id: `Model: "{{OPUS_ID}}"`. Check the SDK release notes for a typed `{{OPUS_NAME}}` constant before assuming one exists.
+`anthropic.Model` is an alias for `string`, so a model with no typed constant yet. Including {{OPUS_NAME}}. Is passed as the plain id: `Model: "{{OPUS_ID}}"`. Check the SDK release notes for a typed `{{OPUS_NAME}}` constant before assuming one exists.
 
 ---
 
-## Basic Message Request
+## Basic Message Request.
 
 ```go
 response, err := client.Messages.New(context.Background(), anthropic.MessageNewParams{
@@ -63,11 +63,11 @@ for _, block := range response.Content {
 
 ---
 
-## Thinking
+## Thinking.
 
 Enable Claude's internal reasoning by setting `Thinking` in `MessageNewParams`. The response will contain `ThinkingBlock` content before the final `TextBlock`.
 
-**Adaptive thinking is the recommended mode for Claude 4.6+ models.** Claude decides dynamically when and how much to think. Combine with the `effort` parameter for cost-quality control.
+**Adaptive thinking is the recommended mode for Claude 4.6+ models**. Claude decides dynamically when and how much to think. Combine with the `effort` parameter for cost-quality control.
 
 Derived from `anthropic-sdk-go/message.go` (`ThinkingConfigParamUnion`, `ThinkingConfigAdaptiveParam`).
 
@@ -100,17 +100,17 @@ for _, block := range resp.Content {
 }
 ```
 
-> **Fable 5, {{OPUS_NAME}}, Opus 4.8, Opus 4.7, Opus 4.6, and Sonnet 4.6:** Use adaptive thinking (above). `ThinkingConfigParamOfEnabled(budgetTokens)` is removed on Fable 5, {{OPUS_NAME}}, Opus 4.8, and 4.7 (400 if sent); deprecated on Opus 4.6 and Sonnet 4.6.
-> **{{OPUS_NAME}}:** thinking is on by default — leaving `Thinking` unset runs adaptive (the adaptive union is equivalent), unlike Opus 4.8/4.7 where leaving it unset meant no thinking.
+> **Fable 5, {{OPUS_NAME}}, Opus 4.8, Opus 4.7, Opus 4.6, and Sonnet 4.6:** Use adaptive thinking (above). `ThinkingConfigParamOfEnabled(budgetTokens)` is removed on Fable 5, {{OPUS_NAME}}, Opus 4.8, and 4.7 (400 if sent). Deprecated on Opus 4.6 and Sonnet 4.6.
+> **{{OPUS_NAME}}:** thinking is on by default. Leaving `Thinking` unset runs adaptive (the adaptive union is equivalent), unlike Opus 4.8/4.7 where leaving it unset meant no thinking.
 > **Older models:** Use `anthropic.ThinkingConfigParamOfEnabled(N)` (budget must be < `MaxTokens`, min 1024).
 
-To disable: `anthropic.ThinkingConfigParamUnion{OfDisabled: &anthropic.ThinkingConfigDisabledParam{}}`. On {{OPUS_NAME}} that is accepted only at effort `high` or lower — pairing it with `xhigh`/`max` returns a 400.
+To disable: `anthropic.ThinkingConfigParamUnion{OfDisabled: &anthropic.ThinkingConfigDisabledParam{}}`. On {{OPUS_NAME}} that is accepted only at effort `high` or lower. Pairing it with `xhigh`/`max` returns a 400.
 
 ---
 
-## Prompt Caching
+## Prompt Caching.
 
-`System` is `[]TextBlockParam`; set `CacheControl` on the last block to cache tools + system together. For placement patterns and the silent-invalidator audit checklist, see `shared/prompt-caching.md`.
+`System` is `[]TextBlockParam`. Set `CacheControl` on the last block to cache tools + system together. For placement patterns and the silent-invalidator audit checklist, see `shared/prompt-caching.md`.
 
 ```go
 System: []anthropic.TextBlockParam{{
@@ -119,13 +119,13 @@ System: []anthropic.TextBlockParam{{
 }},
 ```
 
-For 1-hour TTL: `anthropic.CacheControlEphemeralParam{TTL: anthropic.CacheControlEphemeralTTLTTL1h}`. There's also a top-level `CacheControl` on `MessageNewParams` that auto-places on the last cacheable block.
+For 1-hour TTL: `anthropic.CacheControlEphemeralParam{TTL: anthropic.CacheControlEphemeralTTLTTL1h}`. There is also a top-level `CacheControl` on `MessageNewParams` that auto-places on the last cacheable block.
 
 Verify hits via `resp.Usage.CacheCreationInputTokens` / `resp.Usage.CacheReadInputTokens`.
 
 ---
 
-## Stop Details
+## Stop Details.
 
 When `StopReason` is `anthropic.StopReasonRefusal`, the response includes structured `StopDetails`:
 
@@ -136,11 +136,11 @@ if resp.StopReason == anthropic.StopReasonRefusal {
 }
 ```
 
-**Refusal fallbacks ({{FABLE_NAME}}) — opt in by default.** Fallbacks are opt-in: without them a refused request simply stops. In `{{FABLE_ID}}` code, include `Fallbacks: []anthropic.BetaFallbackParam{{Model: "{{PREV_OPUS_ID}}"}}` plus the `anthropic.AnthropicBetaServerSideFallback2026_06_01` beta on `client.Beta.Messages.New` by default — a policy decline is re-served by the fallback model inside the same call. Not available on Amazon Bedrock, Vertex AI, or Microsoft Foundry — register the client-side middleware there: `option.WithMiddleware(betafallback.BetaRefusalFallbackMiddleware(...))` from `lib/betafallback`, with per-conversation state via `betafallback.WithBetaFallbackState(&betafallback.BetaFallbackState{})`. Full semantics (billing, sticky routing, streaming) and a runnable example: `shared/model-migration.md` → Migrating to {{FABLE_NAME}} → `refusal` stop reason, and the Go SDK repo's `examples/` (WebFetch via `shared/live-sources.md`).
+**Refusal fallbacks ({{FABLE_NAME}}). Opt in by default**. Fallbacks are opt-in: without them a refused request simply stops. In `{{FABLE_ID}}` code, include `Fallbacks: []anthropic.BetaFallbackParam{{Model: "{{PREV_OPUS_ID}}"}}` plus the `anthropic.AnthropicBetaServerSideFallback2026_06_01` beta on `client.Beta.Messages.New` by default. A policy decline is re-served by the fallback model inside the same call. Not available on Amazon Bedrock, Vertex AI, or Microsoft Foundry. Register the client-side middleware there: `option.WithMiddleware(betafallback.BetaRefusalFallbackMiddleware(...))` from `lib/betafallback`, with per-conversation state via `betafallback.WithBetaFallbackState(&betafallback.BetaFallbackState{})`. Full semantics (billing, sticky routing, streaming) and a runnable example: `shared/model-migration.md` → Migrating to {{FABLE_NAME}} → `refusal` stop reason, and the Go SDK repo's `examples/` (WebFetch via `shared/live-sources.md`).
 
 ---
 
-## PDF / Document Input
+## PDF / Document Input.
 
 `NewDocumentBlock` generic helper accepts any source type. `MediaType`/`Type` are auto-set.
 
@@ -157,9 +157,9 @@ Other sources: `URLPDFSourceParam{URL: "https://..."}`, `PlainTextSourceParam{Da
 
 ---
 
-## Context Editing / Compaction (Beta)
+## Context Editing / Compaction (Beta).
 
-Use `Beta.Messages.New` with `ContextManagement` on `BetaMessageNewParams`. There is no `NewBetaAssistantMessage` — use `.ToParam()` for the round-trip.
+Use `Beta.Messages.New` with `ContextManagement` on `BetaMessageNewParams`. There is no `NewBetaAssistantMessage`. Use `.ToParam()` for the round-trip.
 
 ```go
 params := anthropic.BetaMessageNewParams{
@@ -190,4 +190,4 @@ for _, block := range resp.Content {
 }
 ```
 
-Other edit types: `BetaClearToolUses20250919EditParam`, `BetaClearThinking20251015EditParam` — these need `Betas: []anthropic.AnthropicBeta{"context-management-2025-06-27"}`, not `compact-2026-01-12`.
+Other edit types: `BetaClearToolUses20250919EditParam`, `BetaClearThinking20251015EditParam`. These need `Betas: []anthropic.AnthropicBeta{"context-management-2025-06-27"}`, not `compact-2026-01-12`.
