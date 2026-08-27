@@ -28,8 +28,9 @@ system-prompts/*.diff.html
 !.claude/skills/
 .serena/
 
-# Node deps for scripts/ (gray-matter is pinned in scripts/package.json;
-# the lockfile is checked in for reproducibility).
+# Node deps: package.json and the lockfile are committed for reproducibility,
+# but the installed node_modules trees are not (they regenerate via install).
+node_modules/
 scripts/node_modules/
 
 # engine/ deps: package.json + our .mjs are committed, but node_modules is NOT —
