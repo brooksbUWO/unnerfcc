@@ -189,16 +189,60 @@ function spContent(blob, sp, what = "string pointer") {
   return blob.subarray(sp.offset, sp.offset + sp.length);
 }
 
-function detectModuleStruct(modulesListLen) {
+// True when parsing the module list at `structSize` yields a self-consistent
+// table: a whole number of modules, every module's name+contents StringPointers
+// in-bounds within the blob, and the header's entryPointId addressing a real
+// module. A wrong struct size walks the records at the wrong stride, so its
+// pointers land out of range or the entry-point index falls off the end.
+function moduleStructValidates(blob, offsets, structSize) {
+  const listLen = offsets.modulesPtr.length;
+  if (listLen % structSize !== 0) return false;
+  const count = listLen / structSize;
+  if (count === 0) return false;
+  if (offsets.entryPointId < 0 || offsets.entryPointId >= count) return false;
+  let modules;
+  try {
+    modules = parseModules(blob, offsets, structSize);
+  } catch {
+    return false;
+  }
+  if (modules.length !== count) return false;
+  for (const m of modules) {
+    for (const sp of [m.ptrs.name, m.ptrs.contents]) {
+      if (!sp || sp.offset < 0 || sp.length < 0 || sp.offset + sp.length > blob.length) return false;
+    }
+  }
+  return true;
+}
+
+function detectModuleStruct(blob, offsets) {
+  const modulesListLen = offsets.modulesPtr.length;
   const fitsNew = modulesListLen % MODULE_NEW === 0;
   const fitsOld = modulesListLen % MODULE_OLD === 0;
   if (fitsNew && !fitsOld) return MODULE_NEW;
   if (fitsOld && !fitsNew) return MODULE_OLD;
-  // Ambiguous (divisible by both) or neither → we can't reliably pick the module
-  // struct size; the layout isn't one we recognize. Fail loud rather than guess.
+  if (fitsNew && fitsOld) {
+    // Divisible by BOTH 52 and 36 (length is a multiple of lcm=468, e.g. CC
+    // 2.1.235). The length alone cannot decide, so trial-parse each candidate
+    // against the actual blob and keep the one that produces a self-consistent
+    // module table. This resolves the true format instead of guessing: for a
+    // real old-format binary only 36 validates, for a new-format one only 52.
+    // Prefer NEW only when BOTH remain valid (recent Bun uses the 52-byte
+    // struct); fail loud if NEITHER validates.
+    const newOk = moduleStructValidates(blob, offsets, MODULE_NEW);
+    const oldOk = moduleStructValidates(blob, offsets, MODULE_OLD);
+    if (newOk && !oldOk) return MODULE_NEW;
+    if (oldOk && !newOk) return MODULE_OLD;
+    if (newOk && oldOk) return MODULE_NEW;
+    throw fmtErr(
+      `cannot determine module struct size: modulesPtr.length=${modulesListLen} ` +
+      `is divisible by both 52 and 36 and neither parse validates`
+    );
+  }
+  // Divisible by NEITHER: genuinely unrecognized layout. Fail loud, do not guess.
   throw fmtErr(
     `cannot determine module struct size: modulesPtr.length=${modulesListLen} ` +
-    `is ${fitsNew ? "divisible by both 52 and 36 (ambiguous)" : "divisible by neither 52 nor 36"}`
+    `is divisible by neither 52 nor 36`
   );
 }
 
@@ -291,7 +335,7 @@ export function extract(binaryPath) {
   else throw fmtErr("unrecognized .bun section size header");
   const blob = section.subarray(headerSize, headerSize + blobLen);
   const offsets = parseOffsets(blob);
-  const structSize = detectModuleStruct(offsets.modulesPtr.length);
+  const structSize = detectModuleStruct(blob, offsets);
   const modules = parseModules(blob, offsets, structSize);
   // The entry-point module is identified by ID in the offsets header — Bun's
   // own authoritative answer, not a guess. Matching by NAME used to be how this
@@ -555,7 +599,7 @@ async function main(argv) {
       else throw fmtErr("unrecognized .bun section size header");
       const blob = section.subarray(headerSize);
       const offsets = parseOffsets(blob);
-      const structSize = detectModuleStruct(offsets.modulesPtr.length);
+      const structSize = detectModuleStruct(blob, offsets);
       const modules = parseModules(blob, offsets, structSize);
       console.log(`format=${format} structSize=${structSize} entryPointId=${offsets.entryPointId} moduleCount=${modules.length}`);
       modules.forEach((m, i) => console.log(`[${i}]${i === offsets.entryPointId ? " *entry*" : ""} ${m.name} (${m.encoding === 0 ? "text" : "binary"}, ${spContent(blob, m.ptrs.contents).length}B)`));
