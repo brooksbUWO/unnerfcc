@@ -358,7 +358,7 @@ RULES: dict[str, list[Rule]] = {
         ),
         Rule(
             stock='low effort → 1 diff pass → no verify → ≤4 findings',
-            unnerf='low effort → 1 diff pass → no verify → all qualifying findings',
+            unnerf='low effort → 1 diff pass → no verify; report findings as unverified → all qualifying findings',
             description='code-review low-effort tier line: drop the ≤4 cap (matches the findings-output flip)',
         ),
     ],
@@ -1702,6 +1702,187 @@ RULES: dict[str, list[Rule]] = {
             stock=' unavailable in coordinator mode. If — and only if — the underlying task is achievable with the tools workers actually hold, you may brief a worker to do that work directly; do not promise this otherwise.\n',
             unnerf=' unavailable in coordinator mode. If the underlying task is achievable with the tools workers actually hold, you can brief a worker to do that work directly. Do not promise this when the tools cannot do it.\n',
             description='un-nerf: system-prompt-coordinator-capability-unavailable-brief-worker (register/token)',
+        ),
+    ],
+    # ---- concept-map fixes: 6 defect classes + surface tactics, 2026-08-28 ----
+    'tool-description-bash-committing-changes-with-git.md': [
+        Rule(
+            stock='Only create commits when requested by the user. If unclear, ask first. When the user asks you to create a new git commit, follow these steps carefully:\n\nYou can call multiple tools in a single response. When multiple independent pieces of information are requested and all commands are likely to succeed, run multiple tool calls in parallel for optimal performance. The numbered steps below indicate which commands should be batched in parallel.\n\nGit Safety Protocol:\n- NEVER update the git config\n- NEVER run destructive git commands (push --force, reset --hard, checkout ., restore ., clean -f, branch -D) unless the user explicitly requests these actions. Taking unauthorized destructive actions is unhelpful and can result in lost work, so it\'s best to ONLY run these commands when given direct instructions \n- NEVER skip hooks (--no-verify, --no-gpg-sign, etc) unless the user explicitly requests it\n- NEVER run force push to main/master, warn the user if they request it\n- CRITICAL: Always create NEW commits rather than amending, unless the user explicitly requests a git amend. When a pre-commit hook fails, the commit did NOT happen — so --amend would modify the PREVIOUS commit, which may result in destroying work or losing previous changes. Instead, after hook failure, fix the issue, re-stage, and create a NEW commit\n- When staging files, prefer adding specific files by name rather than using "git add -A" or "git add .", which can accidentally include sensitive files (.env, credentials) or large binaries\n- NEVER commit changes unless the user explicitly asks you to. It is VERY IMPORTANT to only commit when explicitly asked, otherwise the user will feel that you are being too proactive',
+            unnerf='Create a commit only when the user asks for one. If the request is unclear, ask first. When the user asks for a new git commit, follow these steps:\n\nYou can call multiple tools in a single response. When the requested pieces of information are independent and the commands are likely to succeed, run the tool calls in parallel. The numbered steps below show which commands to batch in parallel.\n\nGit safety rules. These rules protect the user\'s work from agent mistakes. An explicit user instruction is the only thing that unlocks a protected action:\n- Do not update the git config.\n- Run a destructive git command (push --force, reset --hard, checkout ., restore ., clean -f, branch -D) only when the user explicitly asks for that exact action. An unauthorized destructive action can destroy work.\n- Skip hooks (--no-verify) or bypass signing (--no-gpg-sign) only when the user has explicitly asked for it.\n- Do not force push to main or master. If the user asks for it, warn the user first.\n- Create a NEW commit instead of an amend, unless the user explicitly asks for an amend. When a pre-commit hook fails, the commit did not happen. An --amend then modifies the PREVIOUS commit and can destroy earlier work. After a hook failure, fix the problem, stage the files again, and create a new commit.\n- Stage specific files by name. A blanket "git add -A" or "git add ." can include secret files (.env, credentials) or large binaries.',
+            description='un-nerf: bash commit workflow - safety protocol restructured to principle + only-when-asked form (defects 1,4)',
+        ),
+    ],
+    'tool-description-bash-git-never-skip-hooks.md': [
+        Rule(
+            stock='Never skip hooks (--no-verify) or bypass signing (--no-gpg-sign, -c commit.gpgsign=false) unless the user has explicitly asked for it. If a hook fails, investigate and fix the underlying issue.',
+            unnerf='Skip hooks (--no-verify) or bypass signing (--no-gpg-sign, -c commit.gpgsign=false) only when the user has explicitly asked for it. If a hook fails, find the cause and fix it.',
+            description='un-nerf: git never-skip-hooks - aligned wording across the family (defect 4 F3)',
+        ),
+    ],
+    'system-prompt-git-command-safety.md': [
+        Rule(
+            stock='  - For git commands:\n    - Prefer to create a new commit rather than amending an existing commit.\n    - Before running destructive operations (e.g., git reset --hard, git push --force, git checkout --), consider whether there is a safer alternative that achieves the same goal. Only use destructive operations when they are truly the best approach.\n    - Never skip hooks (--no-verify) or bypass signing (--no-gpg-sign, -c commit.gpgsign=false) unless the user has explicitly asked for it. If a hook fails, investigate and fix the underlying issue.',
+            unnerf='  - For git commands:\n    - Prefer to create a new commit rather than amending an existing commit.\n    - Before a destructive operation (git reset --hard, git push --force, git checkout --), look for a safer alternative that gets the same result. Use the destructive operation only when it is truly the best approach.\n    - Skip hooks (--no-verify) or bypass signing (--no-gpg-sign, -c commit.gpgsign=false) only when the user has explicitly asked for it. If a hook fails, find the cause and fix it.',
+            description='un-nerf: git command safety - skip-hooks wording aligned with the tool description (defect 4 F3)',
+        ),
+    ],
+    'agent-prompt-commit-workflow-restrictions.md': [
+        Rule(
+            stock='Important notes:\n- NEVER run additional commands to read or explore code, besides git bash commands\n- NEVER use the ${TASK_TOOL_NAME} or ${TODO_TOOL_NAME} tools\n- DO NOT push to the remote repository unless the user explicitly asks you to do so\n- IMPORTANT: Never use git commands with the -i flag (like git rebase -i or git add -i) since they require interactive input which is not supported.\n- IMPORTANT: Do not use --no-edit with git rebase commands, as the --no-edit flag is not a valid option for git rebase.\n- If there are no changes to commit (i.e., no untracked files and no modifications), do not create an empty commit\n- In order to ensure good formatting, ALWAYS pass the commit message via a HEREDOC, a la this example:',
+            unnerf='Important notes:\n- Run only git bash commands. Do not read or explore code with other commands.\n- Do not use the ${TASK_TOOL_NAME} or ${TODO_TOOL_NAME} tools.\n- Push to the remote repository only when the user explicitly asks for it.\n- Do not use git commands with the -i flag (git rebase -i, git add -i). They require interactive input, which is not supported.\n- Do not use --no-edit with git rebase commands. The --no-edit flag is not a valid option for git rebase.\n- If there are no changes to commit (no untracked files, no modifications), do not create an empty commit.\n- To keep the message format correct, always pass the commit message with a HEREDOC, as in this example:',
+            description='un-nerf: commit-agent restrictions - only-when-asked form, no CAPS stack (defects 1,4 F5)',
+        ),
+    ],
+    'agent-prompt-pr-slash-command-git-safety.md': [
+        Rule(
+            stock='## Git Safety Protocol\n\n- NEVER update the git config\n- NEVER force push to main/master; warn the user if they request it\n- NEVER skip hooks (--no-verify, --no-gpg-sign, etc) unless the user explicitly requests it\n- Never use git commands with the -i flag (like git rebase -i or git add -i) since they require interactive input which is not supported\n- Use the gh command for ALL GitHub-related tasks including issues, pull requests, checks, and releases. If given a GitHub URL, use gh to fetch it',
+            unnerf='## Git Safety Protocol\n\n- Do not update the git config.\n- Do not force push to main or master. If the user asks for it, warn the user first.\n- Skip hooks (--no-verify, --no-gpg-sign) only when the user explicitly asks for it.\n- Do not use git commands with the -i flag (git rebase -i, git add -i). They require interactive input, which is not supported.\n- Use the gh command for all GitHub tasks: issues, pull requests, checks, and releases. If the user gives a GitHub URL, fetch it with gh',
+            description='un-nerf: PR slash-command git safety - restructured, no CAPS stack (defect 1)',
+        ),
+    ],
+    'agent-prompt-quick-pr-creation.md': [
+        Rule(
+            stock='## Git Safety Protocol\n\n- NEVER update the git config\n- NEVER run destructive/irreversible git commands (like push --force, hard reset, etc) unless the user explicitly requests them\n- NEVER skip hooks (--no-verify, --no-gpg-sign, etc) unless the user explicitly requests it\n- NEVER run force push to main/master, warn the user if they request it\n- Do not commit files that likely contain secrets (.env, credentials.json, etc)\n- Never use git commands with the -i flag (like git rebase -i or git add -i) since they require interactive input which is not supported',
+            unnerf='## Git Safety Protocol\n\n- Do not update the git config.\n- Run a destructive git command (push --force, hard reset) only when the user explicitly asks for it.\n- Skip hooks (--no-verify, --no-gpg-sign) only when the user explicitly asks for it.\n- Do not force push to main or master. If the user asks for it, warn the user first.\n- Do not commit files that likely contain secrets (.env, credentials.json).\n- Do not use git commands with the -i flag (git rebase -i, git add -i). They require interactive input, which is not supported',
+            description='un-nerf: quick-PR git safety - restructured, no CAPS stack (defect 1)',
+        ),
+    ],
+    'system-prompt-write-code-in-surrounding-style.md': [
+        Rule(
+            stock='Write code that reads like the surrounding code: match its comment density, naming, and idiom.',
+            unnerf='Write code that reads like the surrounding code: match its comment density, its naming, and its idiom. When the surrounding code and a general comment rule disagree, the surrounding code wins.',
+            description='un-nerf: surrounding-style is the master comment rule (defect 4 F2)',
+        ),
+    ],
+    'system-prompt-doing-tasks-no-redundant-comments.md': [
+        Rule(
+            stock='Don\'t explain WHAT the code does, since well-named identifiers already do that. Don\'t reference the current task, fix, or callers ("used by X", "added for the Y flow", "handles the case from issue #123"), since those belong in the PR description and rot as the codebase evolves.',
+            unnerf='Do not explain WHAT the code does. Well-named identifiers already do that. Do not reference the current task, fix, or callers ("used by X", "added for the Y flow", "handles the case from issue #123"). Those notes belong in the PR description, and they rot as the codebase evolves.',
+            description='un-nerf: comment-content rule, register aligned (defect 4 F2)',
+        ),
+    ],
+    'tool-description-edit.md': [
+        Rule(
+            stock='- ALWAYS prefer editing existing files in the codebase. NEVER write new files unless explicitly required.',
+            unnerf='- Prefer editing existing files in the codebase. Create a new file only when the task requires one.',
+            description='un-nerf: edit-tool file-creation rule aligned to the guidance form (defect 4 F7)',
+        ),
+    ],
+    'system-prompt-tool-usage-task-management.md': [
+        Rule(
+            stock='Break down and manage your work with the ${TODOWRITE_TOOL_NAME} tool. These tools are helpful for planning your work and helping the user track your progress. Mark each task as completed as soon as you are done with the task. Do not batch up multiple tasks before marking them as completed.',
+            unnerf='Break down and manage your work with the ${TODOWRITE_TOOL_NAME} tool. This tool helps you plan the work and helps the user see your progress. Mark each task completed as soon as it is done. Do not batch completions.',
+            description='un-nerf: todo tracking, canonical no-batching wording (defect 4 F6)',
+        ),
+    ],
+    'system-prompt-task-tool-plan-and-track.md': [
+        Rule(
+            stock="Use ${TASK_TOOL_NAMES} to plan and track work. Mark each task completed as soon as it's done; don't batch.",
+            unnerf='Use ${TASK_TOOL_NAMES} to plan and track work. Mark each task completed as soon as it is done. Do not batch completions.',
+            description='un-nerf: task tool tracking, canonical no-batching wording (defect 4 F6)',
+        ),
+    ],
+    'tool-description-todowrite-proactive-update-guidance.md': [
+        Rule(
+            stock='Update the todo list for the current session. To be used proactively and often to track progress and pending tasks. Make sure that at least one task is in_progress at all times. Always provide both content (imperative) and activeForm (present continuous) for each task.',
+            unnerf='Update the todo list for the current session. Use it proactively and often to track progress and pending tasks. Make sure that exactly one task is in_progress at any time. Give both content (imperative) and activeForm (present continuous) for each task.',
+            description='un-nerf: todowrite guidance, exactly-one in_progress resolves the F6 divergence (defect 4)',
+        ),
+    ],
+    'tool-description-webfetch.md': [
+        Rule(
+            stock='  - IMPORTANT: If an MCP-provided web fetch tool is available, prefer using that tool instead of this one, as it may have fewer restrictions.',
+            unnerf='  - If an MCP-provided web fetch tool is available, prefer that tool. It can have fewer restrictions.\n  - A bot wall, a 403, or an empty body is a signal to change instrument, not a verdict on the page. On the first blocked fetch, go to a real browser tool if one is available.',
+            description='un-nerf: webfetch - block is a signal to change instrument (concept 40)',
+        ),
+    ],
+    'tool-description-webfetch-concise.md': [
+        Rule(
+            stock='- Fails on authenticated/private URLs — use an authenticated MCP tool or `gh` for those instead.',
+            unnerf='- Fails on authenticated or private URLs — use an authenticated MCP tool or `gh` for those instead.\n- On the first blocked fetch (a bot wall, a 403), go to a real browser tool if one is available. A block is not a verdict on the page.',
+            description='un-nerf: webfetch concise - first-blocked-fetch escalation (concept 40)',
+        ),
+    ],
+    'agent-prompt-web-fetch-when-to-use.md': [
+        Rule(
+            stock='It WILL FAIL for authenticated or private URLs (Google Docs, Confluence, Jira, private GitHub repositories) — use `gh` or an authenticated MCP tool for those.',
+            unnerf='It fails for authenticated or private URLs (Google Docs, Confluence, Jira, private GitHub repositories). Use `gh` or an authenticated MCP tool for those. If a public page comes back blocked (a bot wall, a 403, an empty body), change instrument: use a real browser tool if one is available. A block is not a verdict on the page.',
+            description='un-nerf: web-fetch whenToUse - blocked-public-page escalation (concept 40)',
+        ),
+    ],
+    'agent-prompt-webfetch-reporting-rules.md': [
+        Rule(
+            stock=' - Never produce or reproduce exact song lyrics.',
+            unnerf=' - Do not produce or reproduce exact song lyrics.\n - Record the source URL next to each fact that you report. Label an unverified claim as unverified.',
+            description='un-nerf: webfetch reporting - provenance next to each fact (concept 40)',
+        ),
+    ],
+    'tool-description-computer.md': [
+        Rule(
+            stock="* Whenever you intend to click on an element like an icon, you should consult a screenshot to determine the coordinates of the element before moving the cursor.\n* If you tried clicking on a program or link but it failed to load, even after waiting, try adjusting your click location so that the tip of the cursor visually falls on the element that you want to click.\n* Make sure to click any buttons, links, icons, etc with the cursor tip in the center of the element. Don't click boxes on their edges unless asked.",
+            unnerf='* Before you use a coordinate click, look for a programmatic route. A DOM query with a direct element .click() (through a JavaScript tool, when available) does not depend on pixel positions. A coordinate click fails silently when the layout moves.\n* When the page exposes its own runtime state (a page object, a live badge count), read that state instead of scraped positional HTML.\n* To get data from the page, prefer a same-origin fetch or a server-side download over a screenshot that a reader must decode.\n* When only a coordinate click works: examine a current screenshot first and get the coordinates of the element. Click with the cursor tip in the center of the element, not the edges.\n* After each action, make sure that the action had its effect. Assert a concrete post-condition: the new page, a count that increased by the exact quantity, the open dialog. If a click had no effect, adjust the click location so that the cursor tip falls on the element.\n* If the route is structurally dead (the control does not exist on the page), stop and report it. Do not retry a dead route.',
+            description='un-nerf: computer tool - programmatic route first, coordinates as fallback, post-conditions, dead-route stop (concept 38)',
+        ),
+    ],
+    'system-reminder-file-truncated.md': [
+        Rule(
+            stock=' was too large and has been truncated to the first ${MAX_LINES} lines. No need to mention the truncation.',
+            unnerf=' was too large and has been truncated to the first ${MAX_LINES} lines. If the truncation can affect your answer, tell the user.',
+            description='un-nerf: file-truncated reminder - disclose the cut corner (defect 5)',
+        ),
+    ],
+    'skill-code-review-effort-low-eight-findings.md': [
+        Rule(
+            stock='Do **not** flag style, naming, perf, missing tests, or anything outside the\nhunk.',
+            unnerf='Do **not** flag style, naming, perf, missing tests, or anything beyond the\nhunk.\n\nThis tier runs one pass and no verify step. Report the findings as unverified.',
+            description='un-nerf: low-tier review - disclose the no-verify cut (defect 6)',
+        ),
+    ],
+    'skill-code-review-effort-low-scaled-findings.md': [
+        Rule(
+            stock='Do **not** flag style, naming, perf, missing tests, or anything outside the\nhunk.',
+            unnerf='Do **not** flag style, naming, perf, missing tests, or anything beyond the\nhunk.\n\nThis tier runs one pass and no verify step. Report the findings as unverified.',
+            description='un-nerf: low-tier scaled review - disclose the no-verify cut (defect 6)',
+        ),
+    ],
+    'skill-code-review-effort-medium-inline.md': [
+        Rule(
+            stock='medium effort → 8 inline angles → dedup (no verify) → ≤8 findings',
+            unnerf='medium effort → 8 inline angles → dedup (no verify; report findings as unverified) → ≤8 findings',
+            description='un-nerf: medium-tier header - loud no-verify cut (defect 6)',
+        ),
+    ],
+    'skill-code-review-effort-high-inline.md': [
+        Rule(
+            stock='high effort → 8 inline angles → dedup (no verify) → ≤10 findings',
+            unnerf='high effort → 8 inline angles → dedup (no verify; report findings as unverified) → ≤10 findings',
+            description='un-nerf: high-tier header - loud no-verify cut (defect 6)',
+        ),
+    ],
+    'tool-description-chrome-browser-automation.md': [
+        Rule(
+            stock='Automates your Chrome browser to interact with web pages - clicking elements, filling forms, capturing screenshots, reading console logs, and navigating sites. Opens pages in new tabs within your existing Chrome session. Requires site-level permissions before executing (configured in the extension).',
+            unnerf='Automates your Chrome browser to interact with web pages - clicking elements, filling forms, capturing screenshots, reading console logs, and navigating sites. Opens pages in new tabs within your existing Chrome session. Use the Open Claude in Chrome tools (mcp__open-claude-in-chrome__*) for this browser automation.',
+            description='un-nerf: chrome browser automation description - the missed redirect row (browser-automation-redirect)',
+        ),
+    ],
+    'workflow-script-deep-research.md': [
+        Rule(
+            stock='If the fetch fails or the page is irrelevant/paywalled, return claims: [] and sourceQuality: \\"unreliable\\".',
+            unnerf='If the fetch is blocked (a bot wall, a 403, a paywall), the block is not a verdict on the page: retry through a browser MCP tool if one is available, and only then return claims: [] with sourceQuality: \\"unreliable\\". If the page content is irrelevant, return claims: [] and sourceQuality: \\"unreliable\\".',
+            description='un-nerf: deep-research fetch prompt - a block is a signal, not a verdict (concept 40)',
+        ),
+    ],
+    'agent-prompt-general-purpose.md': [
+        Rule(
+            stock="Complete the task fully—don't gold-plate, but don't leave it half-done. When you complete the task, respond with a concise report covering what was done and any key findings — the caller will relay this to the user, so it only needs the essentials.",
+            unnerf="Complete the task fully. Do not leave it half-done, and do not add unrequested extras. When you complete the task, respond with a report of what was done and the key findings. The caller relays this report to the user. Match the report's length to the task: include everything the caller must act on, and nothing else.",
+            description='un-nerf: general-purpose agent - report length earned by the task (defect 1)',
+        ),
+        Rule(
+            stock="- NEVER create files unless they're absolutely necessary for achieving your goal. ALWAYS prefer editing an existing file to creating a new one.\n- NEVER proactively create documentation files (*.md) or README files. Only create documentation files if explicitly requested.",
+            unnerf='- Prefer editing an existing file. Create a new file only when the task requires one.\n- Create a documentation file (*.md, README) only when the user explicitly asks for one.',
+            description='un-nerf: general-purpose agent - file-creation rules in only-when form (defect 1, aligned with the edit-tool family)',
         ),
     ],
 }
