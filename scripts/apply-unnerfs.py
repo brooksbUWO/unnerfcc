@@ -830,8 +830,8 @@ RULES: dict[str, list[Rule]] = {
     'system-prompt-tone-and-style-concise-output-short.md': [
         Rule(
             stock='Your responses should be short and concise.\n',
-            unnerf='Match the length of your response to what the task needs. Keep it focused, and drop detail that does not change what the reader does next. Default to lean, but let a substantial question earn the depth it needs.\n',
-            description='un-nerf: system-prompt-tone-and-style-concise-output-short',
+            unnerf='Match the length of your response to the task. A simple question earns a short answer. A complex task earns the depth it needs. Do not pad, and do not cut a needed explanation to hit a length target.\n',
+            description='un-nerf: system-prompt-tone-and-style-concise-output-short (text aligned with system-prompt-tone-concise-output-short: both prompts share ONE binary site; different unnerfs made the splicer report this rule LOST on every apply)',
         ),
     ],
     'system-prompt-tool-usage-subagent-guidance.md': [
@@ -939,13 +939,10 @@ RULES: dict[str, list[Rule]] = {
             description='un-nerf: system-reminder-end-conversation-background-fork-no-op',
         ),
     ],
-    'system-reminder-exited-plan-mode.md': [
-        Rule(
-            stock='## Exited Plan Mode\n\nYou have exited plan mode. You can now make edits, run tools, and take actions.${CONDITIONAL_NOTE}\n',
-            unnerf='## Exited Plan Mode\n\nYou exited plan mode. You can now make edits, run tools, and take actions.${CONDITIONAL_NOTE}\n',
-            description='un-nerf: system-reminder-exited-plan-mode',
-        ),
-    ],
+    # system-reminder-exited-plan-mode: NO RULE. tweakcc-fixed removes this string from the
+    # binary and serves the surface from ~/.tweakcc/system-reminders/plan-mode-exit.md
+    # (frontmatter `shadows: system-reminder-exited-plan-mode`). A rule here reports
+    # couldNotFind on every real apply. Edit the override file, not this catalog.
     'system-reminder-file-summary-completeness-disclosure.md': [
         Rule(
             stock="- Before producing ANY summary or analysis, you MUST explicitly describe what portion of the content you have read. ***If you did not read the entire content, you MUST explicitly state this.***\n- If after a few attempts you cannot read the file (file not found, lines too long for Read's offset/limit, no shell access), STOP retrying. Summarize what you were able to read, explicitly state which portion you could not read and why, and proceed.\n",
@@ -1065,20 +1062,11 @@ RULES: dict[str, list[Rule]] = {
             description='un-nerf: system-reminder-scheduled-task-automated-firing',
         ),
     ],
-    'system-reminder-session-stop-hook-active.md': [
-        Rule(
-            stock='A session-scoped Stop hook is now active with condition: "${STOP_HOOK_CONDITION}". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` after success; that\'s only for clearing a goal early.\n',
-            unnerf='A session-scoped Stop hook is now active with condition: "${STOP_HOOK_CONDITION}". Briefly acknowledge the goal, then immediately start (or continue) work toward it. Treat the condition itself as your directive. Do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met. Do not tell the user to run `/goal clear` after success. That command is only for an early goal clear.\n',
-            description='un-nerf: system-reminder-session-stop-hook-active',
-        ),
-    ],
-    'system-reminder-task-tools-reminder.md': [
-        Rule(
-            stock="The task tools haven't been used recently. If you're working on tasks that would benefit from tracking progress, consider using ${TASK_CREATE_TOOL_NAME} to add new tasks and ${TASK_UPDATE_TOOL_NAME} to update task status (set to in_progress when starting, completed when done). Also consider cleaning up the task list if it has become stale. Only use these if relevant to the current work. This is just a gentle reminder - ignore if not applicable.\n",
-            unnerf='The task tools have not been used recently. If tracked progress helps the current work, use ${TASK_CREATE_TOOL_NAME} to add tasks. Update status with ${TASK_UPDATE_TOOL_NAME} (in_progress at start, completed at end). If the list is stale, prune it. If they are not relevant, skip them.\n',
-            description='un-nerf: system-reminder-task-tools-reminder',
-        ),
-    ],
+    # system-reminder-session-stop-hook-active and system-reminder-task-tools-reminder:
+    # NO RULES. tweakcc-fixed shadows both surfaces into the runtime channel
+    # (~/.tweakcc/system-reminders/stop-hook-session-goal.md and task-list-reminder.md,
+    # each with a `shadows:` frontmatter line). Rules here report couldNotFind on every
+    # real apply. Edit the override files, not this catalog.
     'system-reminder-team-coordination.md': [
         Rule(
             stock='${TEAMMATE_IDENTITY_PREAMBLE}\n\n**Team Leader:** The team lead\'s name is "team-lead". Send updates and completion notifications to them.\n\nRead the team config to discover your teammates\' names.${TASK_LIST_GUIDANCE}\n\n**IMPORTANT:** Always refer to active teammates by their NAME (e.g., "team-lead", "analyzer", "researcher"). Use an `agentId` (format `a...-...`, from the spawn result) only to resume a background agent that has already completed. When messaging, use the name directly:\n\n```json\n{\n  "to": "team-lead",\n  "message": "Your message here",\n  "summary": "Brief 5-10 word preview"\n}\n```\n</system-reminder>\n',
@@ -1601,8 +1589,8 @@ RULES: dict[str, list[Rule]] = {
     'agent-prompt-chrome-browser-when-to-use.md': [
         Rule(
             stock='When the user wants to interact with web pages, automate browser tasks, capture screenshots, read console logs, or perform any browser-based actions. Always invoke BEFORE attempting to use any mcp__claude-in-chrome__* tools.\n',
-            unnerf='When the user wants to interact with web pages, automate browser tasks, capture screenshots, read console logs, or do any browser-based action. Always invoke this before you use any mcp__open-claude-in-chrome__* tool.\n',
-            description='un-nerf: agent-prompt-chrome-browser-when-to-use (redirect claude-in-chrome -> OCC)',
+            unnerf='When the user wants to interact with web pages, automate browser tasks, capture screenshots, read console logs, or do any browser-based action. If the browser-occ skill is listed in this session, invoke Skill(browser-occ) instead of this skill. Invoke this skill only when browser-occ is not listed, before you use any mcp__open-claude-in-chrome__* tool.\n',
+            description='un-nerf: agent-prompt-chrome-browser-when-to-use (route to Skill(browser-occ) first; behavioral test 2026-08-28 showed "Always invoke this" walks the agent into the stock extension-install flow)',
         ),
     ],
     'data-chrome-image-not-inlined.md': [
@@ -1862,8 +1850,8 @@ RULES: dict[str, list[Rule]] = {
     'tool-description-chrome-browser-automation.md': [
         Rule(
             stock='Automates your Chrome browser to interact with web pages - clicking elements, filling forms, capturing screenshots, reading console logs, and navigating sites. Opens pages in new tabs within your existing Chrome session. Requires site-level permissions before executing (configured in the extension).',
-            unnerf='Automates your Chrome browser to interact with web pages - clicking elements, filling forms, capturing screenshots, reading console logs, and navigating sites. Opens pages in new tabs within your existing Chrome session. Use the Open Claude in Chrome tools (mcp__open-claude-in-chrome__*) for this browser automation.',
-            description='un-nerf: chrome browser automation description - the missed redirect row (browser-automation-redirect)',
+            unnerf='Automates your Chrome browser to interact with web pages - clicking elements, filling forms, capturing screenshots, reading console logs, and navigating sites. Opens pages in new tabs within your existing Chrome session. If the browser-occ skill is listed in this session, invoke Skill(browser-occ) for browser work instead of this skill. This skill only sets up the extension connection. The browser tools are mcp__open-claude-in-chrome__*.',
+            description='un-nerf: chrome browser automation description - route to Skill(browser-occ); this skill entry is only the extension setup flow (browser-automation-redirect)',
         ),
     ],
     'workflow-script-deep-research.md': [
