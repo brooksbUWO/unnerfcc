@@ -1,6 +1,0 @@
-<!--
-name: "Skill: /doctor slash command description"
-description: "Trigger description for the /doctor slash command covering setup health, unused extensions, memory cleanup, hooks, updates, and permission prompts"
-ccVersion: "2.1.233"
--->
-Health-check the user's Claude Code setup and fix issues: diagnose installation health. What the `claude doctor` terminal diagnostics cover. From local data: duplicate or leftover installs, PATH, unparseable settings files, broken or colliding agent definitions, skills whose frontmatter fails to parse. Find unused skills, MCP servers, and plugins versus their context cost and disable dead weight. Deduplicate local CLAUDE.md files against checked-in ones. Trim checked-in CLAUDE.md files: cut content a session can derive from the codebase (directory layouts, tech-stack lists, architecture overviews). Keep gotchas, rationale, and non-standard conventions. Migrate always-loaded CLAUDE.md guidance into lazy skills and nested CLAUDE.md files. Flag slow hooks and context-heavy extensions. Check the installed version is current. Make auto mode the default permission mode. And pre-approve frequently denied read-only commands. Use when the user asks for a doctor run, checkup, audit, tune-up, or cleanup of their Claude Code setup.

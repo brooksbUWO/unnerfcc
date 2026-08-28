@@ -1,7 +1,9 @@
 <!--
-name: "Tool Description: SuggestConnectors"
-description: "Describes the SuggestConnectors tool for resolving SearchMcpRegistry directoryUuid values into full connector payloads and install-state guidance"
-ccVersion: "2.1.199"
+name: 'Tool Description: SuggestConnectors'
+description: >-
+  Describes the SuggestConnectors tool for resolving SearchMcpRegistry
+  directoryUuid values into full connector payloads and install-state guidance
+ccVersion: 2.1.199
 -->
 Get the full connector payloads for a set of directoryUuid values from SearchMcpRegistry. Call this tool only with directoryUuid values from a SearchMcpRegistry result. Do not guess UUIDs. Do not pass connector names.
 

@@ -37,5 +37,5 @@ Wait for all four agents to complete, dedup findings that point at the same
 line or mechanism, and fix each remaining one directly. Skip any finding whose
 fix would change intended behavior, require changes well outside the reviewed
 diff, or that you judge to be a false positive — note the skip rather than
-arguing with it. Finish with a thorough summary of what was fixed and why, and what was
-skipped with the reason for each skip (or confirm the code was already clean).
+arguing with it. Finish with a brief summary of what was fixed and what was
+skipped (or confirm the code was already clean).

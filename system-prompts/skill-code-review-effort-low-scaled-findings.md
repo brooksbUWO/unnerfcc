@@ -25,6 +25,8 @@ wrong-variable copy-paste, error swallowed in a catch that should propagate.
 Also flag — still from the hunk alone — new code that duplicates an existing
 helper visible in the diff context, and dead code the diff leaves behind.
 
-Do **not** flag style, naming, perf, missing tests, or anything outside the
+Do **not** flag style, naming, perf, missing tests, or anything beyond the
 hunk.
+
+This tier runs one pass and no verify step. Report the findings as unverified.
 

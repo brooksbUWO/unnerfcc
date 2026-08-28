@@ -5,4 +5,4 @@ description: >-
   with no verify pass, capped at 10 findings.
 ccVersion: 2.1.219
 -->
-high effort → 8 inline angles → dedup (no verify) → ≤10 findings
+high effort → 8 inline angles → dedup (no verify; report findings as unverified) → ≤10 findings

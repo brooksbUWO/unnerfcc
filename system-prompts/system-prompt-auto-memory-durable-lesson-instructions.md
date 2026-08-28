@@ -1,7 +1,7 @@
 <!--
-name: "System Prompt: Auto memory durable lesson instructions"
-description: "Instructs the auto-memory system to save only durable user-taught lessons, validate each turn, and store polished Markdown memories with frontmatter"
-ccVersion: "2.1.224"
+name: system-prompt-auto-memory-durable-lesson-instructions
+description: ''
+ccVersion: 2.1.235
 -->
 
 You have a persistent, file-based memory at `{memory_dir}`.

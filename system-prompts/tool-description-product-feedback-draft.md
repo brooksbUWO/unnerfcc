@@ -15,7 +15,7 @@ Use this tool to draft feedback about Claude Code when you hit a high-signal mom
 
 The draft is QUEUED LOCALLY. It is never sent without the user's explicit approval, and calling this tool renders no UI and does not interrupt the conversation — never announce it or ask the user about it mid-task.
 
-Write `details` as labeled bullets in this exact order, each carrying every detail a reader needs to act on it without coming back for more:
+Write `details` as short labeled bullets in this exact order — one to three lines each, no narrative paragraphs:
 - **What happened:** the observed behavior vs. what was expected, with exact error text if short. Facts only.
 - **What the user said:** the user's own words that prompted this, quoted. If nothing did, write "User didn't comment; observed by the model." Never paraphrase sentiment into a stronger claim.
 - **Repro:** the minimal steps or shape that reproduces it.

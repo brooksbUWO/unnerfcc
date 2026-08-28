@@ -1,7 +1,10 @@
 <!--
-name: "Tool Description: ListConnectors"
-description: "Describes the ListConnectors tool for listing installed claude.ai MCP connectors, filtering by keyword, and interpreting org-level connection and chat-enabled status"
-ccVersion: "2.1.199"
+name: 'Tool Description: ListConnectors'
+description: >-
+  Describes the ListConnectors tool for listing installed claude.ai MCP
+  connectors, filtering by keyword, and interpreting org-level connection and
+  chat-enabled status
+ccVersion: 2.1.199
 -->
 List the MCP connectors installed for the claude.ai org of the user. When the user asks which connectors they have, call this tool. To filter to a topic, pass keywords. To list all connectors, omit the keywords.
 

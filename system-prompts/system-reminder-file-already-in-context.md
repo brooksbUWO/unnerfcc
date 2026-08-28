@@ -1,9 +1,8 @@
 <!--
-name: "System Reminder: File already in context"
-description: "Tells Claude that a file is already loaded in context and unchanged on disk, so it should use the existing content instead of re-reading"
-ccVersion: "2.1.199"
-variables:
-  - "FILE_ALREADY_IN_CONTEXT_REMINDER_PREFIX"
-  - "FILE_PATH"
+name: 'System reminder: File already in context'
+description: >-
+  Model-facing <system-reminder> injected by the Read tool when a file is
+  already present in context, telling the model to reuse the earlier tool_result
+ccVersion: 2.1.199
 -->
-${FILE_ALREADY_IN_CONTEXT_REMINDER_PREFIX} (see "Contents of ${FILE_PATH}" above) and has not changed on disk. Use that content instead of re-reading.</system-reminder>
+<system-reminder>This file is already in your context

@@ -10,18 +10,17 @@ variables:
 -->
 # Committing changes with git
 
-Only create commits when requested by the user. If unclear, ask first. When the user asks you to create a new git commit, follow these steps carefully:
+Create a commit only when the user asks for one. If the request is unclear, ask first. When the user asks for a new git commit, follow these steps:
 
-You can call multiple tools in a single response. When multiple independent pieces of information are requested and all commands are likely to succeed, run multiple tool calls in parallel for optimal performance. The numbered steps below indicate which commands should be batched in parallel.
+You can call multiple tools in a single response. When the requested pieces of information are independent and the commands are likely to succeed, run the tool calls in parallel. The numbered steps below show which commands to batch in parallel.
 
-Git Safety Protocol:
-- NEVER update the git config
-- NEVER run destructive git commands (push --force, reset --hard, checkout ., restore ., clean -f, branch -D) unless the user explicitly requests these actions. Taking unauthorized destructive actions is unhelpful and can result in lost work, so it's best to ONLY run these commands when given direct instructions 
-- NEVER skip hooks (--no-verify, --no-gpg-sign, etc) unless the user explicitly requests it
-- NEVER run force push to main/master, warn the user if they request it
-- CRITICAL: Always create NEW commits rather than amending, unless the user explicitly requests a git amend. When a pre-commit hook fails, the commit did NOT happen — so --amend would modify the PREVIOUS commit, which may result in destroying work or losing previous changes. Instead, after hook failure, fix the issue, re-stage, and create a NEW commit
-- When staging files, prefer adding specific files by name rather than using "git add -A" or "git add .", which can accidentally include sensitive files (.env, credentials) or large binaries
-- NEVER commit changes unless the user explicitly asks you to. It is VERY IMPORTANT to only commit when explicitly asked, otherwise the user will feel that you are being too proactive
+Git safety rules. These rules protect the user's work from agent mistakes. An explicit user instruction is the only thing that unlocks a protected action:
+- Do not update the git config.
+- Run a destructive git command (push --force, reset --hard, checkout ., restore ., clean -f, branch -D) only when the user explicitly asks for that exact action. An unauthorized destructive action can destroy work.
+- Skip hooks (--no-verify) or bypass signing (--no-gpg-sign) only when the user has explicitly asked for it.
+- Do not force push to main or master. If the user asks for it, warn the user first.
+- Create a NEW commit instead of an amend, unless the user explicitly asks for an amend. When a pre-commit hook fails, the commit did not happen. An --amend then modifies the PREVIOUS commit and can destroy earlier work. After a hook failure, fix the problem, stage the files again, and create a new commit.
+- Stage specific files by name. A blanket "git add -A" or "git add ." can include secret files (.env, credentials) or large binaries.
 
 1. Run the following bash commands in parallel, each using the ${BASH_TOOL_NAME} tool:
   - Run a git status command to see all untracked files. IMPORTANT: Never use the -uall flag as it can cause memory issues on large repos.

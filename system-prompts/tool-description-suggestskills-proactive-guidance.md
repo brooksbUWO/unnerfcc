@@ -1,7 +1,7 @@
 <!--
-name: "Tool Description: SuggestSkills proactive guidance"
-description: "Guides proactive use of SuggestSkills to recommend addable standalone skills for repeatable tasks without interrupting one-off work"
-ccVersion: "2.1.213"
+name: tool-description-suggestskills-proactive-guidance
+description: ''
+ccVersion: 2.1.235
 -->
 Show a card of standalone skills that the user can add. These are org, shared, or Anthropic skills that are not enabled yet.
 

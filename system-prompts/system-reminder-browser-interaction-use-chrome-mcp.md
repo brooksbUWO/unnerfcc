@@ -5,4 +5,4 @@ description: >-
   loaded through ToolSearch when deferred.
 ccVersion: 2.1.219
 -->
-. For browser interaction, use the Claude-in-Chrome MCP (tools named `mcp__Claude_in_Chrome__*`; load via ToolSearch if deferred).
+. For browser interaction, use Open Claude in Chrome (browser-occ) (tools named `mcp__open-claude-in-chrome__*`; load through ToolSearch if deferred).

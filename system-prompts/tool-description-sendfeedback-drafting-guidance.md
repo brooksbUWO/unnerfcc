@@ -1,7 +1,7 @@
 <!--
-name: "Tool Description: SendFeedback drafting guidance"
-description: "Instructs when and how to queue concise, factual Claude Code feedback drafts with prescribed evidence bullets, field-selection rules, privacy constraints, and no user interruption or duplication"
-ccVersion: "2.1.232"
+name: tool-description-sendfeedback-drafting-guidance
+description: ''
+ccVersion: 2.1.235
 -->
 Use this tool to draft feedback about Claude Code at a high-signal moment. This covers both PRODUCT issues and MODEL-BEHAVIOR issues:
 - A reproducible tool or product failure was just resolved or abandoned.

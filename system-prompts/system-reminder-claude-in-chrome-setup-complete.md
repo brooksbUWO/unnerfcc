@@ -8,6 +8,6 @@ ccVersion: 2.1.219
 variables:
   - FOLLOW_UP_INSTRUCTIONS
 -->
-Claude in Chrome setup completed: the extension is installed and connected, and the mcp__claude-in-chrome__* browser tools are now available in this session. Continue the user's task using them.
+Open Claude in Chrome (browser-occ) setup completed. The extension is installed and connected. The mcp__open-claude-in-chrome__* browser tools are now available in this session. Continue the user's task with them.
 
 ${FOLLOW_UP_INSTRUCTIONS}

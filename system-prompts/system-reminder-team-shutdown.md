@@ -1,7 +1,7 @@
 <!--
-name: "System Reminder: Team Shutdown"
-description: "System reminder for team shutdown"
-ccVersion: "2.1.16"
+name: 'System Reminder: Team Shutdown'
+description: System reminder for team shutdown
+ccVersion: 2.1.16
 -->
 <system-reminder>
 You are running in non-interactive mode. Your final response reaches the user only after your team is shut down, so shut the team down first:

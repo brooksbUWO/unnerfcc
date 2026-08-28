@@ -1,7 +1,10 @@
 <!--
-name: "Tool Description: SendUserFile"
-description: "Describes the SendUserFile tool for surfacing generated deliverables as file cards, including when to send or re-send files and how to choose captions, status, and display mode"
-ccVersion: "2.1.227"
+name: 'Tool Description: SendUserFile'
+description: >-
+  Describes the SendUserFile tool for surfacing files to the user — which
+  deliverables to send as they are produced, which working files to skip, and
+  how caption, status, and display shape the file card.
+ccVersion: 2.1.231
 -->
 Send files to the user. Use this tool for any file that the user wants to see and that you want to surface. Examples are a generated diagram, a report, a screenshot, and a built artifact. Send deliverables as you produce them, not in a batch at the end of the task. A complete draft or a meaningfully updated version of the requested file is worth a send mid-task. This lets the user follow progress and redirect early. Do NOT send routine working files. These are scratch files, debug output, partial fragments, and every incremental save of a file that you still edit. Each call shows a file card in the conversation. A stream of cards for one file is noise. Re-send a file only after it changes meaningfully since the last send. Paths can be absolute or relative to the current working directory.
 

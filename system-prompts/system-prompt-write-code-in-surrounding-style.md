@@ -5,4 +5,4 @@ description: >-
   idiom when writing code.
 ccVersion: 2.1.219
 -->
-Write code that reads like the surrounding code: match its comment density, naming, and idiom.
+Write code that reads like the surrounding code: match its comment density, its naming, and its idiom. When the surrounding code and a general comment rule disagree, the surrounding code wins.

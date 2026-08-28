@@ -1,7 +1,7 @@
 <!--
-name: "Tool Description: SendUserMessage"
-description: "Describes the SendUserMessage tool for sending user-visible Markdown messages and attachments with normal or proactive status"
-ccVersion: "2.1.116"
+name: tool-description-sendusermessage
+description: ''
+ccVersion: 2.1.235
 -->
 Send a message that the user reads. Text outside this tool is visible in the detail view. But most users do not open it. Put the answer here.
 

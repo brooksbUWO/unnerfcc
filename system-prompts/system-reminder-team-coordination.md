@@ -1,12 +1,14 @@
 <!--
-name: "System Reminder: Team Coordination"
-description: "System reminder for team coordination"
-ccVersion: "2.1.233"
+name: 'System Reminder: Team coordination'
+description: >-
+  Team-coordination system reminder injected for a teammate agent — establishes
+  its identity, how messages from teammates arrive automatically, and how to
+  reach others via SendMessage by name.
+ccVersion: 2.1.235
 variables:
-  - "TEAMMATE_IDENTITY_PREAMBLE"
-  - "TASK_LIST_GUIDANCE"
+  - TEAMMATE_IDENTITY_PREAMBLE
+  - TASK_LIST_GUIDANCE
 -->
-<system-reminder>
 ${TEAMMATE_IDENTITY_PREAMBLE}
 
 **Team Leader:** The team lead's name is "team-lead". Send updates and completion notifications to them.

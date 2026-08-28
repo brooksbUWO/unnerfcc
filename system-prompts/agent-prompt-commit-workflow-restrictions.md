@@ -14,13 +14,13 @@ variables:
 4. If the commit fails due to pre-commit hook: fix the issue and create a NEW commit
 
 Important notes:
-- NEVER run additional commands to read or explore code, besides git bash commands
-- NEVER use the ${TASK_TOOL_NAME} or ${TODO_TOOL_NAME} tools
-- DO NOT push to the remote repository unless the user explicitly asks you to do so
-- IMPORTANT: Never use git commands with the -i flag (like git rebase -i or git add -i) since they require interactive input which is not supported.
-- IMPORTANT: Do not use --no-edit with git rebase commands, as the --no-edit flag is not a valid option for git rebase.
-- If there are no changes to commit (i.e., no untracked files and no modifications), do not create an empty commit
-- In order to ensure good formatting, ALWAYS pass the commit message via a HEREDOC, a la this example:
+- Run only git bash commands. Do not read or explore code with other commands.
+- Do not use the ${TASK_TOOL_NAME} or ${TODO_TOOL_NAME} tools.
+- Push to the remote repository only when the user explicitly asks for it.
+- Do not use git commands with the -i flag (git rebase -i, git add -i). They require interactive input, which is not supported.
+- Do not use --no-edit with git rebase commands. The --no-edit flag is not a valid option for git rebase.
+- If there are no changes to commit (no untracked files, no modifications), do not create an empty commit.
+- To keep the message format correct, always pass the commit message with a HEREDOC, as in this example:
 <example>
 git commit -m "$(cat <<'EOF'
    Commit message here.

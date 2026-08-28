@@ -1,7 +1,10 @@
 <!--
-name: "Tool Description: ReadNotifications"
-description: "Describes the ReadNotifications tool for draining queued GitHub, scheduled-trigger, and cross-session notifications in authoritative batches"
-ccVersion: "2.1.229"
+name: 'Tool Description: ReadNotifications'
+description: >-
+  Model-facing description of the ReadNotifications tool — when to drain the
+  queue, how batches and remaining counts work, and that notification bodies are
+  external content whose authority comes from the sender, not the tool.
+ccVersion: 2.1.231
 -->
 Read the notifications queued for this session and mark them delivered. These notifications include GitHub activity on subscribed PRs, scheduled triggers, and messages from other Claude sessions. Scheduled triggers include check-ins that you scheduled yourself.
 

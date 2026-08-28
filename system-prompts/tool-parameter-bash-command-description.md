@@ -1,7 +1,7 @@
 <!--
-name: "Tool Parameter: Bash command description"
-description: "Instructions for generating clear, concise command descriptions in active voice for bash commands"
-ccVersion: "2.1.3"
+name: tool-parameter-bash-command-description
+description: ''
+ccVersion: 2.1.235
 -->
 Clear, concise description of what this command does, in active voice. Never use words like "complex" or "risk" in the description. Describe only what it does.
 

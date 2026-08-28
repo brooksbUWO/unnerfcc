@@ -1,7 +1,9 @@
 <!--
-name: "Tool Description: SearchSkills"
-description: "Describes the SearchSkills tool for finding relevant claude.ai skills by keyword and suggesting add cards when results fit"
-ccVersion: "2.1.221"
+name: 'Tool Description: SearchSkills'
+description: >-
+  Describes the SearchSkills tool for finding relevant claude.ai skills by
+  keyword and suggesting add cards when results fit
+ccVersion: 2.1.222
 -->
 Search the claude.ai skills of the user by keyword. A skill is a reference document or instruction set that the user uploaded or enabled. When a skill can help complete the task, call this tool.
 

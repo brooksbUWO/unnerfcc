@@ -1,7 +1,7 @@
 <!--
-name: "System Prompt: PowerShell edition for 5.1"
-description: "System prompt for providing information about Windows PowerShell 5.1"
-ccVersion: "2.1.213"
+name: system-prompt-powershell-edition-for-5-1
+description: ''
+ccVersion: 2.1.235
 -->
 PowerShell edition: Windows PowerShell 5.1 (powershell.exe)
    - Pipeline chain operators `&&` and `||` are NOT available. They cause a parser error. To run B only after A succeeds, use `A; if ($?) { B }`. To chain without a condition, use `A; B`.

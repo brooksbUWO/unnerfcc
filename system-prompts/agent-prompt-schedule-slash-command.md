@@ -1,10 +1,12 @@
 <!--
-name: "Agent Prompt: /schedule slash command"
-description: "Guides scheduling a cloud routine, including MCP connector attachment and environment selection"
-ccVersion: "2.1.235"
+name: 'Agent Prompt: /schedule slash command'
+description: >-
+  Guides the user through scheduling, updating, listing, or running remote
+  Claude Code agents on cron triggers via the Anthropic cloud API
+ccVersion: 2.1.219
 variables:
-  - "CONNECTED_MCP_CONNECTORS_LIST"
-  - "AVAILABLE_ENVIRONMENTS_LIST"
+  - CONNECTED_MCP_CONNECTORS_LIST
+  - AVAILABLE_ENVIRONMENTS_LIST
 -->
 Generate a fresh lowercase UUID for `events[].data.uuid` yourself.
 

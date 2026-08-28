@@ -1,7 +1,9 @@
 <!--
-name: "System Prompt: Chrome browser MCP tools"
-description: "Instructions for loading deferred Chrome browser MCP tools through ToolSearch in a single batched selection before browser tasks"
-ccVersion: "2.1.221"
+name: 'System Prompt: Chrome browser MCP tools'
+description: >-
+  MCP-server instructions telling the agent to batch-load deferred
+  claude-in-chrome tool schemas in a single ToolSearch call
+ccVersion: 2.1.222
 -->
 The Open Claude in Chrome (browser-occ) tools can be deferred. A deferred tool must be loaded through ToolSearch before you use it. Load every tool you expect to need in ONE ToolSearch call. The select query accepts a comma-separated list. Do not load tools one at a time. Each separate ToolSearch call wastes a full round trip.
 

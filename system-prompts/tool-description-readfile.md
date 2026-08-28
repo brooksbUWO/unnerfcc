@@ -1,20 +1,19 @@
 <!--
-name: "Tool Description: ReadFile"
-description: "Tool description for reading files"
-ccVersion: "2.1.235"
-
+name: 'Tool Description: ReadFile'
+description: Tool description for reading files
+ccVersion: 2.1.219
 variables:
-  - "DEFAULT_READ_LINE_LIMIT"
-  - "OFFSET_LIMIT_NOTE"
-  - "LINE_TRUNCATION_NOTE"
-  - "EXTRA_USAGE_NOTES"
+  - DEFAULT_READ_LINE_LIMIT
+  - OFFSET_LIMIT_NOTE
+  - LINE_TRUNCATION_NOTE
+  - EXTRA_USAGE_NOTES
 -->
-Reads a file from the local filesystem. You can access any file directly with this tool.
-Assume that this tool can read all files on the machine. If the user gives a path to a file, assume that the path is valid. A read of a file that does not exist is okay. The tool returns an error.
+Reads a file from the local filesystem. You can access any file directly by using this tool.
+Assume this tool is able to read all files on the machine. If the User provides a path to a file assume that path is valid. It is okay to read a file that does not exist; an error will be returned.
 
 Usage:
 - The file_path parameter must be an absolute path, not a relative path
-- By default, it reads up to ${DEFAULT_READ_LINE_LIMIT} lines from the start of the file${OFFSET_LIMIT_NOTE}
+- By default, it reads up to ${DEFAULT_READ_LINE_LIMIT} lines starting from the beginning of the file${OFFSET_LIMIT_NOTE}
 ${LINE_TRUNCATION_NOTE}
 ${EXTRA_USAGE_NOTES}
-- This tool reads images (for example PNG or JPG). It presents the contents of an image file visually, because Claude Code is a multimodal LLM.
+- This tool allows Claude Code to read images (eg PNG, JPG, etc). When reading an image file the contents are presented visually as Claude Code is a multimodal LLM.

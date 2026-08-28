@@ -5,4 +5,4 @@ description: >-
   launched.
 ccVersion: 2.1.219
 -->
-briefly tell the user what you launched
+tell the user what you launched and why

@@ -183,7 +183,7 @@ const FETCH_PROMPT = (source, angle) =>
   "   - include a direct quote from the source as support\n" +
   "   - be rated central/supporting/tangential to the research question\n" +
   "4. Note publish date if available.\n\n" +
-  "If the fetch fails or the page is irrelevant/paywalled, return claims: [] and sourceQuality: \"unreliable\".\n\nStructured output only."
+  "If the fetch is blocked (a bot wall, a 403, a paywall), the block is not a verdict on the page: retry through a browser MCP tool if one is available, and only then return claims: [] with sourceQuality: \"unreliable\". If the page content is irrelevant, return claims: [] and sourceQuality: \"unreliable\".\n\nStructured output only."
 
 const VERIFY_PROMPT = (claim, v) =>
   "## Adversarial Claim Verifier (voter " + (v + 1) + "/" + VOTES_PER_CLAIM + ")\n\n" +

@@ -5,7 +5,7 @@ description: >-
   qualifying findings
 ccVersion: 2.1.219
 -->
-`low effort → 1 diff pass → no verify → all qualifying findings`
+`low effort → 1 diff pass → no verify; report findings as unverified → all qualifying findings`
 
 ## Turn 1 — read
 

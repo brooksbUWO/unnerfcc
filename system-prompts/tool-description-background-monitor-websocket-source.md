@@ -1,7 +1,7 @@
 <!--
-name: "Tool Description: Background monitor WebSocket source"
-description: "Addendum to the background monitor tool description covering the WebSocket (ws) source, which opens a WebSocket and streams each incoming text frame as a notification event instead of running a shell command, with notes on binary frames, socket close, and rate limiting"
-ccVersion: "2.1.195"
+name: 'Tool Description: Monitor WebSocket Source'
+description: Monitor tool ws source documentation injected into the model's context.
+ccVersion: 2.1.219
 -->
 
 **ws source**: open a WebSocket and stream each incoming text frame as an event. There is no shell and no polling. The server pushes, and you get a notification.

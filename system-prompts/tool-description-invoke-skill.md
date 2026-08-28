@@ -1,9 +1,13 @@
 <!--
-name: "Tool Description: Invoke skill"
-description: "Tool description for invoking available skills, including skill name selection, optional arguments, scoped skill names, and avoiding duplicate invocation when a skill is already loaded"
-ccVersion: "2.1.218"
+name: 'Tool Description: Invoke skill'
+description: >-
+  Tool description for invoking available skills, including skill name
+  selection, optional arguments, scoped skill names, background-running skills
+  whose results arrive later as task notifications, and avoiding duplicate
+  invocation when a skill is already loaded
+ccVersion: 2.1.219
 variables:
-  - "SKILL_TAG_NAME"
+  - SKILL_TAG_NAME
 -->
 Invoke a skill.
 

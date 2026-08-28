@@ -1,9 +1,12 @@
 <!--
-name: "Tool Description: WebSearch (concise)"
-description: "Describes the concise WebSearch tool variant with US-only results, current-month guidance, domain filters, and required sources"
-ccVersion: "2.1.173"
+name: 'Tool Description: WebSearch (concise)'
+description: >-
+  Concise (velvet) WebSearch tool description rendered for Opus 4.8 / Fable 5 /
+  Mythos 5 — US-only web search returning titled URL result blocks, with the
+  current-month grounding note and the Sources list requirement
+ccVersion: 2.1.219
 variables:
-  - "CURRENT_MONTH_YEAR"
+  - CURRENT_MONTH_YEAR
 -->
 Search the web. Returns result blocks with titles and URLs. US-only.
 

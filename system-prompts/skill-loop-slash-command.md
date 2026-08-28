@@ -1,10 +1,12 @@
 <!--
-name: "Skill: /loop slash command"
-description: "Parses /loop input into an interval and prompt and schedules a recurring cron task"
-ccVersion: "2.1.235"
+name: 'Skill: /loop slash command'
+description: >-
+  Parses user input into an interval and prompt, converts the interval to a cron
+  expression, and schedules a recurring task
+ccVersion: 2.1.219
 variables:
-  - "CRON_CREATE_TOOL_NAME"
-  - "DEFAULT_INTERVAL"
+  - CRON_CREATE_TOOL_NAME
+  - DEFAULT_INTERVAL
 -->
 # /loop — schedule a recurring prompt
 

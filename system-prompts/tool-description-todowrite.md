@@ -1,9 +1,9 @@
 <!--
-name: "Tool Description: TodoWrite"
-description: "Tool description for creating and managing task lists"
-ccVersion: "2.1.84"
+name: 'Tool Description: TodoWrite'
+description: Tool description for creating and managing task lists
+ccVersion: 2.1.84
 variables:
-  - "EDIT_TOOL_NAME"
+  - EDIT_TOOL_NAME
 -->
 Use this tool to create and manage a structured task list for the current coding session. It tracks progress, organizes complex work, and lets the user follow what is done and what remains.
 
