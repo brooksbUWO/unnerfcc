@@ -6845,8 +6845,8 @@
       "version": "2.1.172"
     },
     {
-      "name": "Tool Description: ShowOnboardingRolePicker",
-      "id": "tool-description-showonboardingrolepicker",
+      "name": "Tool Description: ShowOnboardingRolePicker (detailed)",
+      "id": "tool-description-showonboardingrolepicker-detailed",
       "description": "Tool description for ShowOnboardingRolePicker — renders a clickable role-picker chip row during Cowork onboarding",
       "pieces": [
         "Render a clickable role-picker chip row during Cowork onboarding. Call this when asking the user what kind of work they do so they can pick their role and get a matching plugin installed. The role list is hardcoded in the frontend — call with no args.\n\nThe call blocks until the user responds. Three resolution paths all land in the tool result: chip click or free-form typed answer → {\"role\": \"Legal\"} or {\"role\": \"paralegal\"}; X button → {\"dismissed\": true}. An empty object {} means the user approved without picking a role — treat it like a dismissal. Free-form roles may not match the chip list — search the marketplace with whatever string you get.\n\nDo NOT call this in normal conversation. Only call this when explicitly helping the user set up Cowork for their role/job function."
@@ -41813,7 +41813,7 @@
         0
       ],
       "identifierMap": {
-        "0": ""
+        "0": "GREP_TOOL_NAME"
       },
       "version": "2.1.235"
     },
@@ -41941,8 +41941,8 @@
         1
       ],
       "identifierMap": {
-        "0": "",
-        "1": ""
+        "0": "PLAN_FILE_PATH",
+        "1": "REQUEST_ID"
       },
       "version": "2.1.235"
     },
@@ -41958,7 +41958,7 @@
         0
       ],
       "identifierMap": {
-        "0": ""
+        "0": "SCHEDULED_TASK_HEADER"
       },
       "version": "2.1.235"
     },
@@ -41996,7 +41996,7 @@
         0
       ],
       "identifierMap": {
-        "0": ""
+        "0": "PUSH_NOTIFICATION_TOOL_NAME"
       },
       "version": "2.1.235"
     },
@@ -42068,7 +42068,7 @@
         0
       ],
       "identifierMap": {
-        "0": ""
+        "0": "END_CONVERSATION_TOOL_NAME"
       },
       "version": "2.1.235"
     },
@@ -42143,9 +42143,9 @@
         2
       ],
       "identifierMap": {
-        "0": "",
-        "1": "",
-        "2": ""
+        "0": "TOOL_DESCRIPTION_TASKLIST_VAR_0",
+        "1": "TOOL_DESCRIPTION_TASKLIST_VAR_1",
+        "2": "TOOL_DESCRIPTION_TASKLIST_VAR_2"
       },
       "version": "2.1.235"
     },
