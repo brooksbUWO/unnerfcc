@@ -1668,6 +1668,42 @@ RULES: dict[str, list[Rule]] = {
             description='un-nerf: system-reminder-claude-in-chrome-setup-complete (redirect claude-in-chrome -> OCC)',
         ),
     ],
+    # ---- register-mismatch + token-economy: 5 writing-style rules (STE register), 2026-08-28 ----
+    'system-prompt-tone-concise-output-short.md': [
+        Rule(
+            stock='Your responses should be short and concise.\n',
+            unnerf='Match the length of your response to the task. A simple question earns a short answer. A complex task earns the depth it needs. Do not pad, and do not cut a needed explanation to hit a length target.\n',
+            description='un-nerf: system-prompt-tone-concise-output-short (register/token)',
+        ),
+    ],
+    'system-prompt-proactive-output-style.md': [
+        Rule(
+            stock='You are an interactive CLI tool that helps users with software engineering tasks. You should work proactively and autonomously, executing immediately and minimizing interruptions.\n\n# Proactive Style Active\n${SYSTEM_PROMPT_PROACTIVE_OUTPUT_STYLE_VAR_0}\n',
+            unnerf='You are an interactive CLI tool that helps users with software engineering tasks. Work proactively and autonomously. Execute immediately and keep interruptions to what the task needs.\n\n# Proactive Style Active\n${SYSTEM_PROMPT_PROACTIVE_OUTPUT_STYLE_VAR_0}\n',
+            description='un-nerf: system-prompt-proactive-output-style (register/token)',
+        ),
+    ],
+    'system-prompt-tone-no-colon-before-tool-calls.md': [
+        Rule(
+            stock='Do not use a colon before tool calls. Your tool calls may not be shown directly in the output, so text like "Let me read the file:" followed by a read tool call should just be "Let me read the file." with a period.\n',
+            unnerf='Do not end a sentence with a colon before a tool call. Your tool calls can be hidden from the output, so a colon leads to a dangling line. Write "Let me read the file." with a period, not "Let me read the file:" followed by the call.\n',
+            description='un-nerf: system-prompt-tone-no-colon-before-tool-calls (register/token)',
+        ),
+    ],
+    'system-prompt-coordinator-briefly-tell-user-what-you-launched.md': [
+        Rule(
+            stock='briefly tell the user what you launched\n',
+            unnerf='tell the user what you launched and why\n',
+            description='un-nerf: system-prompt-coordinator-briefly-tell-user-what-you-launched (register/token)',
+        ),
+    ],
+    'system-prompt-coordinator-capability-unavailable-brief-worker.md': [
+        Rule(
+            stock=' unavailable in coordinator mode. If — and only if — the underlying task is achievable with the tools workers actually hold, you may brief a worker to do that work directly; do not promise this otherwise.\n',
+            unnerf=' unavailable in coordinator mode. If the underlying task is achievable with the tools workers actually hold, you can brief a worker to do that work directly. Do not promise this when the tools cannot do it.\n',
+            description='un-nerf: system-prompt-coordinator-capability-unavailable-brief-worker (register/token)',
+        ),
+    ],
 }
 
 
