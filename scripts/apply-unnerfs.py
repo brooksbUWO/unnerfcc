@@ -244,7 +244,7 @@ RULES: dict[str, list[Rule]] = {
     'agent-prompt-report-be-direct-for-developers.md': [
         Rule(
             stock='- Be direct and clear for developers to understand the problem',
-            unnerf='- Be direct and clear for developers to understand the problem\n- Include only what the reader can act on. Do not describe your own method or process',
+            unnerf='- Be direct and clear, so that developers understand the problem\n- Include only what the reader can act on. Do not describe your own method or process',
             description='report style bullets: add the reader-can-act line, no narration of method',
         ),
     ],
@@ -771,7 +771,7 @@ RULES: dict[str, list[Rule]] = {
     'system-prompt-operating-autonomously.md': [
         Rule(
             stock='End your turn only when the task is complete or you are blocked on input only the user can provide.',
-            unnerf='End your turn only when the task is complete or you are blocked on input only the user can provide. The task is complete for present purposes when no remaining step can materially change the outcome: design, risk, cost, an authority decision, or verification. Do not stop because the token budget is low, and do not continue work that cannot change the outcome.',
+            unnerf='End your turn only when the task is complete, or when you are blocked on input that only the user can give. The task is complete for present purposes when no remaining step can materially change the outcome: design, risk, cost, an authority decision, or verification. Do not stop because the token budget is low, and do not continue work that cannot change the outcome.',
             description='autonomous stop rule: materiality is folded into the completion definition, never a second stop license',
         ),
     ],
