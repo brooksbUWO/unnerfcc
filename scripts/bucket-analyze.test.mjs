@@ -143,6 +143,35 @@ test("the count guard detects a short write and reports failure rather than succ
   rmSync(dir, { recursive: true, force: true });
 });
 
+test("writeRulesToStore rejects a stock value containing a carriage return", () => {
+  // Write-side CR guard (fix-02): apply-unnerfs.py's own loader (_load_rules)
+  // already rejects a stored rule body line that contains \r. This writer
+  // must refuse a CR-bearing stock/unnerf at write time instead of doing
+  // rule.stock.split("\n") and silently storing "line one\r". RED today:
+  // this call writes the file with no error.
+  const dir = makeStore({});
+  assert.throws(
+    () =>
+      writeRulesToStore(dir, "2.1.258", [
+        { file: "cr-stock.md", rule: { stock: "line one\r\nline two", unnerf: "u", description: "d" } },
+      ]),
+    /error|bucket-analyze/i,
+  );
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("writeRulesToStore rejects an unnerf value containing a carriage return", () => {
+  const dir = makeStore({});
+  assert.throws(
+    () =>
+      writeRulesToStore(dir, "2.1.258", [
+        { file: "cr-unnerf.md", rule: { stock: "s", unnerf: "line one\r\nline two", description: "d" } },
+      ]),
+    /error|bucket-analyze/i,
+  );
+  rmSync(dir, { recursive: true, force: true });
+});
+
 test("rulesDirFor resolves the rules directory from the apply-unnerfs.py path's parent's parent", () => {
   const applyPath = join("some", "repo", "scripts", "apply-unnerfs.py");
   const dir = rulesDirFor(applyPath);
