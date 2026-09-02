@@ -227,7 +227,16 @@ function merge(workDir, applyUnnerfsPath, ccVersion) {
       report.push({ file: item.file, verdict: "keep", reasoning: v.reasoning || "" });
       continue;
     }
-    if (v.verdict !== "lift" || !v.rule || !v.rule.stock || !v.rule.unnerf) {
+    if (
+      v.verdict !== "lift" ||
+      !v.rule ||
+      !v.rule.stock ||
+      !v.rule.unnerf ||
+      typeof v.rule.stock !== "string" ||
+      typeof v.rule.unnerf !== "string" ||
+      typeof v.rule.description !== "string" ||
+      !v.rule.description
+    ) {
       console.error(`  ref ${v.ref} (${item.file}): malformed verdict, treating as reject`);
       report.push({ file: item.file, verdict: "rejected", reasoning: "malformed verdict/rule" });
       rejected++;
@@ -364,6 +373,16 @@ export function writeRulesToStore(rulesDir, ccVersion, accepted) {
   const logLines = [];
   for (const { file, rule } of accepted) {
     const id = file.endsWith(".md") ? file.slice(0, -3) : file;
+    if (
+      typeof rule.description !== "string" ||
+      !rule.description ||
+      typeof rule.stock !== "string" ||
+      typeof rule.unnerf !== "string"
+    ) {
+      throw new Error(
+        `bucket-analyze: ${file} has a missing, empty, or non-string description/stock/unnerf; nothing written`,
+      );
+    }
     if (rule.stock.includes("\r") || rule.unnerf.includes("\r")) {
       throw new Error(
         `bucket-analyze: ${file} contains a carriage return (\\r) in stock/unnerf; nothing written`,
