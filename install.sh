@@ -72,7 +72,8 @@ win_resolve_shim() {
 is_unnerfed() {
   local s
   for s in "senior-engineer standard" "never trade away rigor, depth, or correctness" \
-           "investigate thoroughly, then be direct"; do
+           "Spawn agents whenever parallel investigation" "investigate thoroughly, then be direct" \
+           "Complete what was asked thoroughly and correctly"; do
     grep -qaF "$s" "$1" 2>/dev/null && return 0
   done
   return 1
