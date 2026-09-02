@@ -354,6 +354,14 @@ export function writeRulesToStore(rulesDir, ccVersion, accepted) {
     `mechanically validated (stock occurs exactly once, no new \${VAR} introduced, ` +
     `no overlap with an existing rule, --dry-run confirmed).`;
 
+  // Stage-then-write: validate and build every touched file's full new
+  // content in memory first (no writes here), keyed by path so two
+  // accepted rules targeting the same id accumulate on one in-memory
+  // object. Only after every rule stages without throwing does the second
+  // pass write the staged content to disk. This keeps a throw partway
+  // through the batch from leaving a half-written store.
+  const staged = new Map();
+  const logLines = [];
   for (const { file, rule } of accepted) {
     const id = file.endsWith(".md") ? file.slice(0, -3) : file;
     if (rule.stock.includes("\r") || rule.unnerf.includes("\r")) {
@@ -362,15 +370,22 @@ export function writeRulesToStore(rulesDir, ccVersion, accepted) {
       );
     }
     const path = join(rulesDir, `${id}.json`);
-    const data = existsSync(path) ? loadJson(path) : { id, rules: [] };
+    const data = staged.has(path) ? staged.get(path) : existsSync(path) ? loadJson(path) : { id, rules: [] };
     data.rules.push({
       description: rule.description,
       stock: rule.stock.split("\n"),
       unnerf: rule.unnerf.split("\n"),
       provenance,
     });
+    staged.set(path, data);
+    logLines.push(`  ${id}: appended 1 rule(s) to ${id}.json (now ${data.rules.length} total)`);
+  }
+
+  for (const [path, data] of staged) {
     writeFileSync(path, JSON.stringify(data, null, 1) + "\n", { encoding: "utf-8" });
-    console.error(`  ${id}: appended 1 rule(s) to ${id}.json (now ${data.rules.length} total)`);
+  }
+  for (const line of logLines) {
+    console.error(line);
   }
 }
 
