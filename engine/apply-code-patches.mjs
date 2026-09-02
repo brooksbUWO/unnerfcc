@@ -130,6 +130,8 @@ import { encodeQuoted } from "./normalize-ast.mjs";
 // form P0 rewrites; GUARD_CASCADED is the P0-applied "drop to xhigh" form (which
 // the resolver's next line then cascades xhigh->high by capability). Var/fn names
 // are minified and version-specific, so they are captured, never hardcoded.
+// Minified names may contain `$`; escape before embedding one in a RegExp source.
+const reEscape = (name) => name.replace(/[$\\^*+?.()|[\]{}]/g, "\\$&");
 const GUARD_STOCK = /(([$\w]+)==="max"&&![$\w]+\([$\w]+\)\))\2="high"/;
 const GUARD_CASCADED = /(([$\w]+)==="max"&&![$\w]+\([$\w]+\)\))\2="xhigh"/;
 
@@ -199,7 +201,10 @@ function p0_cascadeMaxFallback(js) {
         detail: `anchor MISSING: resolver guard \`X==="max"&&!F(Y))X="high"\` not found — CC's effort resolver likely changed; cascade NOT applied (P1 will conservatively SKIP raising "xhigh" defaults; "high" defaults are still floored safely)`,
       };
     }
-    const out = js.replace(GUARD_STOCK, `${m[1]}${m[2]}="xhigh"`);
+    // Function replacer: a replacement STRING would re-interpret `$n` inside the
+    // captured minified names (2.1.258 names the capability guard `$2`, and
+    // `${m[1]}` then expanded to `!o(n)`, calling the string "max" as a function).
+    const out = js.replace(GUARD_STOCK, () => `${m[1]}${m[2]}="xhigh"`);
     if (!GUARD_CASCADED.test(out)) return { js, status: "failed", detail: `verify failed: cascade fallback not present after patch` };
     return { js: out, status: "applied", detail: `resolver now degrades an unsupported "max" by capability (max -> xhigh -> high) instead of straight to "high" — makes flooring any default to "max" regression-proof` };
   } catch (e) {
@@ -292,11 +297,11 @@ function p2_uncapEffortEnum(js) {
       if (!allKeyed) {
         return { js, status: "failed", detail: `ambiguous: ${nCapped} capped effort enums found (expected 1) — refusing to guess which is the /effort setting; enum uncap NOT applied` };
       }
-      const out = js.replaceAll(capped, uncapped);
+      const out = js.replaceAll(capped, () => uncapped);
       if (out.includes(capped)) return { js, status: "failed", detail: `verify failed: capped enum still present after replace` };
       return { js: out, status: "applied", detail: `added "max" to the persisted /effort enum (${nCapped}× duplicate "effortLevel" schema sites in this chunk, all keyed the same, all patched)` };
     }
-    const out = js.replace(capped, uncapped);
+    const out = js.replace(capped, () => uncapped);
     if ((out.split(capped).length - 1) !== 0) return { js, status: "failed", detail: `verify failed: capped enum still present after replace` };
     return { js: out, status: "applied", detail: `added "max" to the persisted /effort enum (was capped at xhigh)` };
   } catch (e) {
@@ -321,8 +326,8 @@ function p3_validatorAcceptsMax(js) {
       };
     }
     const v = m[2]; // captured minified parameter name
-    const out = js.replace(re, `${m[1]}||${v}==="max")return`);
-    if (!new RegExp(`==="xhigh"\\|\\|${v}==="max"\\)return`).test(out)) return { js, status: "failed", detail: `verify failed: validator does not accept "max" after patch` };
+    const out = js.replace(re, () => `${m[1]}||${v}==="max")return`);
+    if (!new RegExp(`==="xhigh"\\|\\|${reEscape(v)}==="max"\\)return`).test(out)) return { js, status: "failed", detail: `verify failed: validator does not accept "max" after patch` };
     return { js: out, status: "applied", detail: `/effort validator now accepts "max" (captured param "${v}")` };
   } catch (e) {
     return { js, status: "failed", detail: `P3 threw: ${e.message}` };
@@ -365,7 +370,7 @@ function p4_liftPrSummaryBulletCap(js) {
       };
     }
     if (n > 1) return { js, status: "failed", detail: `ambiguous: ${n}× "<1-3 bullet points>" found (expected 1) — refusing to guess; cap NOT lifted` };
-    const out = js.replace(stock, unnerf);
+    const out = js.replace(stock, () => unnerf);
     if (out.includes(stock)) return { js, status: "failed", detail: `verify failed: bullet cap still present after replace` };
     return { js: out, status: "applied", detail: `lifted the PR-summary bullet cap (upstream v2.1.205 moved "<1-3 bullet points>" into a JS generator; same text as the retired prompt un-nerf)` };
   } catch (e) {
