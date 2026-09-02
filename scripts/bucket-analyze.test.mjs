@@ -208,6 +208,74 @@ test("writeRulesToStore leaves the store byte-unchanged when a later rule in the
   rmSync(dir, { recursive: true, force: true });
 });
 
+test("writeRulesToStore rejects a rule with an empty description and writes nothing", () => {
+  // Fix-06 contract 2: writeRulesToStore has no field validation on
+  // rule.description at all. A verdict rule with description="" reaches
+  // this writer unrejected and lands in the store, after which
+  // apply-unnerfs.py's own plan-01 loader (which requires a non-empty
+  // string description) rejects the file on the very next load. RED
+  // today: this call writes x.json with "description": "" and does not
+  // throw.
+  const dir = makeStore({});
+  assert.throws(
+    () =>
+      writeRulesToStore(dir, "2.1.258", [
+        { file: "empty-desc.md", rule: { stock: "s", unnerf: "u", description: "" } },
+      ]),
+    /error|bucket-analyze/i,
+  );
+  assert.deepEqual(readdirSync(dir), [], "nothing may be written when a rule field is malformed");
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("writeRulesToStore rejects a rule with a non-string description and writes nothing", () => {
+  // Same contract, non-string shape: a verdict rule whose description is a
+  // number or object is not caught by any existing check either. RED
+  // today: this call writes the file with description: 42 unrejected.
+  const dir = makeStore({});
+  assert.throws(
+    () =>
+      writeRulesToStore(dir, "2.1.258", [
+        { file: "numeric-desc.md", rule: { stock: "s", unnerf: "u", description: 42 } },
+      ]),
+    /error|bucket-analyze/i,
+  );
+  assert.deepEqual(readdirSync(dir), [], "nothing may be written when a rule field is malformed");
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("writeRulesToStore leaves the store byte-unchanged when an empty description is rejected mid-batch", () => {
+  // Contract 2, all-or-nothing shape for the new description guard: a
+  // clean first rule must not land on disk before a malformed second rule
+  // in the same batch is rejected. Mirrors the existing mid-batch CR test
+  // above. RED today: the call does not throw at all (empty description
+  // is accepted), so both aaa.json and zzz.json get written.
+  const dir = makeStore({});
+
+  function snapshot() {
+    const files = readdirSync(dir).sort();
+    const out = {};
+    for (const f of files) {
+      out[f] = readFileSync(join(dir, f));
+    }
+    return out;
+  }
+
+  const before = snapshot();
+
+  const accepted = [
+    { file: "aaa.md", rule: { stock: "s1", unnerf: "u1", description: "clean rule" } },
+    { file: "zzz.md", rule: { stock: "s2", unnerf: "u2", description: "" } },
+  ];
+
+  assert.throws(() => writeRulesToStore(dir, "2.1.258", accepted), /error|bucket-analyze/i);
+
+  const after = snapshot();
+  assert.deepEqual(after, before, "the store must be byte-unchanged when a later rule in the batch is rejected");
+
+  rmSync(dir, { recursive: true, force: true });
+});
+
 test("rulesDirFor resolves the rules directory from the apply-unnerfs.py path's parent's parent", () => {
   const applyPath = join("some", "repo", "scripts", "apply-unnerfs.py");
   const dir = rulesDirFor(applyPath);
