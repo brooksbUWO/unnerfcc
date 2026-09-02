@@ -139,6 +139,8 @@ def _load_rules(rules_dir: Path) -> dict[str, list[Rule]]:
             data = json.loads(path.read_text(encoding="utf-8"))
         except json.JSONDecodeError as e:
             raise SystemExit(f"error: malformed JSON in {path}: {e}")
+        if not isinstance(data, dict):
+            raise SystemExit(f"error: {path}: top-level JSON must be an object")
         if data.get("id") != pid:
             raise SystemExit(
                 f"error: {path} declares id {data.get('id')!r}, filename stem is {pid!r}"
@@ -148,6 +150,8 @@ def _load_rules(rules_dir: Path) -> dict[str, list[Rule]]:
             raise SystemExit(f"error: {path}: 'rules' must be a non-empty list")
         entries: list[Rule] = []
         for r in rule_entries:
+            if not isinstance(r, dict):
+                raise SystemExit(f"error: {path}: rule entry must be an object")
             description = r.get("description")
             if not isinstance(description, str) or not description:
                 raise SystemExit(f"error: {path}: rule has a missing or non-string 'description'")
@@ -157,6 +161,10 @@ def _load_rules(rules_dir: Path) -> dict[str, list[Rule]]:
                     raise SystemExit(f"error: {path}: rule has a missing or empty list '{field}'")
                 if not all(isinstance(line, str) for line in value):
                     raise SystemExit(f"error: {path}: rule field '{field}' has a non-string element")
+                if not any(line for line in value):
+                    raise SystemExit(f"error: {path}: rule field '{field}' is empty")
+                if any("\r" in line for line in value):
+                    raise SystemExit(f"error: {path}: rule field '{field}' contains a carriage return")
             entries.append(
                 Rule(
                     stock="\n".join(r["stock"]),
