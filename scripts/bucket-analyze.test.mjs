@@ -8,7 +8,7 @@
 // drop at v2.1.251, see bucket-analyze.mjs's own comment on that history).
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { mkdtempSync, writeFileSync, readFileSync, rmSync, chmodSync } from "node:fs";
+import { mkdtempSync, writeFileSync, readFileSync, readdirSync, rmSync, chmodSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import {
@@ -169,6 +169,42 @@ test("writeRulesToStore rejects an unnerf value containing a carriage return", (
       ]),
     /error|bucket-analyze/i,
   );
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("writeRulesToStore leaves the store byte-unchanged when a later rule in the batch throws", () => {
+  // Contract 2 (all-or-nothing): the old writer built the whole new file
+  // text in memory and wrote it with one writeFileSync, so a failure never
+  // left a half-written file. The new writer loops per accepted rule and
+  // calls writeFileSync each iteration, so a clean first rule is already
+  // persisted to disk by the time a CR-bearing second rule throws. Snapshot
+  // the temp store (file list plus bytes) before the call, call inside
+  // assert.throws, then re-snapshot and assert equality. RED today: the
+  // snapshot differs because aaa.json was created by the first iteration
+  // before the throw on the second (zzz) rule.
+  const dir = makeStore({});
+
+  function snapshot() {
+    const files = readdirSync(dir).sort();
+    const out = {};
+    for (const f of files) {
+      out[f] = readFileSync(join(dir, f));
+    }
+    return out;
+  }
+
+  const before = snapshot();
+
+  const accepted = [
+    { file: "aaa.md", rule: { stock: "s1", unnerf: "u1", description: "clean rule" } },
+    { file: "zzz.md", rule: { stock: "line one\r\nline two", unnerf: "u2", description: "cr rule" } },
+  ];
+
+  assert.throws(() => writeRulesToStore(dir, "2.1.258", accepted), /error|bucket-analyze/i);
+
+  const after = snapshot();
+  assert.deepEqual(after, before, "the store must be byte-unchanged after a mid-batch throw");
+
   rmSync(dir, { recursive: true, force: true });
 });
 

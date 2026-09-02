@@ -261,6 +261,37 @@ def test_stock_joins_to_empty_string_exits_loud_case_c(tmp_path):
     assert str(path) in msg
 
 
+def test_missing_rules_dir_exits_loud():
+    """A rules_dir path that does not exist on disk must not load silently to
+    an empty catalog. Before the JSON-catalog refactor, the catalog was a
+    265-entry Python literal that could never be empty; apply_rules() then
+    becomes a silent no-op with exit 0 for a typo'd or moved path. Expected:
+    SystemExit with an error: message naming the missing directory.
+    RED today: _load_rules returns {} with no raise, because
+    Path.glob("*.json") on a non-existent directory yields nothing rather
+    than erroring."""
+    missing_dir = Path(__file__).resolve().parent / "does-not-exist-rules-dir-fixture"
+    assert not missing_dir.exists()
+    with pytest.raises(SystemExit) as exc_info:
+        MOD._load_rules(missing_dir)
+    msg = str(exc_info.value)
+    assert msg.startswith("error:")
+    assert str(missing_dir) in msg
+
+
+def test_empty_rules_dir_exits_loud(tmp_path):
+    """A rules_dir that exists but holds zero *.json files must fail loudly
+    with the same silent-no-op risk as the missing-directory case above.
+    Expected: SystemExit with an error: message naming the empty directory.
+    RED today: _load_rules returns {} with no raise."""
+    assert list(tmp_path.glob("*.json")) == []
+    with pytest.raises(SystemExit) as exc_info:
+        MOD._load_rules(tmp_path)
+    msg = str(exc_info.value)
+    assert msg.startswith("error:")
+    assert str(tmp_path) in msg
+
+
 def test_body_line_with_cr_exits_loud_case_d(tmp_path):
     """Case D: a "stock" (or "unnerf") line array element that contains a
     carriage return byte. Today it loads unchanged: the CR silently breaks
