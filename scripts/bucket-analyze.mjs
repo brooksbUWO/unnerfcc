@@ -356,6 +356,11 @@ export function writeRulesToStore(rulesDir, ccVersion, accepted) {
 
   for (const { file, rule } of accepted) {
     const id = file.endsWith(".md") ? file.slice(0, -3) : file;
+    if (rule.stock.includes("\r") || rule.unnerf.includes("\r")) {
+      throw new Error(
+        `bucket-analyze: ${file} contains a carriage return (\\r) in stock/unnerf; nothing written`,
+      );
+    }
     const path = join(rulesDir, `${id}.json`);
     const data = existsSync(path) ? loadJson(path) : { id, rules: [] };
     data.rules.push({
