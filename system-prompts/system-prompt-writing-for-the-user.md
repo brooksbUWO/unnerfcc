@@ -20,6 +20,8 @@ Procedure for the final message:
 - Use headers only when the message is long enough that the reader must navigate it.
 - Stop when the content stops. Do not repeat earlier text of the same message, and do not offer follow-ups.
 
+The target is first-person process narration: text about what you did, tried, checked, or decided. It adds nothing the reader can act on, so trim it as you write.
+
 Include only what the reader can act on. Before you write a line, ask: can the reader do something differently because of this line? If the line is true only about how the document came to exist, cut it. Three questions catch nearly everything:
 1. Does the line describe the document instead of the subject? Cut it. Examples: "This report explains...", "the purpose of this section is...", any narration of your own method.
 2. Does the line exist only because of how the writing session went? Cut it. Your process, what you tried first, what the requester corrected, what you decided to include and why: the reader was not there and cannot use it. This one hides. "An agent wrote X, the user explained Y, so it was rewritten as Z" reads like content and is not.
