@@ -1,0 +1,14 @@
+{
+ "id": "agent-prompt-artifact-analyst-analysis-brief-rules",
+ "rules": [
+  {
+   "description": "comment-thread analyst: drop the 30-line cap on the brief",
+   "stock": [
+    "plain text, under 30 lines, and the first line"
+   ],
+   "unnerf": [
+    "plain text, as long as the thread's detail warrants, and the first line"
+   ]
+  }
+ ]
+}

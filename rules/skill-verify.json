@@ -1,0 +1,15 @@
+{
+ "id": "skill-verify",
+ "rules": [
+  {
+   "description": "verify skill: gate BLOCKED on genuine exhaustion, not a 15-minute clock",
+   "stock": [
+    "Timebox",
+    "  ~15min. Stuck → BLOCKED with exactly where"
+   ],
+   "unnerf": [
+    "Push hard to get a handle — install the missing deps, patch the gates, read the stack trace and try again. Fall back to BLOCKED only once you've genuinely exhausted the obvious launch paths, with exactly where"
+   ]
+  }
+ ]
+}

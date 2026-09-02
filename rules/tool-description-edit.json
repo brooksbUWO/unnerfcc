@@ -1,0 +1,14 @@
+{
+ "id": "tool-description-edit",
+ "rules": [
+  {
+   "description": "un-nerf: edit-tool file-creation rule aligned to the guidance form (defect 4 F7)",
+   "stock": [
+    "- ALWAYS prefer editing existing files in the codebase. NEVER write new files unless explicitly required."
+   ],
+   "unnerf": [
+    "- Prefer editing existing files in the codebase. Create a new file only when the task requires one."
+   ]
+  }
+ ]
+}

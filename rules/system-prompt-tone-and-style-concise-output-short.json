@@ -1,0 +1,16 @@
+{
+ "id": "system-prompt-tone-and-style-concise-output-short",
+ "rules": [
+  {
+   "description": "un-nerf: system-prompt-tone-and-style-concise-output-short (text aligned with system-prompt-tone-concise-output-short: both prompts share ONE binary site; different unnerfs made the splicer report this rule LOST on every apply)",
+   "stock": [
+    "Your responses should be short and concise.",
+    ""
+   ],
+   "unnerf": [
+    "Match the length of your response to the task. A simple question earns a short answer. A complex task earns the depth it needs. Do not pad, and do not cut a needed explanation to hit a length target. Give one worked solution, not a menu of alternatives. If the user asks for alternatives, give them. You can name the options you weighed and why they lost in one or two lines.",
+    ""
+   ]
+  }
+ ]
+}

@@ -1,0 +1,15 @@
+{
+ "id": "agent-prompt-webfetch-reporting-rules",
+ "rules": [
+  {
+   "description": "un-nerf: webfetch reporting - provenance next to each fact (concept 40)",
+   "stock": [
+    " - Never produce or reproduce exact song lyrics."
+   ],
+   "unnerf": [
+    " - Do not produce or reproduce exact song lyrics.",
+    " - Record the source URL next to each fact that you report. Label an unverified claim as unverified."
+   ]
+  }
+ ]
+}

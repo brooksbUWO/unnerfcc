@@ -1,0 +1,45 @@
+{
+ "id": "skill-code-review-effort-medium",
+ "rules": [
+  {
+   "description": "code-review medium frontmatter: drop candidate/finding caps",
+   "stock": [
+    "Effort-tier prompt for medium code review — 8 finder angles, up to 6",
+    "  candidates each, precision-biased, up to 8 findings"
+   ],
+   "unnerf": [
+    "Effort-tier prompt for medium code review — 8 finder angles, uncapped candidate",
+    "  reporting, precision-biased, all qualifying findings"
+   ]
+  },
+  {
+   "description": "code-review medium tier line: all qualifying findings",
+   "stock": [
+    "`medium effort → 3+5 angles × 6 candidates → 1-vote verify → ≤8 findings`"
+   ],
+   "unnerf": [
+    "`medium effort → 3+5 angles → 1-vote verify → all qualifying findings`"
+   ]
+  },
+  {
+   "description": "code-review medium phase heading: drop per-angle cap",
+   "stock": [
+    "## Phase 1 — Find candidates (3 correctness angles + 3 cleanup angles + 1 altitude angle + 1 conventions angle, up to 6 each)"
+   ],
+   "unnerf": [
+    "## Phase 1 — Find candidates (3 correctness angles + 3 cleanup angles + 1 altitude angle + 1 conventions angle)"
+   ]
+  },
+  {
+   "description": "code-review medium finders: surface every candidate",
+   "stock": [
+    "surfaces **up to 6 candidate findings** with `file`, `line`, a one-line",
+    "`summary`, and a concrete `failure_scenario`."
+   ],
+   "unnerf": [
+    "surfaces every candidate finding with `file`, `line`, a one-line",
+    "`summary`, and a concrete `failure_scenario`."
+   ]
+  }
+ ]
+}

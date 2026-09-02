@@ -1,0 +1,14 @@
+{
+ "id": "agent-prompt-pr-slash-command-single-message-and-url",
+ "rules": [
+  {
+   "description": "PR slash command: allow reading beyond the supplied git context",
+   "stock": [
+    "Do not run additional commands to read or explore code beyond the git context above, and do not use any non-git tools for this task."
+   ],
+   "unnerf": [
+    "Read whatever additional code, history, or files you need to describe the change accurately."
+   ]
+  }
+ ]
+}

@@ -1,0 +1,20 @@
+{
+ "id": "tool-description-suggestconnectors",
+ "rules": [
+  {
+   "description": "un-nerf: tool-description-suggestconnectors",
+   "stock": [
+    "Resolve full connector payloads for a set of directoryUuid values returned by SearchMcpRegistry. Do NOT call this unless you already have directoryUuid values from a SearchMcpRegistry result — do not guess UUIDs or pass connector names.",
+    "",
+    "Returns name, description, url, iconUrl, sample tool names, and whether the connector is already installed for the user's claude.ai org. installState reflects org-level auth, not whether tools are loaded this session — check ListConnectors' enabledInChat before claiming a connector is usable here. If a result looks relevant and is not installed, tell the user they could connect it via claude.ai; this tool does not itself connect anything.",
+    ""
+   ],
+   "unnerf": [
+    "Get the full connector payloads for a set of directoryUuid values from SearchMcpRegistry. Call this tool only with directoryUuid values from a SearchMcpRegistry result. Do not guess UUIDs. Do not pass connector names.",
+    "",
+    "This tool returns the name, the description, the url, the iconUrl, and sample tool names of each connector. It also returns whether the connector is installed for the claude.ai org of the user. The installState field shows org-level auth only. It does not show whether the tools are loaded this session. To know whether a connector is usable here, examine the enabledInChat field from ListConnectors first. If a result is relevant and is not installed, tell the user to connect it through claude.ai. This tool does not connect anything itself.",
+    ""
+   ]
+  }
+ ]
+}

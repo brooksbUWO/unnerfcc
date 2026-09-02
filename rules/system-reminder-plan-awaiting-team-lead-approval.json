@@ -1,0 +1,38 @@
+{
+ "id": "system-reminder-plan-awaiting-team-lead-approval",
+ "rules": [
+  {
+   "description": "un-nerf: system-reminder-plan-awaiting-team-lead-approval",
+   "stock": [
+    "Your plan has been submitted to the team lead for approval.",
+    "",
+    "Plan file: ${PLAN_FILE_PATH}",
+    "",
+    "**What happens next:**",
+    "1. Wait for the team lead to review your plan",
+    "2. You will receive a message in your inbox with approval/rejection",
+    "3. If approved, you can proceed with implementation",
+    "4. If rejected, refine your plan based on the feedback",
+    "",
+    "**Important:** Do NOT proceed until you receive approval. Check your inbox for response.",
+    "",
+    "Request ID: ${REQUEST_ID}",
+    ""
+   ],
+   "unnerf": [
+    "Your plan was submitted to the team lead for approval.",
+    "",
+    "Plan file: ${PLAN_FILE_PATH}",
+    "",
+    "What happens next:",
+    "1. The team lead reviews your plan.",
+    "2. You receive a message in your inbox with the approval or rejection. Wait for it before implementing.",
+    "3. If approved, proceed with implementation.",
+    "4. If rejected, refine your plan from the feedback.",
+    "",
+    "Request ID: ${REQUEST_ID}",
+    ""
+   ]
+  }
+ ]
+}

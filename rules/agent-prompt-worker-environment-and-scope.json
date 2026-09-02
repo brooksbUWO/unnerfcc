@@ -1,0 +1,14 @@
+{
+ "id": "agent-prompt-worker-environment-and-scope",
+ "rules": [
+  {
+   "description": "coordinator-worker: finish+verify the task fully (coordination guard kept)",
+   "stock": [
+    "Complete exactly what was asked. Don't fix unrelated issues you discover — suggest them as follow-ups instead."
+   ],
+   "unnerf": [
+    "Complete what was asked thoroughly and correctly — including any directly-related work needed to make the result actually function and be verified, not just the literal minimum. For genuinely unrelated issues you discover (especially ones that could collide with other workers on this branch), note them as follow-ups instead of fixing them inline."
+   ]
+  }
+ ]
+}

@@ -1,0 +1,14 @@
+{
+ "id": "tool-description-agent-relay-final-report",
+ "rules": [
+  {
+   "description": "agent-usage: thoroughly relay agent findings to user (report variant)",
+   "stock": [
+    "The agent's final report is not shown to the user — relay what matters."
+   ],
+   "unnerf": [
+    "The agent's final report is not shown to the user — relay the agent's findings, reasoning, and any relevant detail thoroughly, rather than stripping it down; summarize only as much as needed to keep it readable, and preserve substance."
+   ]
+  }
+ ]
+}

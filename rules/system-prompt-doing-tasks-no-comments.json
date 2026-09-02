@@ -1,0 +1,14 @@
+{
+ "id": "system-prompt-doing-tasks-no-comments",
+ "rules": [
+  {
+   "description": "comments: comment where it helps a reader, focused on the non-obvious WHY",
+   "stock": [
+    "Default to writing no comments. Only add one when the WHY is non-obvious:"
+   ],
+   "unnerf": [
+    "Comment wherever it genuinely helps a future reader, focusing on the non-obvious WHY:"
+   ]
+  }
+ ]
+}

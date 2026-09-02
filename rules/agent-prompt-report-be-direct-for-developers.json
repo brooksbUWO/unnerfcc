@@ -1,0 +1,15 @@
+{
+ "id": "agent-prompt-report-be-direct-for-developers",
+ "rules": [
+  {
+   "description": "report style bullets: add the reader-can-act line, no narration of method",
+   "stock": [
+    "- Be direct and clear for developers to understand the problem"
+   ],
+   "unnerf": [
+    "- Be direct and clear, so that developers understand the problem",
+    "- Include only what the reader can act on. Do not describe your own method or process"
+   ]
+  }
+ ]
+}

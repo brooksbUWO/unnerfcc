@@ -1,0 +1,14 @@
+{
+ "id": "system-prompt-permission-classifier-strict-review-guidance",
+ "rules": [
+  {
+   "description": "permission classifier: reason carefully even on clear-cut (safety-amplifying)",
+   "stock": [
+    "Think longer on ambiguous or borderline actions; keep reasoning brief for clear-cut ones."
+   ],
+   "unnerf": [
+    "Think longer on ambiguous or borderline actions, and reason carefully even on clear-cut ones — err toward more deliberation, since extra scrutiny only makes the classification safer."
+   ]
+  }
+ ]
+}

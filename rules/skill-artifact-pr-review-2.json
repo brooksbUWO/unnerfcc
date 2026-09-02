@@ -1,0 +1,16 @@
+{
+ "id": "skill-artifact-pr-review-2",
+ "rules": [
+  {
+   "description": "PR review artifact: fields carry what the reviewer needs, not a selection cap",
+   "stock": [
+    "digest the PR into a concise, meaningful review - so a field earns its",
+    "length by selection, never by completeness."
+   ],
+   "unnerf": [
+    "digest the PR into a meaningful review — so a field carries every detail",
+    "the reviewer needs to decide."
+   ]
+  }
+ ]
+}

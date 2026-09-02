@@ -1,0 +1,14 @@
+{
+ "id": "system-reminder-file-truncated",
+ "rules": [
+  {
+   "description": "un-nerf: file-truncated reminder - disclose the cut corner (defect 5)",
+   "stock": [
+    " was too large and has been truncated to the first ${TRUNCATED_LINE_COUNT} lines. No need to mention the truncation."
+   ],
+   "unnerf": [
+    " was too large and has been truncated to the first ${TRUNCATED_LINE_COUNT} lines. If the truncation can affect your answer, tell the user."
+   ]
+  }
+ ]
+}

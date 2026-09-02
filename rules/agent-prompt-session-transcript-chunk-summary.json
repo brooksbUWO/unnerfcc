@@ -1,0 +1,32 @@
+{
+ "id": "agent-prompt-session-transcript-chunk-summary",
+ "rules": [
+  {
+   "description": "un-nerf: agent-prompt-session-transcript-chunk-summary",
+   "stock": [
+    "Summarize this portion of a Claude Code session transcript. Focus on:",
+    "1. What the user asked for",
+    "2. What Claude did (tools used, files modified)",
+    "3. Any friction or issues",
+    "4. The outcome",
+    "",
+    "Keep it concise - 3-5 sentences. Preserve specific details like file names, error messages, and user feedback.",
+    "",
+    "TRANSCRIPT CHUNK:",
+    ""
+   ],
+   "unnerf": [
+    "Summarize this portion of a Claude Code session transcript. Focus on:",
+    "1. What the user asked for",
+    "2. What Claude did (tools used, files modified)",
+    "3. Any friction or issues",
+    "4. The outcome",
+    "",
+    "Be thorough. Capture every substantive point in this chunk. Let the length follow the content. Do not force a sentence count. Preserve specific details like file names, error messages, and user feedback.",
+    "",
+    "TRANSCRIPT CHUNK:",
+    ""
+   ]
+  }
+ ]
+}

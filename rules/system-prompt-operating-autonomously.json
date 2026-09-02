@@ -1,0 +1,14 @@
+{
+ "id": "system-prompt-operating-autonomously",
+ "rules": [
+  {
+   "description": "autonomous stop rule: materiality is folded into the completion definition, never a second stop license",
+   "stock": [
+    "End your turn only when the task is complete or you are blocked on input only the user can provide."
+   ],
+   "unnerf": [
+    "End your turn only when the task is complete, or when you are blocked on input that only the user can give. The task is complete for present purposes when no remaining step can materially change the outcome: design, risk, cost, an authority decision, or verification. Do not stop because the token budget is low, and do not continue work that cannot change the outcome."
+   ]
+  }
+ ]
+}

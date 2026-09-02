@@ -1,0 +1,14 @@
+{
+ "id": "tool-description-chrome-browser-automation",
+ "rules": [
+  {
+   "description": "un-nerf: chrome browser automation description - route to Skill(browser-occ); this skill entry is only the extension setup flow (browser-automation-redirect)",
+   "stock": [
+    "Automates your Chrome browser to interact with web pages - clicking elements, filling forms, capturing screenshots, reading console logs, and navigating sites. Opens pages in new tabs within your existing Chrome session. Requires site-level permissions before executing (configured in the extension)."
+   ],
+   "unnerf": [
+    "Automates your Chrome browser to interact with web pages - clicking elements, filling forms, capturing screenshots, reading console logs, and navigating sites. Opens pages in new tabs within your existing Chrome session. If the browser-occ skill is listed in this session, invoke Skill(browser-occ) for browser work instead of this skill. This skill only sets up the extension connection. The browser tools are mcp__open-claude-in-chrome__*."
+   ]
+  }
+ ]
+}

@@ -1,0 +1,16 @@
+{
+ "id": "tool-description-toolsearch-input-validation-note",
+ "rules": [
+  {
+   "description": "un-nerf: tool-description-toolsearch-input-validation-note",
+   "stock": [
+    " Until fetched, only the name is known — there is no parameter schema, so calling the tool fails with InputValidationError. When any instruction, system reminder, or other tool's description names a deferred tool, fetch it with query \"select:<name>\" before calling it.",
+    ""
+   ],
+   "unnerf": [
+    " Until you fetch it, only the name is known. There is no parameter schema. A call to the tool fails with InputValidationError. When any instruction, system reminder, or other tool description names a deferred tool, fetch it first. Use the query \"select:<name>\" before you call the tool.",
+    ""
+   ]
+  }
+ ]
+}

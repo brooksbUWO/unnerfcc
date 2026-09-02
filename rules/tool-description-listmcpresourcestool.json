@@ -1,0 +1,28 @@
+{
+ "id": "tool-description-listmcpresourcestool",
+ "rules": [
+  {
+   "description": "un-nerf: tool-description-listmcpresourcestool",
+   "stock": [
+    "",
+    "Lists available resources from configured MCP servers.",
+    "Each resource object includes a 'server' field indicating which server it's from.",
+    "",
+    "Usage examples:",
+    "- List all resources from all servers: `listMcpResources`",
+    "- List resources from a specific server: `listMcpResources({ server: \"myserver\" })`",
+    ""
+   ],
+   "unnerf": [
+    "",
+    "Lists available resources from configured MCP servers.",
+    "Each resource object includes a 'server' field. This field names the source server of the resource.",
+    "",
+    "Usage examples:",
+    "- List all resources from all servers: `listMcpResources`",
+    "- List resources from a specific server: `listMcpResources({ server: \"myserver\" })`",
+    ""
+   ]
+  }
+ ]
+}

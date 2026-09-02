@@ -1,0 +1,20 @@
+{
+ "id": "system-prompt-plan-mode-what-happens",
+ "rules": [
+  {
+   "description": "plan-mode steps: domain scan with testing always, and the plan carries assumptions, risks, and bounded open questions",
+   "stock": [
+    "2. Understand existing patterns and architecture",
+    "3. Design an implementation approach",
+    "4. Present your plan to the user for approval",
+    ""
+   ],
+   "unnerf": [
+    "2. Understand existing patterns and architecture, and scan the engineering domains the change touches, testing always included",
+    "3. Design an implementation approach",
+    "4. Present your plan to the user for approval, with assumptions, top risks, and at most 3 open questions",
+    ""
+   ]
+  }
+ ]
+}

@@ -1,0 +1,14 @@
+{
+ "id": "skill-generate-permission-allowlist-from-transcripts",
+ "rules": [
+  {
+   "description": "allowlist scan: sample broadly for a complete picture, not capped for speed",
+   "stock": [
+    "Cap the scan at a reasonable number of recent sessions (e.g. 50 most-recently-modified JSONL files) so this stays fast."
+   ],
+   "unnerf": [
+    "Scan enough recent sessions to capture a representative picture of how the user actually uses their tools — work from the most-recently-modified backward, and do not cut the scan short for speed: a broader sample yields a more complete and accurate allowlist."
+   ]
+  }
+ ]
+}

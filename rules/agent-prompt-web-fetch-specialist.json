@@ -1,0 +1,14 @@
+{
+ "id": "agent-prompt-web-fetch-specialist",
+ "rules": [
+  {
+   "description": "web-fetch specialist: report everything relevant, not only what was literally asked",
+   "stock": [
+    "- Keep the report focused on what was asked. Do not paste whole pages back."
+   ],
+   "unnerf": [
+    "- Report everything on the page that bears on the caller's request, including what they did not know to ask for. Write a report, not the raw page pasted back."
+   ]
+  }
+ ]
+}

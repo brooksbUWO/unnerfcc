@@ -1,0 +1,16 @@
+{
+ "id": "tool-parameter-sendusermessage-attachments",
+ "rules": [
+  {
+   "description": "un-nerf: tool-parameter-sendusermessage-attachments",
+   "stock": [
+    "Optional attachments for the user to see alongside your message. Each entry is either a file path (absolute or relative to cwd) for a file you can read locally, or a pre-resolved {file_uuid, file_name, size, is_image} object you obtained from a device tool such as attach_file.",
+    ""
+   ],
+   "unnerf": [
+    "Optional attachments for the user to see with your message. Each entry has one of two forms. The first form is a file path for a local file (absolute or relative to cwd). The second form is a pre-resolved `{file_uuid, file_name, size, is_image}` object from a device tool such as attach_file.",
+    ""
+   ]
+  }
+ ]
+}

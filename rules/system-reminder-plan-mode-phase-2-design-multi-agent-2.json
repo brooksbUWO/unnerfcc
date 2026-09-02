@@ -1,0 +1,16 @@
+{
+ "id": "system-reminder-plan-mode-phase-2-design-multi-agent-2",
+ "rules": [
+  {
+   "description": "plan-mode phase-2 design: err on launching agents",
+   "stock": [
+    "- **Default**: Launch at least 1 Plan agent for most tasks - it helps validate your understanding and consider alternatives",
+    "- **Skip agents**: Only for truly trivial tasks (typo fixes, single-line changes, simple renames)"
+   ],
+   "unnerf": [
+    "- **Default**: Launch one or more Plan agents for almost every task — they validate your understanding, consider alternatives, and surface issues you'd miss solo. Err on the side of launching them.",
+    "- **Skip agents**: Only for genuinely trivial tasks (typo fixes, single-line changes, simple renames) where there's nothing to design"
+   ]
+  }
+ ]
+}

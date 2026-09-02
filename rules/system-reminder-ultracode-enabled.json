@@ -1,0 +1,16 @@
+{
+ "id": "system-reminder-ultracode-enabled",
+ "rules": [
+  {
+   "description": "un-nerf: system-reminder-ultracode-enabled",
+   "stock": [
+    "Ultracode is on: optimize for the most exhaustive, correct answer — not the fastest or cheapest. Use the Workflow tool on every substantive task; token cost is not a constraint. See the **Ultracode** section and quality patterns in the workflow authoring reference. Solo only on conversational/trivial turns.",
+    ""
+   ],
+   "unnerf": [
+    "Ultracode is on: optimize for the most exhaustive, correct answer — not the fastest or cheapest. Use the Workflow tool on every substantive task. Token cost is not a constraint. See the **Ultracode** section and quality patterns in the workflow authoring reference. Solo only on conversational/trivial turns.",
+    ""
+   ]
+  }
+ ]
+}

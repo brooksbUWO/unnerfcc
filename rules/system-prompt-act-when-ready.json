@@ -1,0 +1,14 @@
+{
+ "id": "system-prompt-act-when-ready",
+ "rules": [
+  {
+   "description": "act-when-ready: lead with a recommendation AND the alternatives weighed",
+   "stock": [
+    "If you are weighing a choice, give a recommendation, not an exhaustive survey"
+   ],
+   "unnerf": [
+    "If you are weighing a choice, lead with a recommendation and briefly name the alternatives you weighed and why they lose, not an exhaustive survey"
+   ]
+  }
+ ]
+}

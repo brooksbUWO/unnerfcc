@@ -1,0 +1,57 @@
+{
+ "id": "skill-prototype",
+ "rules": [
+  {
+   "description": "prototype description: drop the 'short' intake cap",
+   "stock": [
+    "Run a short intake, state your assumptions, build, then iterate on feedback in the same artifact."
+   ],
+   "unnerf": [
+    "Run the intake, state your assumptions, build, then iterate on feedback in the same artifact."
+   ]
+  },
+  {
+   "description": "prototype intake: drop the 2-4-question cap and the one-message limit",
+   "stock": [
+    "two to four questions, each a single pointed sentence, in",
+    "one short message"
+   ],
+   "unnerf": [
+    "as many questions as the ambiguity genuinely requires, each a single pointed sentence"
+   ]
+  },
+  {
+   "description": "prototype assumptions: drop the 'one short message' cap",
+   "stock": [
+    "Before building, send one short message: what you take the idea to be,"
+   ],
+   "unnerf": [
+    "Before building, send a message covering what you take the idea to be,"
+   ]
+  },
+  {
+   "description": "prototype publish: drop the 'one or two lines' cap",
+   "stock": [
+    "Give the user the link plus one or two lines: what the prototype shows,",
+    "what is faked, and the obvious next step."
+   ],
+   "unnerf": [
+    "Give the user the link plus a summary of what the prototype shows,",
+    "what is faked, and the obvious next step."
+   ]
+  },
+  {
+   "description": "prototype close: 'short list' -> 'complete list'",
+   "stock": [
+    "close with a",
+    "short list of what a real build would still need that the prototype",
+    "skipped"
+   ],
+   "unnerf": [
+    "close with a",
+    "complete list of what a real build would still need that the prototype",
+    "skipped"
+   ]
+  }
+ ]
+}

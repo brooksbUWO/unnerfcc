@@ -1,0 +1,16 @@
+{
+ "id": "system-reminder-memory-extraction-turn-budget",
+ "rules": [
+  {
+   "description": "un-nerf: system-reminder-memory-extraction-turn-budget",
+   "stock": [
+    "You have a limited turn budget. ${EDIT_TOOL_NAME} requires a prior ${READ_TOOL_NAME} of the same file, so the efficient strategy is: turn 1 — issue all ${READ_TOOL_NAME} calls in parallel for every file you might update; turn 2 — issue all ${WRITE_TOOL_NAME}/${EDIT_TOOL_NAME} calls in parallel. Do not interleave reads and writes across multiple turns.",
+    ""
+   ],
+   "unnerf": [
+    "You have a limited turn budget. ${EDIT_TOOL_NAME} requires a prior ${READ_TOOL_NAME} of the same file, so the efficient strategy has two turns. Turn 1: issue all ${READ_TOOL_NAME} calls in parallel for every file you can update. Turn 2: issue all ${WRITE_TOOL_NAME}/${EDIT_TOOL_NAME} calls in parallel. Do not interleave reads and writes across multiple turns.",
+    ""
+   ]
+  }
+ ]
+}

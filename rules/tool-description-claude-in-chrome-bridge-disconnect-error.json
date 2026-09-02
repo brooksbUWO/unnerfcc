@@ -1,0 +1,16 @@
+{
+ "id": "tool-description-claude-in-chrome-bridge-disconnect-error",
+ "rules": [
+  {
+   "description": "un-nerf: tool-description-claude-in-chrome-bridge-disconnect-error",
+   "stock": [
+    "The \"${CHROME_TOOL_NAME}\" tool call failed because the Chrome extension disconnected mid-operation. This is usually transient (Chrome service worker restart, tab closed, network blip) and the extension often reconnects automatically. Retry the same tool call in a few seconds. If it keeps failing, ask the user to switch to Chrome (which wakes the extension) or check that the extension is still logged in.",
+    ""
+   ],
+   "unnerf": [
+    "The \"${CHROME_TOOL_NAME}\" tool call failed. The Open Claude in Chrome (browser-occ) connection dropped during the operation. This is usually transient. A host restart, an extension restart, a closed tab, or a network blip can cause it. The connection often returns on its own. Retry the same tool call after a few seconds. A dropped connection does not mean the browser lane is gone. The entry tools auto-start a down host. Re-read the connection tool and retry. You can also use the TCP bridge shell lane (run_occ_tool.py). Do not fall back to a plain HTTP fetch. If the call keeps failing, relaunch the OCC browser profile (connection ladder Step 3). You can also ask the user to make sure that the extension is loaded and connected.",
+    ""
+   ]
+  }
+ ]
+}

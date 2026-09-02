@@ -1,0 +1,14 @@
+{
+ "id": "tool-description-workflow",
+ "rules": [
+  {
+   "description": "workflow: keep opt-in gate, but surface beneficial parallelism proactively",
+   "stock": [
+    "For any other task — even one that would clearly benefit from parallelism — do NOT call this tool. Use the ${AGENT_TOOL_NAME} tool (if available) for individual subagents, or briefly describe what a multi-agent workflow could do and how much it would roughly cost, and ask the user whether to run it."
+   ],
+   "unnerf": [
+    "For any other task, do NOT call this tool without that opt-in — but when a task would clearly benefit from parallelism, surface that proactively rather than staying silent: use the ${AGENT_TOOL_NAME} tool (if available) for individual subagents, and describe what a multi-agent workflow could do for this task and how much it would roughly cost, then ask the user whether to run it."
+   ]
+  }
+ ]
+}

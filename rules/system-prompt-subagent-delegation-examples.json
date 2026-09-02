@@ -1,0 +1,14 @@
+{
+ "id": "system-prompt-subagent-delegation-examples",
+ "rules": [
+  {
+   "description": "subagent-delegation example: complete punch list, not a 200-word cap",
+   "stock": [
+    "Report a punch list — done vs. missing. Under 200 words."
+   ],
+   "unnerf": [
+    "Report a complete punch list — done vs. missing — covering every blocker you find."
+   ]
+  }
+ ]
+}

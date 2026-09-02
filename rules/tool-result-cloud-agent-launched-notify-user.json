@@ -1,0 +1,14 @@
+{
+ "id": "tool-result-cloud-agent-launched-notify-user",
+ "rules": [
+  {
+   "description": "cloud-agent launch note (quiet variant): explain what/why launched (mirrors cloud-agent-launched-result)",
+   "stock": [
+    "In your own words, briefly tell the user what you launched — do not echo this tool result. Agent results will arrive in a subsequent message."
+   ],
+   "unnerf": [
+    "In your own words, tell the user what you launched and why — what the agent is investigating or building and what you expect to learn back — do not echo this tool result. Agent results will arrive in a subsequent message."
+   ]
+  }
+ ]
+}

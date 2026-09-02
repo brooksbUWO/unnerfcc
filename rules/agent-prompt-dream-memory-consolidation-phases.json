@@ -1,0 +1,14 @@
+{
+ "id": "agent-prompt-dream-memory-consolidation-phases",
+ "rules": [
+  {
+   "description": "dream consolidation: drop the transcript-reading cap",
+   "stock": [
+    "Don't exhaustively read transcripts. Look only for things you already suspect matter."
+   ],
+   "unnerf": [
+    "Read as much of the transcripts as the consolidation needs, including what you did not already suspect mattered."
+   ]
+  }
+ ]
+}

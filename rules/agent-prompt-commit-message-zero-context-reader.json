@@ -1,0 +1,14 @@
+{
+ "id": "agent-prompt-commit-message-zero-context-reader",
+ "rules": [
+  {
+   "description": "commit message: drop 'short beats complete'",
+   "stock": [
+    "Short beats complete: after one pass the reader should know what the change does and what to check"
+   ],
+   "unnerf": [
+    "Give the reader what the change does and what to check, at whatever length that takes"
+   ]
+  }
+ ]
+}

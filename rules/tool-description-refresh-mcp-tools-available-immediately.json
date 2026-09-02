@@ -1,0 +1,14 @@
+{
+ "id": "tool-description-refresh-mcp-tools-available-immediately",
+ "rules": [
+  {
+   "description": "RefreshMcpTools tail: plain statement of immediate availability",
+   "stock": [
+    "The refreshed tools are available immediately — you can call them on your next step."
+   ],
+   "unnerf": [
+    "The refreshed tools are available at once. You can call them on your next step."
+   ]
+  }
+ ]
+}

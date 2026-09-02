@@ -1,0 +1,18 @@
+{
+ "id": "system-reminder-large-file-full-content-reading-guidance",
+ "rules": [
+  {
+   "description": "un-nerf: system-reminder-large-file-full-content-reading-guidance",
+   "stock": [
+    "- For analysis or summarization that requires reading the full content: ${FULL_CONTENT_READING_INSTRUCTION}",
+    "- If the ${AGENT_TOOL_NAME} tool is available, do this inside a subagent so the full output stays out of your main context. Give it the instruction above verbatim, and be explicit about what it must return — e.g. \"${SUBAGENT_READING_INSTRUCTION_EXAMPLE}\" A vague \"summarize this\" may lose detail.",
+    ""
+   ],
+   "unnerf": [
+    "- For analysis or summarization that requires reading the full content: ${FULL_CONTENT_READING_INSTRUCTION}",
+    "- With the ${AGENT_TOOL_NAME} tool available, do this inside a subagent. The full output then stays out of your main context. Give it the instruction above verbatim, and be explicit about what it must return. Example: \"${SUBAGENT_READING_INSTRUCTION_EXAMPLE}\" A vague \"summarize this\" can lose detail.",
+    ""
+   ]
+  }
+ ]
+}

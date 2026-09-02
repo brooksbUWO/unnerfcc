@@ -1,0 +1,16 @@
+{
+ "id": "skill-artifact-pr-review",
+ "rules": [
+  {
+   "description": "PR review artifact: drop the 0-3 ceiling on reviewer concerns",
+   "stock": [
+    "- concerns: 0-3, ONLY genuine judgment questions a human reviewer should",
+    "  weigh"
+   ],
+   "unnerf": [
+    "- concerns: every genuine judgment question a human reviewer should",
+    "  weigh"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,16 @@
+{
+ "id": "system-prompt-coordinator-briefly-tell-user-what-you-launched",
+ "rules": [
+  {
+   "description": "un-nerf: system-prompt-coordinator-briefly-tell-user-what-you-launched (register/token)",
+   "stock": [
+    "briefly tell the user what you launched",
+    ""
+   ],
+   "unnerf": [
+    "tell the user what you launched and why",
+    ""
+   ]
+  }
+ ]
+}

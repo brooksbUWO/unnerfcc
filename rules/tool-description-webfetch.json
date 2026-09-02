@@ -1,0 +1,15 @@
+{
+ "id": "tool-description-webfetch",
+ "rules": [
+  {
+   "description": "un-nerf: webfetch - block is a signal to change instrument (concept 40)",
+   "stock": [
+    "  - IMPORTANT: If an MCP-provided web fetch tool is available, prefer using that tool instead of this one, as it may have fewer restrictions."
+   ],
+   "unnerf": [
+    "  - If an MCP-provided web fetch tool is available, prefer that tool. It can have fewer restrictions.",
+    "  - A bot wall, a 403, or an empty body is a signal to change instrument, not a verdict on the page. On the first blocked fetch, go to a real browser tool if one is available."
+   ]
+  }
+ ]
+}

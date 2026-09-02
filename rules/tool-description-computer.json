@@ -1,0 +1,21 @@
+{
+ "id": "tool-description-computer",
+ "rules": [
+  {
+   "description": "un-nerf: computer tool - programmatic route first, coordinates as fallback, post-conditions, dead-route stop (concept 38)",
+   "stock": [
+    "* Whenever you intend to click on an element like an icon, you should consult a screenshot to determine the coordinates of the element before moving the cursor.",
+    "* If you tried clicking on a program or link but it failed to load, even after waiting, try adjusting your click location so that the tip of the cursor visually falls on the element that you want to click.",
+    "* Make sure to click any buttons, links, icons, etc with the cursor tip in the center of the element. Don't click boxes on their edges unless asked."
+   ],
+   "unnerf": [
+    "* Before you use a coordinate click, look for a programmatic route. A DOM query with a direct element .click() (through a JavaScript tool, when available) does not depend on pixel positions. A coordinate click fails silently when the layout moves.",
+    "* When the page exposes its own runtime state (a page object, a live badge count), read that state instead of scraped positional HTML.",
+    "* To get data from the page, prefer a same-origin fetch or a server-side download over a screenshot that a reader must decode.",
+    "* When only a coordinate click works: examine a current screenshot first and get the coordinates of the element. Click with the cursor tip in the center of the element, not the edges.",
+    "* After each action, make sure that the action had its effect. Assert a concrete post-condition: the new page, a count that increased by the exact quantity, the open dialog. If a click had no effect, adjust the click location so that the cursor tip falls on the element.",
+    "* If the route is structurally dead (the control does not exist on the page), stop and report it. Do not retry a dead route."
+   ]
+  }
+ ]
+}

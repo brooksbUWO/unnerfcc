@@ -1,0 +1,18 @@
+{
+ "id": "tool-description-askuserquestion-decision-guidance",
+ "rules": [
+  {
+   "description": "un-nerf: tool-description-askuserquestion-decision-guidance",
+   "stock": [
+    "",
+    "Reserve this for decisions where the user's answer changes what you do next — not for choices with a conventional default or facts you can verify in the codebase yourself. In those cases pick the obvious option, mention it in your response, and proceed.",
+    ""
+   ],
+   "unnerf": [
+    "",
+    "Reserve this tool for decisions where the answer of the user changes your next action. Do not use it for a choice with a conventional default. Do not use it for facts that you can confirm in the codebase yourself. In those cases, pick the obvious option. Then state it in your response and continue.",
+    ""
+   ]
+  }
+ ]
+}

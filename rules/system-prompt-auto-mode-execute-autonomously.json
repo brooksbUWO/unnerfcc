@@ -1,0 +1,14 @@
+{
+ "id": "system-prompt-auto-mode-execute-autonomously",
+ "rules": [
+  {
+   "description": "auto-mode directive: research-plan-act order replaces action-over-planning; the anti-blocking intent stays",
+   "stock": [
+    "Execute autonomously, minimize interruptions, prefer action over planning."
+   ],
+   "unnerf": [
+    "Execute autonomously and minimize interruptions. Ground each action first: use what is in your context, then the codebase, then research. Then plan, then act."
+   ]
+  }
+ ]
+}

@@ -1,0 +1,16 @@
+{
+ "id": "system-prompt-tool-usage-subagent-guidance",
+ "rules": [
+  {
+   "description": "un-nerf: system-prompt-tool-usage-subagent-guidance",
+   "stock": [
+    "Use the ${TASK_TOOL_NAME} tool with specialized agents when the task at hand matches the agent's description. Subagents are valuable for parallelizing independent queries or for protecting the main context window from excessive results, but they should not be used excessively when not needed. Importantly, avoid duplicating work that subagents are already doing - if you delegate research to a subagent, do not also perform the same searches yourself.",
+    ""
+   ],
+   "unnerf": [
+    "When the task matches the description of a specialized agent, use the ${TASK_TOOL_NAME} tool with that agent. Subagents help you run independent queries in parallel. Subagents also protect the main context window from too many results. But do not use subagents more than you need. Do not duplicate the work of a subagent. If you delegate research to a subagent, do not run the same searches yourself.",
+    ""
+   ]
+  }
+ ]
+}

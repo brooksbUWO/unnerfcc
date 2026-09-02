@@ -1,0 +1,16 @@
+{
+ "id": "system-reminder-browser-extension-not-connected",
+ "rules": [
+  {
+   "description": "un-nerf: system-reminder-browser-extension-not-connected",
+   "stock": [
+    "Browser extension is not connected. Please ensure the Claude browser extension is installed and running (${CHROME_EXTENSION_URL}), and that you are logged into claude.ai with the same account as Claude Code. If this is your first time connecting to Chrome, you may need to restart Chrome for the installation to take effect. If you continue to experience issues, please report a bug: ${BROWSER_EXTENSION_BUG_REPORT_URL}",
+    ""
+   ],
+   "unnerf": [
+    "Browser extension is not connected. Make sure that the Claude browser extension is installed and running (${CHROME_EXTENSION_URL}). Make sure that you are logged into claude.ai with the same account as Claude Code. If this is your first Chrome connection, restart Chrome so the installation takes effect. If issues continue, report a bug: ${BROWSER_EXTENSION_BUG_REPORT_URL}",
+    ""
+   ]
+  }
+ ]
+}

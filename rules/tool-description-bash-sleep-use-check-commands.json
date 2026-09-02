@@ -1,0 +1,16 @@
+{
+ "id": "tool-description-bash-sleep-use-check-commands",
+ "rules": [
+  {
+   "description": "un-nerf: tool-description-bash-sleep-use-check-commands",
+   "stock": [
+    "If you must poll an external process, use a check command (e.g. `gh run view`) rather than sleeping first.",
+    ""
+   ],
+   "unnerf": [
+    "If you must poll an external process, use a check command (for example `gh run view`). Do not sleep first.",
+    ""
+   ]
+  }
+ ]
+}

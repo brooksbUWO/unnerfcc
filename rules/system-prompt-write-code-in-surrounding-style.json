@@ -1,0 +1,14 @@
+{
+ "id": "system-prompt-write-code-in-surrounding-style",
+ "rules": [
+  {
+   "description": "un-nerf: surrounding-style is the master comment rule (defect 4 F2)",
+   "stock": [
+    "Write code that reads like the surrounding code: match its comment density, naming, and idiom."
+   ],
+   "unnerf": [
+    "Write code that reads like the surrounding code: match its comment density, its naming, and its idiom. When the surrounding code and a general comment rule disagree, the surrounding code wins."
+   ]
+  }
+ ]
+}

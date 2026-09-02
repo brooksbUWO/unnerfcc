@@ -1,0 +1,14 @@
+{
+ "id": "skill-code-review-effort-max-header",
+ "rules": [
+  {
+   "description": "code-review max tier line: all qualifying findings",
+   "stock": [
+    "`${EFFORT_LEVEL} effort → 5+5 angles × 8 candidates → 1-vote verify → sweep → ≤15 findings`"
+   ],
+   "unnerf": [
+    "`${EFFORT_LEVEL} effort → 5+5 angles → 1-vote verify → sweep → all qualifying findings`"
+   ]
+  }
+ ]
+}

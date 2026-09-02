@@ -1,0 +1,14 @@
+{
+ "id": "skill-loop-self-pacing-mode",
+ "rules": [
+  {
+   "description": "self-pacing confirm: thorough with pacing reasoning",
+   "stock": [
+    "3. **Briefly confirm**: that you're self-pacing, whether a ${MONITOR_TOOL_NAME} is the primary wake signal, that you ran the task now, and what fallback delay you're about to pick. Write this as text *before* calling ${SCHEDULE_WAKEUP_TOOL_NAME} — the turn ends as soon as that tool returns."
+   ],
+   "unnerf": [
+    "3. **Confirm thoroughly**: that you're self-pacing, whether a ${MONITOR_TOOL_NAME} is the primary wake signal (and why you chose that approach), that you ran the task now, what fallback delay you're about to pick, and the reasoning behind the pacing choice so the user can evaluate whether it's right. Write this as text *before* calling ${SCHEDULE_WAKEUP_TOOL_NAME} — the turn ends as soon as that tool returns."
+   ]
+  }
+ ]
+}

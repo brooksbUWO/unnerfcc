@@ -1,0 +1,22 @@
+{
+ "id": "system-prompt-powershell-edition-for-7",
+ "rules": [
+  {
+   "description": "un-nerf: system-prompt-powershell-edition-for-7",
+   "stock": [
+    "PowerShell edition: PowerShell 7+ (pwsh)",
+    "   - Pipeline chain operators `&&` and `||` ARE available and work like bash. Prefer `cmd1 && cmd2` over `cmd1; cmd2` when cmd2 should only run if cmd1 succeeds.",
+    "   - Ternary (`$cond ? $a : $b`), null-coalescing (`??`), and null-conditional (`?.`) operators are available.",
+    "   - Default file encoding is UTF-8 without BOM.",
+    ""
+   ],
+   "unnerf": [
+    "PowerShell edition: PowerShell 7+ (pwsh)",
+    "   - Pipeline chain operators `&&` and `||` ARE available. They work like bash. To run cmd2 only after cmd1 succeeds, use `cmd1 && cmd2`. Do not use `cmd1; cmd2` for this case.",
+    "   - Ternary (`$cond ? $a : $b`), null-coalescing (`??`), and null-conditional (`?.`) operators are available.",
+    "   - Default file encoding is UTF-8 without BOM.",
+    ""
+   ]
+  }
+ ]
+}

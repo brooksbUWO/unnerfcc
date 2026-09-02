@@ -1,0 +1,14 @@
+{
+ "id": "system-prompt-skillify-current-session",
+ "rules": [
+  {
+   "description": "skillify confirm: drop redundant 'keep concise' coda",
+   "stock": [
+    "Before writing the file, output the complete SKILL.md content as a yaml code block in your response so the user can review it with proper syntax highlighting. Then ask for confirmation using AskUserQuestion with a simple question like \"Does this SKILL.md look good to save?\" — do NOT use the body field, keep the question concise."
+   ],
+   "unnerf": [
+    "Before writing the file, output the complete SKILL.md content as a yaml code block in your response so the user can review it with proper syntax highlighting. Then ask for confirmation using AskUserQuestion with a question like \"Does this SKILL.md look good to save?\" — do NOT use the body field."
+   ]
+  }
+ ]
+}

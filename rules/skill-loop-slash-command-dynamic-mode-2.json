@@ -1,0 +1,14 @@
+{
+ "id": "skill-loop-slash-command-dynamic-mode-2",
+ "rules": [
+  {
+   "description": "/loop dynamic-mode scheduling confirm: thorough with rounding rationale (mirrors skill-loop-slash-command.md)",
+   "stock": [
+    "2. Briefly confirm: what's scheduled, the cron expression, the human-readable cadence, that recurring tasks auto-expire after ${RECURRING_EXPIRY_DAYS} days, and that the user can cancel sooner with ${CRON_DELETE_TOOL_NAME} (include the job ID)."
+   ],
+   "unnerf": [
+    "2. Confirm thoroughly: what's scheduled, the cron expression, the human-readable cadence, any rounding you applied and why, that recurring tasks auto-expire after ${RECURRING_EXPIRY_DAYS} days, and that the user can cancel sooner with ${CRON_DELETE_TOOL_NAME} (include the job ID). Give the user enough information to understand exactly what will run and when."
+   ]
+  }
+ ]
+}

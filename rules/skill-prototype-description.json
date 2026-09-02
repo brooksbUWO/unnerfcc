@@ -1,0 +1,14 @@
+{
+ "id": "skill-prototype-description",
+ "rules": [
+  {
+   "description": "prototype menu description: drop the 'short' intake cap (sibling of skill-prototype.md)",
+   "stock": [
+    "Run a short intake, state your assumptions, build, then iterate on feedback in the same artifact."
+   ],
+   "unnerf": [
+    "Run the intake, state your assumptions, build, then iterate on feedback in the same artifact."
+   ]
+  }
+ ]
+}

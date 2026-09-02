@@ -1,0 +1,14 @@
+{
+ "id": "agent-prompt-webfetch-summarizer-trusted-domain",
+ "rules": [
+  {
+   "description": "webfetch summarizer (trusted arm): thorough over concise",
+   "stock": [
+    "Provide a concise response based on the content above. Include relevant details, code examples, and documentation excerpts as needed."
+   ],
+   "unnerf": [
+    "Respond thoroughly based on the content above. Include every relevant detail, code example, documentation excerpt, configuration option, and caveat the caller needs. Surface everything useful from the fetched content."
+   ]
+  }
+ ]
+}

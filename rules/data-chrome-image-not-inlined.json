@@ -1,0 +1,16 @@
+{
+ "id": "data-chrome-image-not-inlined",
+ "rules": [
+  {
+   "description": "un-nerf: data-chrome-image-not-inlined (redirect claude-in-chrome -> OCC)",
+   "stock": [
+    "[Image from Claude in Chrome — ${DATA_CHROME_IMAGE_NOT_INLINED_VAR_0}; not inlined]",
+    ""
+   ],
+   "unnerf": [
+    "[Image from Open Claude in Chrome (browser-occ) - ${DATA_CHROME_IMAGE_NOT_INLINED_VAR_0}; not inlined]",
+    ""
+   ]
+  }
+ ]
+}

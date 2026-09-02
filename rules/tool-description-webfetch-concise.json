@@ -1,0 +1,15 @@
+{
+ "id": "tool-description-webfetch-concise",
+ "rules": [
+  {
+   "description": "un-nerf: webfetch concise - first-blocked-fetch escalation (concept 40)",
+   "stock": [
+    "- Fails on authenticated/private URLs — use an authenticated MCP tool or `gh` for those instead."
+   ],
+   "unnerf": [
+    "- Fails on authenticated or private URLs — use an authenticated MCP tool or `gh` for those instead.",
+    "- On the first blocked fetch (a bot wall, a 403), go to a real browser tool if one is available. A block is not a verdict on the page."
+   ]
+  }
+ ]
+}

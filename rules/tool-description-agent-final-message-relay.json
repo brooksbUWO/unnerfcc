@@ -1,0 +1,14 @@
+{
+ "id": "tool-description-agent-final-message-relay",
+ "rules": [
+  {
+   "description": "agent-usage: thoroughly relay agent findings to user (tool-result variant)",
+   "stock": [
+    "The agent's final message is returned to you as the tool result; it is not shown to the user — relay what matters."
+   ],
+   "unnerf": [
+    "The agent's final message is returned to you as the tool result; it is not shown to the user — relay the agent's findings, reasoning, and any relevant detail thoroughly, rather than stripping it down; summarize only as much as needed to keep it readable, and preserve substance."
+   ]
+  }
+ ]
+}

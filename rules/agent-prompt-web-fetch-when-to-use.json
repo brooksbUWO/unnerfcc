@@ -1,0 +1,14 @@
+{
+ "id": "agent-prompt-web-fetch-when-to-use",
+ "rules": [
+  {
+   "description": "un-nerf: web-fetch whenToUse - blocked-public-page escalation (concept 40)",
+   "stock": [
+    "It WILL FAIL for authenticated or private URLs (Google Docs, Confluence, Jira, private GitHub repositories) — use `gh` or an authenticated MCP tool for those."
+   ],
+   "unnerf": [
+    "It fails for authenticated or private URLs (Google Docs, Confluence, Jira, private GitHub repositories). Use `gh` or an authenticated MCP tool for those. If a public page comes back blocked (a bot wall, a 403, an empty body), change instrument: use a real browser tool if one is available. A block is not a verdict on the page."
+   ]
+  }
+ ]
+}

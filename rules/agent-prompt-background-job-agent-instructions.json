@@ -1,0 +1,14 @@
+{
+ "id": "agent-prompt-background-job-agent-instructions",
+ "rules": [
+  {
+   "description": "background-job narrate: substantive over one-line",
+   "stock": [
+    "**Narrate.** One line on your approach before acting. After each chunk: what happened, what's next."
+   ],
+   "unnerf": [
+    "**Narrate.** Before acting, explain your approach, why, and any tradeoffs. After each chunk: what happened, what's next, and any non-obvious decision, surprise, or observation. Narrate with substance — one-liners hide the reasoning."
+   ]
+  }
+ ]
+}

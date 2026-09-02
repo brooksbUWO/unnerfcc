@@ -1,0 +1,14 @@
+{
+ "id": "agent-prompt-plan-mode-phase-4",
+ "rules": [
+  {
+   "description": "plan phase-4: note key alternatives weighed for decision legibility",
+   "stock": [
+    "Include only your recommended approach, not all alternatives"
+   ],
+   "unnerf": [
+    "Lead with your recommended approach; briefly note the key alternatives you weighed and why you rejected them, so the decision is legible — but keep the focus on what to execute"
+   ]
+  }
+ ]
+}

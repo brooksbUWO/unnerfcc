@@ -1,0 +1,14 @@
+{
+ "id": "system-prompt-insights-interaction-style",
+ "rules": [
+  {
+   "description": "insights narrative body slot: lift the 2-3 paragraph cap",
+   "stock": [
+    "2-3 paragraphs analyzing HOW the user interacts"
+   ],
+   "unnerf": [
+    "An analysis, as deep as the patterns warrant, of HOW the user interacts"
+   ]
+  }
+ ]
+}

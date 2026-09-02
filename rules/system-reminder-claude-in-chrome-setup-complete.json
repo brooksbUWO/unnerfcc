@@ -1,0 +1,20 @@
+{
+ "id": "system-reminder-claude-in-chrome-setup-complete",
+ "rules": [
+  {
+   "description": "un-nerf: system-reminder-claude-in-chrome-setup-complete (redirect claude-in-chrome -> OCC)",
+   "stock": [
+    "Claude in Chrome setup completed: the extension is installed and connected, and the mcp__claude-in-chrome__* browser tools are now available in this session. Continue the user's task using them.",
+    "",
+    "${FOLLOW_UP_INSTRUCTIONS}",
+    ""
+   ],
+   "unnerf": [
+    "Open Claude in Chrome (browser-occ) setup completed. The extension is installed and connected. The mcp__open-claude-in-chrome__* browser tools are now available in this session. Continue the user's task with them.",
+    "",
+    "${FOLLOW_UP_INSTRUCTIONS}",
+    ""
+   ]
+  }
+ ]
+}

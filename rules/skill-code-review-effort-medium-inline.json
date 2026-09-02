@@ -1,0 +1,14 @@
+{
+ "id": "skill-code-review-effort-medium-inline",
+ "rules": [
+  {
+   "description": "un-nerf: medium-tier header - loud no-verify cut (defect 6)",
+   "stock": [
+    "medium effort → 8 inline angles → dedup (no verify) → ≤8 findings"
+   ],
+   "unnerf": [
+    "medium effort → 8 inline angles → dedup (no verify; report findings as unverified) → ≤8 findings"
+   ]
+  }
+ ]
+}

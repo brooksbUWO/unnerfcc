@@ -1,0 +1,16 @@
+{
+ "id": "tool-description-bash-sleep-no-polling-background-tasks",
+ "rules": [
+  {
+   "description": "un-nerf: tool-description-bash-sleep-no-polling-background-tasks",
+   "stock": [
+    "If waiting for a background task you started with `run_in_background`, you will be notified when it completes — do not poll.",
+    ""
+   ],
+   "unnerf": [
+    "If you wait for a background task that you started with `run_in_background`, do not poll. The system sends you a notification at the end of the task.",
+    ""
+   ]
+  }
+ ]
+}

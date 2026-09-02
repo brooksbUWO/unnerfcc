@@ -1,0 +1,14 @@
+{
+ "id": "system-reminder-goal-check-in-background-work-progress",
+ "rules": [
+  {
+   "description": "goal check-in: report what the background work has done, then keep waiting",
+   "stock": [
+    "If they are progressing, say so briefly and keep waiting;"
+   ],
+   "unnerf": [
+    "If they are progressing, report what their output shows — what is done, what is still running — and keep waiting;"
+   ]
+  }
+ ]
+}

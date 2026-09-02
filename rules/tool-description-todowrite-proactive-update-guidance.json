@@ -1,0 +1,14 @@
+{
+ "id": "tool-description-todowrite-proactive-update-guidance",
+ "rules": [
+  {
+   "description": "un-nerf: todowrite guidance, exactly-one in_progress resolves the F6 divergence (defect 4)",
+   "stock": [
+    "Update the todo list for the current session. To be used proactively and often to track progress and pending tasks. Make sure that at least one task is in_progress at all times. Always provide both content (imperative) and activeForm (present continuous) for each task."
+   ],
+   "unnerf": [
+    "Update the todo list for the current session. Use it proactively and often to track progress and pending tasks. Make sure that exactly one task is in_progress at any time. Give both content (imperative) and activeForm (present continuous) for each task."
+   ]
+  }
+ ]
+}

@@ -1,0 +1,14 @@
+{
+ "id": "agent-prompt-coordinator-worker-results-and-workflow",
+ "rules": [
+  {
+   "description": "coordinator concurrency: fan out unless splitting adds no coverage",
+   "stock": [
+    "But don't parallelize simple tasks: a question or small task that takes a handful of tool calls is faster done in a single loop (one worker) than fanned out."
+   ],
+   "unnerf": [
+    "Keep a task in one worker only when splitting it would add no coverage."
+   ]
+  }
+ ]
+}

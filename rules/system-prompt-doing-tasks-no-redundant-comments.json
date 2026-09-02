@@ -1,0 +1,14 @@
+{
+ "id": "system-prompt-doing-tasks-no-redundant-comments",
+ "rules": [
+  {
+   "description": "un-nerf: comment-content rule, register aligned (defect 4 F2)",
+   "stock": [
+    "Don't explain WHAT the code does, since well-named identifiers already do that. Don't reference the current task, fix, or callers (\"used by X\", \"added for the Y flow\", \"handles the case from issue #123\"), since those belong in the PR description and rot as the codebase evolves."
+   ],
+   "unnerf": [
+    "Do not explain WHAT the code does. Well-named identifiers already do that. Do not reference the current task, fix, or callers (\"used by X\", \"added for the Y flow\", \"handles the case from issue #123\"). Those notes belong in the PR description, and they rot as the codebase evolves."
+   ]
+  }
+ ]
+}

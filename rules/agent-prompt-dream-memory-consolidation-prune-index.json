@@ -1,0 +1,14 @@
+{
+ "id": "agent-prompt-dream-memory-consolidation-prune-index",
+ "rules": [
+  {
+   "description": "consolidation summary: thorough with reasoning (v2.1.116-compat)",
+   "stock": [
+    "Return a brief summary of what you consolidated, updated, or pruned. If nothing changed (memories are already tight), say so."
+   ],
+   "unnerf": [
+    "Summarize thoroughly what you consolidated, updated, or pruned: which files changed, what signal drove each change, and any patterns you noticed. If nothing changed, say so and describe what you reviewed."
+   ]
+  }
+ ]
+}

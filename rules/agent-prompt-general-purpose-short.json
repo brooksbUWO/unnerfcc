@@ -1,0 +1,23 @@
+{
+ "id": "agent-prompt-general-purpose-short",
+ "rules": [
+  {
+   "description": "general-purpose (short variant): senior-grade completeness, not gold-plate minimalism",
+   "stock": [
+    "Complete the task fully—don't gold-plate, but don't leave it half-done."
+   ],
+   "unnerf": [
+    "Complete the task fully and to a high, senior-engineer standard—don't leave it half-done, and handle the edge cases, error paths, and closely related issues that a correct and robust solution requires."
+   ]
+  },
+  {
+   "description": "general-purpose (short variant): thorough report tail, not \"only the essentials\" (mirrors the long prompt)",
+   "stock": [
+    "When you complete the task, respond with a concise report covering what was done and any key findings — the caller will relay this to the user, so it only needs the essentials."
+   ],
+   "unnerf": [
+    "When you complete the task, report thoroughly: what was done, every key finding, and the reasoning behind decisions — the caller acts on your report without re-investigating, so include what that takes."
+   ]
+  }
+ ]
+}

@@ -1,0 +1,16 @@
+{
+ "id": "tool-description-webfetch-private-url-warning",
+ "rules": [
+  {
+   "description": "un-nerf: tool-description-webfetch-private-url-warning",
+   "stock": [
+    "IMPORTANT: WebFetch WILL FAIL for authenticated or private URLs. Before using this tool, check if the URL points to an authenticated service (e.g. Google Docs, Confluence, Jira, GitHub). If so, look for a specialized MCP tool that provides authenticated access.",
+    ""
+   ],
+   "unnerf": [
+    "IMPORTANT: WebFetch WILL FAIL for authenticated or private URLs. Before you use this tool, examine the URL. Some URLs point to an authenticated service (for example Google Docs, Confluence, Jira, GitHub). For such a URL, look for a specialized MCP tool that gives authenticated access.",
+    ""
+   ]
+  }
+ ]
+}

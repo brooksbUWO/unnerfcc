@@ -1,0 +1,14 @@
+{
+ "id": "workflow-script-deep-research",
+ "rules": [
+  {
+   "description": "un-nerf: deep-research fetch prompt - a block is a signal, not a verdict (concept 40)",
+   "stock": [
+    "If the fetch fails or the page is irrelevant/paywalled, return claims: [] and sourceQuality: \\\"unreliable\\\"."
+   ],
+   "unnerf": [
+    "If the fetch is blocked (a bot wall, a 403, a paywall), the block is not a verdict on the page: retry through a browser MCP tool if one is available, and only then return claims: [] with sourceQuality: \\\"unreliable\\\". If the page content is irrelevant, return claims: [] and sourceQuality: \\\"unreliable\\\"."
+   ]
+  }
+ ]
+}

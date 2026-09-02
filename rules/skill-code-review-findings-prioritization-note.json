@@ -1,0 +1,14 @@
+{
+ "id": "skill-code-review-findings-prioritization-note",
+ "rules": [
+  {
+   "description": "code-review prioritization: remove output-cap premise",
+   "stock": [
+    "altitude, and conventions findings when the output cap forces a cut."
+   ],
+   "unnerf": [
+    "altitude, and conventions findings in ordering."
+   ]
+  }
+ ]
+}

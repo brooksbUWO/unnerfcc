@@ -1,0 +1,16 @@
+{
+ "id": "tool-description-claude-in-chrome-shortcuts-execute",
+ "rules": [
+  {
+   "description": "un-nerf: tool-description-claude-in-chrome-shortcuts-execute",
+   "stock": [
+    "Execute a shortcut or workflow by running it in a new sidepanel window using the current tab (shortcuts and workflows are interchangeable). Use shortcuts_list first to see available shortcuts. This starts the execution and returns immediately - it does not wait for completion.",
+    ""
+   ],
+   "unnerf": [
+    "Run a shortcut or workflow in a new side-panel window with the current tab. Shortcuts and workflows are interchangeable. Use shortcuts_list first to see the available shortcuts. This tool starts the run and returns at once. It does not wait for the run to complete.",
+    ""
+   ]
+  }
+ ]
+}

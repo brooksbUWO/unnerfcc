@@ -1,0 +1,18 @@
+{
+ "id": "skill-code-review-effort-low-eight-findings",
+ "rules": [
+  {
+   "description": "un-nerf: low-tier review - disclose the no-verify cut (defect 6)",
+   "stock": [
+    "Do **not** flag style, naming, perf, missing tests, or anything outside the",
+    "hunk."
+   ],
+   "unnerf": [
+    "Do **not** flag style, naming, perf, missing tests, or anything beyond the",
+    "hunk.",
+    "",
+    "This tier runs one pass and no verify step. Report the findings as unverified."
+   ]
+  }
+ ]
+}

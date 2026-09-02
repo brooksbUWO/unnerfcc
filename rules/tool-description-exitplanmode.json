@@ -1,0 +1,20 @@
+{
+ "id": "tool-description-exitplanmode",
+ "rules": [
+  {
+   "description": "plan approval carries the output contract: assumptions flagged, top risks, at most 3 user-only open questions",
+   "stock": [
+    "Ensure your plan is complete and unambiguous:",
+    "- If you have unresolved questions about requirements or approach, use ${ASK_USER_QUESTION_TOOL_NAME} first (in earlier phases)",
+    ""
+   ],
+   "unnerf": [
+    "Make sure that your plan is complete and unambiguous:",
+    "- State the consequential assumptions you made, marked so the user can flag a wrong one",
+    "- List the top risks, and at most 3 open questions that only the user can decide",
+    "- If you have unresolved questions about requirements or approach, use ${ASK_USER_QUESTION_TOOL_NAME} first (in earlier phases)",
+    ""
+   ]
+  }
+ ]
+}

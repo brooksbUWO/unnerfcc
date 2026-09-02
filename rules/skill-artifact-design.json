@@ -1,0 +1,14 @@
+{
+ "id": "skill-artifact-design",
+ "rules": [
+  {
+   "description": "artifact-design process: drop the 'short'/'compact' cap on the design plan",
+   "stock": [
+    "Before writing code, sketch a short design plan - a compact token system with color, type, and layout:"
+   ],
+   "unnerf": [
+    "Before writing code, write the design plan — a token system with color, type, and layout, specified so every build decision derives from it:"
+   ]
+  }
+ ]
+}

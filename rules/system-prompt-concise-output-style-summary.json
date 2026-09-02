@@ -1,0 +1,14 @@
+{
+ "id": "system-prompt-concise-output-style-summary",
+ "rules": [
+  {
+   "description": "concise per-turn reminder aligned to the rules block (task-earned length, not bare brevity) (defects 3, 4)",
+   "stock": [
+    "Be concise: lead with the result, skip preamble and narration, keep only what the user needs."
+   ],
+   "unnerf": [
+    "Concise style: lead with the result, skip narration, and let the task set the length."
+   ]
+  }
+ ]
+}

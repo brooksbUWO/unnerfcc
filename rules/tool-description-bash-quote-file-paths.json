@@ -1,0 +1,16 @@
+{
+ "id": "tool-description-bash-quote-file-paths",
+ "rules": [
+  {
+   "description": "un-nerf: tool-description-bash-quote-file-paths",
+   "stock": [
+    "Always quote file paths that contain spaces with double quotes in your command (e.g., cd \"path with spaces/file.txt\")",
+    ""
+   ],
+   "unnerf": [
+    "In your command, put double quotes around file paths that contain spaces (for example, cd \"path with spaces/file.txt\").",
+    ""
+   ]
+  }
+ ]
+}

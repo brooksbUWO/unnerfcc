@@ -1,0 +1,14 @@
+{
+ "id": "skill-design",
+ "rules": [
+  {
+   "description": "design canvas: drop the one-line cap on reporting the matched design system",
+   "stock": [
+    "Say in one line what you matched"
+   ],
+   "unnerf": [
+    "Name the tokens, components, and values you matched"
+   ]
+  }
+ ]
+}

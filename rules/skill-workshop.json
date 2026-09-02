@@ -1,0 +1,18 @@
+{
+ "id": "skill-workshop",
+ "rules": [
+  {
+   "description": "workshop draft: size by what the decisions need, not by selection over completeness",
+   "stock": [
+    "Size the draft and the",
+    "   background by selection, never completeness: a few short paragraphs",
+    "   stating the plan"
+   ],
+   "unnerf": [
+    "Size the draft and the",
+    "   background by what the decisions need: as many paragraphs as it takes to",
+    "   state the plan"
+   ]
+  }
+ ]
+}

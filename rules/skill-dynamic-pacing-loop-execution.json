@@ -1,0 +1,14 @@
+{
+ "id": "skill-dynamic-pacing-loop-execution",
+ "rules": [
+  {
+   "description": "dynamic pacing confirm: thorough with reasoning",
+   "stock": [
+    "3. **Briefly confirm**: ${CONFIRMATION_STATEMENT_CLAUSE}, whether a ${MONITOR_TOOL_NAME} is the primary wake signal, and what fallback delay you're about to pick. Write this as text *before* calling ${SCHEDULE_WAKEUP_TOOL_NAME} — the turn ends as soon as that tool returns."
+   ],
+   "unnerf": [
+    "3. **Confirm thoroughly**: ${CONFIRMATION_STATEMENT_CLAUSE}, whether a ${MONITOR_TOOL_NAME} is the primary wake signal, the fallback delay you're about to pick and the reasoning that drove the choice, and any observations from this turn that should inform future iterations. Write this as text *before* calling ${SCHEDULE_WAKEUP_TOOL_NAME} — the turn ends as soon as that tool returns."
+   ]
+  }
+ ]
+}

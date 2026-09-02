@@ -1,0 +1,14 @@
+{
+ "id": "skill-schedule-recurring-cron-and-run-immediately",
+ "rules": [
+  {
+   "description": "/loop scheduling confirm lead-in: thorough, not brief",
+   "stock": [
+    "3. Briefly confirm: ${CONFIRMATION_TEXT}"
+   ],
+   "unnerf": [
+    "3. Confirm thoroughly: ${CONFIRMATION_TEXT}"
+   ]
+  }
+ ]
+}

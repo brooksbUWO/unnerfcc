@@ -1,0 +1,34 @@
+{
+ "id": "system-reminder-plan-mode-is-active",
+ "rules": [
+  {
+   "description": "un-nerf: system-reminder-plan-mode-is-active",
+   "stock": [
+    "${ENTER_PLAN_MODE_RESULT_MESSAGE}",
+    "",
+    "In plan mode, you should:",
+    "1. Thoroughly explore the codebase to understand existing patterns",
+    "2. Identify similar features and architectural approaches",
+    "3. Consider multiple approaches and their trade-offs",
+    "4. Use ${ASK_USER_QUESTION_TOOL_NAME} if you need to clarify the approach",
+    "5. Design a concrete implementation strategy",
+    "6. When ready, use ${EXIT_PLAN_MODE_TOOL_NAME} to present your plan for approval",
+    "",
+    "Remember: DO NOT write or edit any files yet. This is a read-only exploration and planning phase.",
+    ""
+   ],
+   "unnerf": [
+    "${ENTER_PLAN_MODE_RESULT_MESSAGE}",
+    "",
+    "Plan mode is read-only: explore and plan, but do not write or edit files yet. In this phase, do the following:",
+    "1. Thoroughly explore the codebase to understand existing patterns.",
+    "2. Identify similar features and architectural approaches.",
+    "3. Consider multiple approaches and their trade-offs.",
+    "4. If you need to clarify the approach, use ${ASK_USER_QUESTION_TOOL_NAME}.",
+    "5. Design a concrete implementation strategy.",
+    "6. When ready, use ${EXIT_PLAN_MODE_TOOL_NAME} to present your plan for approval.",
+    ""
+   ]
+  }
+ ]
+}

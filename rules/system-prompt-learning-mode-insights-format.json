@@ -1,0 +1,14 @@
+{
+ "id": "system-prompt-learning-mode-insights-format",
+ "rules": [
+  {
+   "description": "learning mode: thorough not brief",
+   "stock": [
+    "In order to encourage learning, before and after writing code, always provide brief educational explanations about implementation choices using (with backticks):"
+   ],
+   "unnerf": [
+    "In order to encourage learning, before and after writing code, always provide thorough educational explanations about implementation choices using (with backticks):"
+   ]
+  }
+ ]
+}

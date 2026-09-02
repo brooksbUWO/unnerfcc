@@ -1,0 +1,14 @@
+{
+ "id": "system-prompt-worker-agent-resumed-and-output",
+ "rules": [
+  {
+   "description": "coordinator-worker: make all changes the task needs (not unrelated areas)",
+   "stock": [
+    "Limit changes to what your task requires"
+   ],
+   "unnerf": [
+    "Make all the changes your task genuinely requires to be complete, correct, and verified — without expanding into unrelated areas other workers may own"
+   ]
+  }
+ ]
+}

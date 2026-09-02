@@ -1,0 +1,16 @@
+{
+ "id": "system-reminder-provider-context",
+ "rules": [
+  {
+   "description": "un-nerf: system-reminder-provider-context",
+   "stock": [
+    "**Provider context:** This session is not using Anthropic's first-party API. WebSearch may be unavailable, `/feedback` is unavailable, and some features behave differently — check the docs page for the user's specific provider. Direct issues to https://github.com/anthropics/claude-code/issues.",
+    ""
+   ],
+   "unnerf": [
+    "**Provider context:** This session is not using Anthropic's first-party API. WebSearch can be unavailable, `/feedback` is unavailable, and some features behave differently. See the docs page for the user's specific provider. Direct issues to https://github.com/anthropics/claude-code/issues.",
+    ""
+   ]
+  }
+ ]
+}

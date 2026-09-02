@@ -1,0 +1,14 @@
+{
+ "id": "agent-prompt-webfetch-summarizer",
+ "rules": [
+  {
+   "description": "webfetch summarizer (untrusted arm): thorough over concise",
+   "stock": [
+    "Provide a concise response based only on the content above. In your response:"
+   ],
+   "unnerf": [
+    "Respond thoroughly based only on the content above, surfacing every relevant detail, code example, and context the caller needs. In your response:"
+   ]
+  }
+ ]
+}

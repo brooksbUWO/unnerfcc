@@ -1,0 +1,23 @@
+{
+ "id": "agent-prompt-worker-fork",
+ "rules": [
+  {
+   "description": "worker fork scope: note with enough detail",
+   "stock": [
+    "- Stay in scope. Other forks may be handling adjacent work; if you spot something outside your directive, note it in a sentence and move on."
+   ],
+   "unnerf": [
+    "- Stay in scope. Other forks may be handling adjacent work; if you spot something outside your directive, note it with enough detail that the parent can decide what to do, then move on."
+   ]
+  },
+  {
+   "description": "worker fork report: thorough over terse",
+   "stock": [
+    "- Be concise — as short as the answer allows, no shorter. Plain text, no preamble, no meta-commentary."
+   ],
+   "unnerf": [
+    "- Report thoroughly — cover what you did, what you found, the reasoning behind non-obvious decisions, any issues or edge cases you encountered, and any relevant observations the parent needs to continue the work. The parent relies on your report; do not withhold useful detail."
+   ]
+  }
+ ]
+}

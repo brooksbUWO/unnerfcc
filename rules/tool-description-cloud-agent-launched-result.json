@@ -1,0 +1,14 @@
+{
+ "id": "tool-description-cloud-agent-launched-result",
+ "rules": [
+  {
+   "description": "cloud-agent launch note: explain what/why launched (restored: fork catalogs the once-unreachable variable value)",
+   "stock": [
+    "In your own words, briefly tell the user what you launched — do not echo this tool result — and end your response."
+   ],
+   "unnerf": [
+    "In your own words, tell the user what you launched and why — what the agent is investigating or building and what you expect to learn back — do not echo this tool result — and end your response."
+   ]
+  }
+ ]
+}

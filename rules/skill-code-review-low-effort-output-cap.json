@@ -1,0 +1,14 @@
+{
+ "id": "skill-code-review-low-effort-output-cap",
+ "rules": [
+  {
+   "description": "code-review low-effort: output every qualifying finding (cap lifted)",
+   "stock": [
+    "Output at most **4 findings**, most-severe first, one line each"
+   ],
+   "unnerf": [
+    "Output every qualifying finding, most-severe first, one line each (if you found more than a handful, lead with the most serious and note how many more remain rather than silently dropping them)"
+   ]
+  }
+ ]
+}

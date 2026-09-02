@@ -1,0 +1,14 @@
+{
+ "id": "system-reminder-usage-limit-grace-window-checkpoint",
+ "rules": [
+  {
+   "description": "usage-limit grace window: drop the 3-bullet cap on the remaining-work handoff",
+   "stock": [
+    "list up to 3 short bullets of the most impactful remaining work"
+   ],
+   "unnerf": [
+    "list the remaining work as bullets, most impactful first, with enough detail to resume each one"
+   ]
+  }
+ ]
+}

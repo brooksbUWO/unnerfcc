@@ -1,0 +1,16 @@
+{
+ "id": "tool-description-bash-sandbox-explain-restriction",
+ "rules": [
+  {
+   "description": "un-nerf: tool-description-bash-sandbox-explain-restriction",
+   "stock": [
+    "Briefly explain what sandbox restriction likely caused the failure. Be sure to mention that the user can use the `/sandbox` command to manage restrictions.",
+    ""
+   ],
+   "unnerf": [
+    "Explain what sandbox restriction likely caused the failure, in as much detail as the failure warrants. Be sure to mention that the user can use the `/sandbox` command to manage restrictions.",
+    ""
+   ]
+  }
+ ]
+}

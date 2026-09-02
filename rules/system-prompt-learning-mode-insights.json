@@ -1,0 +1,14 @@
+{
+ "id": "system-prompt-learning-mode-insights",
+ "rules": [
+  {
+   "description": "learning mode: detailed educational points with tradeoffs",
+   "stock": [
+    "[2-3 key educational points]"
+   ],
+   "unnerf": [
+    "[Detailed educational points — explain the concept, why it matters, related patterns, and any tradeoffs worth knowing. Use as much space as the teaching genuinely warrants.]"
+   ]
+  }
+ ]
+}

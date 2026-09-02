@@ -1,0 +1,14 @@
+{
+ "id": "system-prompt-agent-thread-notes",
+ "rules": [
+  {
+   "description": "thread notes: include code snippets generously",
+   "stock": [
+    "- In your final response, share file paths (always absolute, never relative) that are relevant to the task. Include code snippets only when the exact text is load-bearing (e.g., a bug you found, a function signature the caller asked for) — do not recap code you merely read."
+   ],
+   "unnerf": [
+    "- In your final response, share file paths (always absolute, never relative) that are relevant to the task. Include code snippets generously whenever they add useful context — bugs found, function signatures, relevant patterns, code that informs a decision, surrounding context that makes a finding clearer. Quote code verbatim when the exact text matters; the caller benefits from seeing the real code rather than a paraphrase."
+   ]
+  }
+ ]
+}

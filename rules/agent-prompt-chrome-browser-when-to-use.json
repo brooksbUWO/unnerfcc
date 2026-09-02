@@ -1,0 +1,16 @@
+{
+ "id": "agent-prompt-chrome-browser-when-to-use",
+ "rules": [
+  {
+   "description": "un-nerf: agent-prompt-chrome-browser-when-to-use (route to Skill(browser-occ) first; behavioral test 2026-08-28 showed \"Always invoke this\" walks the agent into the stock extension-install flow)",
+   "stock": [
+    "When the user wants to interact with web pages, automate browser tasks, capture screenshots, read console logs, or perform any browser-based actions. Always invoke BEFORE attempting to use any mcp__claude-in-chrome__* tools.",
+    ""
+   ],
+   "unnerf": [
+    "When the user wants to interact with web pages, automate browser tasks, capture screenshots, read console logs, or do any browser-based action. If the browser-occ skill is listed in this session, invoke Skill(browser-occ) instead of this skill. Invoke this skill only when browser-occ is not listed, before you use any mcp__open-claude-in-chrome__* tool.",
+    ""
+   ]
+  }
+ ]
+}

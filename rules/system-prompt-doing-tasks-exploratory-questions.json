@@ -1,0 +1,14 @@
+{
+ "id": "system-prompt-doing-tasks-exploratory-questions",
+ "rules": [
+  {
+   "description": "exploratory questions: full options+tradeoffs analysis, not 2-3 sentences",
+   "stock": [
+    "respond in 2-3 sentences with a recommendation and the main tradeoff."
+   ],
+   "unnerf": [
+    "respond with a thorough analysis: lay out the viable options, the key tradeoffs of each, and your recommendation with the reasoning behind it."
+   ]
+  }
+ ]
+}

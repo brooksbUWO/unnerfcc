@@ -1,0 +1,14 @@
+{
+ "id": "agent-prompt-batch-slash-command",
+ "rules": [
+  {
+   "description": "batch recipe: thorough steps, gotchas, expected signals",
+   "stock": [
+    "   Write the recipe as a short, concrete set of steps that a worker can execute autonomously. Include any setup (start a dev server, build first) and the exact command/interaction to verify."
+   ],
+   "unnerf": [
+    "   Write the recipe as concrete, thorough steps a worker can execute autonomously without asking clarifying questions. Include setup (dev server, build first), the exact commands to verify, expected output or signals, and any gotchas you hit while researching."
+   ]
+  }
+ ]
+}

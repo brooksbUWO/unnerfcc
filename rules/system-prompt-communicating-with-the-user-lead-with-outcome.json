@@ -1,0 +1,14 @@
+{
+ "id": "system-prompt-communicating-with-the-user-lead-with-outcome",
+ "rules": [
+  {
+   "description": "outcome-first: comment constraints, invariants, and subtle reasoning",
+   "stock": [
+    "Only write a code comment to state a constraint the code itself can't show"
+   ],
+   "unnerf": [
+    "Write a code comment whenever it captures something the code itself can't show — a constraint, a non-obvious invariant, or the reasoning behind a subtle choice"
+   ]
+  }
+ ]
+}

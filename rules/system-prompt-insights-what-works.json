@@ -1,0 +1,14 @@
+{
+ "id": "system-prompt-insights-what-works",
+ "rules": [
+  {
+   "description": "insights what-works description slot: lift the 2-3 sentence cap",
+   "stock": [
+    "2-3 sentences describing the impressive workflow or approach"
+   ],
+   "unnerf": [
+    "A description of the impressive workflow or approach, as deep as it warrants"
+   ]
+  }
+ ]
+}

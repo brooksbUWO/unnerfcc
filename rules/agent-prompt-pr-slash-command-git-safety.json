@@ -1,0 +1,26 @@
+{
+ "id": "agent-prompt-pr-slash-command-git-safety",
+ "rules": [
+  {
+   "description": "un-nerf: PR slash-command git safety - restructured, no CAPS stack (defect 1)",
+   "stock": [
+    "## Git Safety Protocol",
+    "",
+    "- NEVER update the git config",
+    "- NEVER force push to main/master; warn the user if they request it",
+    "- NEVER skip hooks (--no-verify, --no-gpg-sign, etc) unless the user explicitly requests it",
+    "- Never use git commands with the -i flag (like git rebase -i or git add -i) since they require interactive input which is not supported",
+    "- Use the gh command for ALL GitHub-related tasks including issues, pull requests, checks, and releases. If given a GitHub URL, use gh to fetch it"
+   ],
+   "unnerf": [
+    "## Git Safety Protocol",
+    "",
+    "- Do not update the git config.",
+    "- Do not force push to main or master. If the user asks for it, warn the user first.",
+    "- Skip hooks (--no-verify, --no-gpg-sign) only when the user explicitly asks for it.",
+    "- Do not use git commands with the -i flag (git rebase -i, git add -i). They require interactive input, which is not supported.",
+    "- Use the gh command for all GitHub tasks: issues, pull requests, checks, and releases. If the user gives a GitHub URL, fetch it with gh"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,16 @@
+{
+ "id": "system-reminder-memory-extraction-recent-context-only",
+ "rules": [
+  {
+   "description": "un-nerf: system-reminder-memory-extraction-recent-context-only",
+   "stock": [
+    "You MUST only use content from the last ~${RECENT_MESSAGE_COUNT} messages to update your persistent memories. Do not waste any turns attempting to investigate or verify that content further — no grepping source files, no reading code to confirm a pattern exists, no git commands.${TRAILING_CONSTRAINTS}",
+    ""
+   ],
+   "unnerf": [
+    "Update your persistent memories only from the last ~${RECENT_MESSAGE_COUNT} messages. Do not spend turns verifying that content further: no grepping source files, no reading code to verify a pattern, no git commands.${TRAILING_CONSTRAINTS}",
+    ""
+   ]
+  }
+ ]
+}

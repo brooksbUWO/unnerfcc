@@ -1,0 +1,14 @@
+{
+ "id": "agent-prompt-security-review-slash-command",
+ "rules": [
+  {
+   "description": "security-review: keep precision bias but don't drop concrete vulns",
+   "stock": [
+    "Better to miss some theoretical issues than flood the report with false positives."
+   ],
+   "unnerf": [
+    "Prefer high-confidence, exploitable findings over noise — but do not discard a concrete, defensible vulnerability just to keep the count low."
+   ]
+  }
+ ]
+}

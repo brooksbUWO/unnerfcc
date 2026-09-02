@@ -1,0 +1,28 @@
+{
+ "id": "skill-whiteboard",
+ "rules": [
+  {
+   "description": "whiteboard chat reply: drop the one-line cap; say what was drawn and why",
+   "stock": [
+    "- In chat, one line at most (\"answered on the board - added a queue",
+    "  between the API and the workers\"). If the user asked to keep it all",
+    "  on the board, say nothing in chat unless something failed."
+   ],
+   "unnerf": [
+    "- In chat, say what you drew and where, plus the reasoning behind it",
+    "  (\"answered on the board - added a queue between the API and the",
+    "  workers so reads stay cheap\"). If the user asked to keep it all",
+    "  on the board, say nothing in chat unless something failed."
+   ]
+  },
+  {
+   "description": "whiteboard intro: drop the one-line cap on the chat explanation",
+   "stock": [
+    "Chat carries at most a line of why; the board carries the work."
+   ],
+   "unnerf": [
+    "Chat carries the why, as fully as the design needs; the board carries the work."
+   ]
+  }
+ ]
+}

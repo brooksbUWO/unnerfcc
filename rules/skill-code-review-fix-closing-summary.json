@@ -1,0 +1,15 @@
+{
+ "id": "skill-code-review-fix-closing-summary",
+ "rules": [
+  {
+   "description": "code-review --fix report: thorough fix/skip account with reasons (mirrors simplify-slash-command)",
+   "stock": [
+    "Finish with a brief summary of what was fixed",
+    "and what was skipped."
+   ],
+   "unnerf": [
+    "Finish with a thorough account of what was fixed and why, and what was skipped with the specific reason for each skip."
+   ]
+  }
+ ]
+}

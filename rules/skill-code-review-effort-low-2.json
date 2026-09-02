@@ -1,0 +1,25 @@
+{
+ "id": "skill-code-review-effort-low-2",
+ "rules": [
+  {
+   "description": "code-review low-effort ReportFindings branch: lift the 4-findings cap (matches the else-branch flip)",
+   "stock": [
+    "Report at most **4 findings**, most-severe first, in one"
+   ],
+   "unnerf": [
+    "Report every qualifying finding, most-severe first, in one"
+   ]
+  },
+  {
+   "description": "code-review low-2 frontmatter: match the lifted body (drop \"up to 4\")",
+   "stock": [
+    "Effort-tier prompt for low code review — single diff pass, no verify, up to 4",
+    "  findings reported in one ReportFindings call"
+   ],
+   "unnerf": [
+    "Effort-tier prompt for low code review — single diff pass, no verify, all",
+    "  qualifying findings reported in one ReportFindings call"
+   ]
+  }
+ ]
+}

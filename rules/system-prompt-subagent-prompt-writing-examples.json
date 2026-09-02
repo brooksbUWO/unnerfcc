@@ -1,0 +1,23 @@
+{
+ "id": "system-prompt-subagent-prompt-writing-examples",
+ "rules": [
+  {
+   "description": "subagent-prompt example: complete punch list, not a 200-word cap",
+   "stock": [
+    "Report a punch list — done vs. missing. Under 200 words."
+   ],
+   "unnerf": [
+    "Report a thorough punch list — done vs. missing, with specifics (file paths, line numbers) for each item. Prioritize completeness over brevity; don't drop a real blocker to hit a word count."
+   ]
+  },
+  {
+   "description": "subagent-prompt commentary: restore \"without capping its length\" (v2.1.218 nerfed it)",
+   "stock": [
+    "it states the goal, lists what to check, and caps the response length"
+   ],
+   "unnerf": [
+    "it states the goal, lists what to check, and specifies the report format (a complete done-vs-missing punch list) without artificially capping its length"
+   ]
+  }
+ ]
+}

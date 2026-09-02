@@ -1,0 +1,16 @@
+{
+ "id": "tool-description-bash-prefer-dedicated-tools-bullet",
+ "rules": [
+  {
+   "description": "un-nerf: tool-description-bash-prefer-dedicated-tools-bullet",
+   "stock": [
+    "- IMPORTANT: Avoid using this tool to run ${READ_ONLY_SEARCHING_BASH_COMMANDS} commands, unless explicitly instructed or after you have verified that a dedicated tool cannot accomplish your task. Instead, use the appropriate dedicated tool as this will provide a much better experience for the user.",
+    ""
+   ],
+   "unnerf": [
+    "- IMPORTANT: Do not use this tool to run ${READ_ONLY_SEARCHING_BASH_COMMANDS} commands. There are two exceptions. The user gives you an explicit instruction to do so. Or you make sure first that no dedicated tool can do your task. In all other cases, use the correct dedicated tool. A dedicated tool gives a much better experience for the user.",
+    ""
+   ]
+  }
+ ]
+}

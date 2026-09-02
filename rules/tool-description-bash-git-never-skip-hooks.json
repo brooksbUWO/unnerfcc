@@ -1,0 +1,14 @@
+{
+ "id": "tool-description-bash-git-never-skip-hooks",
+ "rules": [
+  {
+   "description": "un-nerf: git never-skip-hooks - aligned wording across the family (defect 4 F3)",
+   "stock": [
+    "Never skip hooks (--no-verify) or bypass signing (--no-gpg-sign, -c commit.gpgsign=false) unless the user has explicitly asked for it. If a hook fails, investigate and fix the underlying issue."
+   ],
+   "unnerf": [
+    "Skip hooks (--no-verify) or bypass signing (--no-gpg-sign, -c commit.gpgsign=false) only when the user has explicitly asked for it. If a hook fails, find the cause and fix it."
+   ]
+  }
+ ]
+}

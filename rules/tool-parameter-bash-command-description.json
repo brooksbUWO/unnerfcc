@@ -1,0 +1,36 @@
+{
+ "id": "tool-parameter-bash-command-description",
+ "rules": [
+  {
+   "description": "un-nerf: tool-parameter-bash-command-description",
+   "stock": [
+    "Clear, concise description of what this command does in active voice. Never use words like \"complex\" or \"risk\" in the description - just describe what it does.",
+    "",
+    "For simple commands (git, npm, standard CLI tools), keep it brief (5-10 words):",
+    "- ls → \"List files in current directory\"",
+    "- git status → \"Show working tree status\"",
+    "- npm install → \"Install package dependencies\"",
+    "",
+    "For commands that are harder to parse at a glance (piped commands, obscure flags, etc.), add enough context to clarify what it does:",
+    "- find . -name \"*.tmp\" -exec rm {} \\; → \"Find and delete all .tmp files recursively\"",
+    "- git reset --hard origin/main → \"Discard all local changes and match remote main\"",
+    "- curl -s url | jq '.data[]' → \"Fetch JSON from URL and extract data array elements\"",
+    ""
+   ],
+   "unnerf": [
+    "Clear, concise description of what this command does, in active voice. Never use words like \"complex\" or \"risk\" in the description. Describe only what it does.",
+    "",
+    "For simple commands (git, npm, standard CLI tools), keep it brief (5-10 words):",
+    "- ls → \"List files in current directory\".",
+    "- git status → \"Show working tree status\".",
+    "- npm install → \"Install package dependencies\".",
+    "",
+    "Some commands are harder to parse at a glance, such as piped commands and obscure flags. For those, add enough context to make it clear:",
+    "- `find . -name \"*.tmp\" -exec rm {} \\;` → \"Find and delete all .tmp files recursively\".",
+    "- git reset --hard origin/main → \"Discard all local changes and match remote main\".",
+    "- curl -s url | jq '.data[]' → \"Fetch JSON from URL and extract data array elements\".",
+    ""
+   ]
+  }
+ ]
+}

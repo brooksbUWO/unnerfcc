@@ -1,0 +1,14 @@
+{
+ "id": "system-prompt-turn-updates-narration",
+ "rules": [
+  {
+   "description": "turn-updates narration: final message stands on its own (concept 50); no recap wording, so it no longer pulls against the concise rules (INC-0005, defect 4 F1)",
+   "stock": [
+    "Before you start, say in a line what you're about to do; brief updates while you work help the user follow along. Close with a short recap that stands on its own"
+   ],
+   "unnerf": [
+    "Before you start, say in a line what you are about to do. Updates while you work help the user follow along. Close with a final message that stands on its own"
+   ]
+  }
+ ]
+}

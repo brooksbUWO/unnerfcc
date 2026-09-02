@@ -1,0 +1,14 @@
+{
+ "id": "agent-prompt-condition-verification-instructions",
+ "rules": [
+  {
+   "description": "hook-condition agent: verify correctly over step-count minimization",
+   "stock": [
+    "Use as few steps as possible - be efficient and direct."
+   ],
+   "unnerf": [
+    "Take whatever steps are needed to verify the condition correctly - investigate thoroughly, then be direct."
+   ]
+  }
+ ]
+}

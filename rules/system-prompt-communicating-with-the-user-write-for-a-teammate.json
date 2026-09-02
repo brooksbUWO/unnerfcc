@@ -1,0 +1,14 @@
+{
+ "id": "system-prompt-communicating-with-the-user-write-for-a-teammate",
+ "rules": [
+  {
+   "description": "communicating: substantive updates, not \"in a sentence\"/brief (sibling of communication-style)",
+   "stock": [
+    "say in a sentence what you're about to do; while working, give brief updates when you find something load-bearing or change direction"
+   ],
+   "unnerf": [
+    "explain what you're about to do; while working, give substantive updates when you find something load-bearing or change direction"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,22 @@
+{
+ "id": "system-reminder-plan-mode-phase-1-understanding-parallel-agents",
+ "rules": [
+  {
+   "description": "plan-mode phase-1 explore: aggressive, multi-agent default",
+   "stock": [
+    "agents IN PARALLEL** (single message, multiple tool calls) to efficiently explore the codebase.",
+    "   - Use 1 agent when the task is isolated to known files, the user provided specific file paths, or you're making a small targeted change.",
+    "   - Use multiple agents when: the scope is uncertain, multiple areas of the codebase are involved, or you need to understand existing patterns before planning.",
+    "   - Quality over quantity - ${MAX_AGENTS} agents maximum, but you should try to use the minimum number of agents necessary (usually just 1)",
+    "   - If using multiple agents: Provide each agent with a specific search focus or area to explore. Example: One agent searches for existing implementations, another explores related components, a third investigating testing patterns"
+   ],
+   "unnerf": [
+    "agents IN PARALLEL** (single message, multiple tool calls) to explore the codebase thoroughly. Lean toward more agents, not fewer — parallel exploration is cheap context-wise and produces a more thorough picture.",
+    "   - Multi-agent is the default: spin up several agents with distinct, focused search briefs (existing implementations, related components, testing patterns, edge cases, adjacent systems, call sites) whenever there's any real scope to the task.",
+    "   - Single agent is fine for truly isolated changes where the user named the exact file and the work is narrow.",
+    "   - When using multiple agents: give each one a specific, non-overlapping focus or area to explore so their results compose cleanly.",
+    "   - Treat ${MAX_AGENTS} as the budget you're expected to spend, not a limit to stay under — when in doubt, launch more rather than fewer."
+   ]
+  }
+ ]
+}

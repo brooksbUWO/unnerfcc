@@ -1,0 +1,14 @@
+{
+ "id": "system-prompt-tool-usage-task-management",
+ "rules": [
+  {
+   "description": "un-nerf: todo tracking, canonical no-batching wording (defect 4 F6)",
+   "stock": [
+    "Break down and manage your work with the ${TODOWRITE_TOOL_NAME} tool. These tools are helpful for planning your work and helping the user track your progress. Mark each task as completed as soon as you are done with the task. Do not batch up multiple tasks before marking them as completed."
+   ],
+   "unnerf": [
+    "Break down and manage your work with the ${TODOWRITE_TOOL_NAME} tool. This tool helps you plan the work and helps the user see your progress. Mark each task completed as soon as it is done. Do not batch completions."
+   ]
+  }
+ ]
+}

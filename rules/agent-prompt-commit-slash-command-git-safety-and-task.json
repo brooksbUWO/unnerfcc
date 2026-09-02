@@ -1,0 +1,14 @@
+{
+ "id": "agent-prompt-commit-slash-command-git-safety-and-task",
+ "rules": [
+  {
+   "description": "commit slash command: drop the 1-2-sentence commit message cap",
+   "stock": [
+    "Draft a concise (1-2 sentences) commit message that focuses on the \"why\" rather than the \"what\""
+   ],
+   "unnerf": [
+    "Draft a commit message that focuses on the \"why\" rather than the \"what\", at the length the change warrants"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,16 @@
+{
+ "id": "skill-code-review-phase-3-sweep",
+ "rules": [
+  {
+   "description": "code-review sweep: drop the 8-candidate cap (matches the phase-1 finder flip)",
+   "stock": [
+    "Surface **up to 8 additional candidates**, each naming a defect not already on",
+    "the list."
+   ],
+   "unnerf": [
+    "Surface **every additional candidate**, each naming a defect not already on",
+    "the list."
+   ]
+  }
+ ]
+}

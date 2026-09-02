@@ -1,0 +1,25 @@
+{
+ "id": "skill-code-review-effort-low",
+ "rules": [
+  {
+   "description": "code-review low frontmatter: match the already-lifted body (drop \"up to 4\")",
+   "stock": [
+    "Effort-tier prompt for low code review — single diff pass, no verify, up to 4",
+    "  findings"
+   ],
+   "unnerf": [
+    "Effort-tier prompt for low code review — single diff pass, no verify, all",
+    "  qualifying findings"
+   ]
+  },
+  {
+   "description": "code-review low-effort tier line: drop the ≤4 cap (matches the findings-output flip)",
+   "stock": [
+    "low effort → 1 diff pass → no verify → ≤4 findings"
+   ],
+   "unnerf": [
+    "low effort → 1 diff pass → no verify; report findings as unverified → all qualifying findings"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,14 @@
+{
+ "id": "system-reminder-plan-mode-prototype-option",
+ "rules": [
+  {
+   "description": "plan-mode prototype option: drop the 'short plan' cap",
+   "stock": [
+    "Write a short plan to the plan file naming the prototype-first approach"
+   ],
+   "unnerf": [
+    "Write a plan to the plan file naming the prototype-first approach"
+   ]
+  }
+ ]
+}

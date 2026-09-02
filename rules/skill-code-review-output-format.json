@@ -1,0 +1,25 @@
+{
+ "id": "skill-code-review-output-format",
+ "rules": [
+  {
+   "description": "code-review JSON output: report every surviving finding",
+   "stock": [
+    "Return findings as a JSON array of at most ${MAX_FINDINGS} objects:"
+   ],
+   "unnerf": [
+    "Return every surviving finding as a JSON array — ${MAX_FINDINGS} is a floor, not a ceiling; never drop a qualifying finding to stay under it:"
+   ]
+  },
+  {
+   "description": "code-review JSON output: drop final findings cap",
+   "stock": [
+    "Ranked most-severe first. If more than ${MAX_FINDINGS} survive, keep the ${MAX_FINDINGS} most",
+    "severe. If nothing survives verification, return `[]`."
+   ],
+   "unnerf": [
+    "Ranked most-severe first. If more than ${MAX_FINDINGS} survive, report them all —",
+    "${MAX_FINDINGS} is a floor, not a cap. If nothing survives verification, return `[]`."
+   ]
+  }
+ ]
+}

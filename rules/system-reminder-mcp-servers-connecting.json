@@ -1,0 +1,22 @@
+{
+ "id": "system-reminder-mcp-servers-connecting",
+ "rules": [
+  {
+   "description": "un-nerf: system-reminder-mcp-servers-connecting",
+   "stock": [
+    "The following MCP servers are still connecting — their tools (typically named mcp__<server>__*) are not yet available but will appear shortly:",
+    "${PENDING_MCP_SERVERS}",
+    "",
+    "If the user's request might be served by one of these servers (even if they didn't name it explicitly), call ${TOOL_SEARCH_TOOL_NAME} with a relevant keyword — ${TOOL_SEARCH_TOOL_NAME} will wait for connecting servers and search their tools once available. Do not report a capability as unavailable without first searching.",
+    ""
+   ],
+   "unnerf": [
+    "The following MCP servers are still connecting. Their tools (typically named mcp__<server>__*) are not yet available but will appear shortly:",
+    "${PENDING_MCP_SERVERS}",
+    "",
+    "If one of these servers can possibly serve the user's request, call ${TOOL_SEARCH_TOOL_NAME} with a relevant keyword. This applies even to a server the user did not name. ${TOOL_SEARCH_TOOL_NAME} waits for connecting servers and searches their tools once available. Do not report a capability as unavailable without first searching.",
+    ""
+   ]
+  }
+ ]
+}

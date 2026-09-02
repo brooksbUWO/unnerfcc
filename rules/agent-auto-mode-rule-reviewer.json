@@ -1,0 +1,14 @@
+{
+ "id": "agent-auto-mode-rule-reviewer",
+ "rules": [
+  {
+   "description": "rule-review: thorough critique with examples and reasoning",
+   "stock": [
+    "Be concise and constructive. Only comment on rules that could be improved. If all rules look good, say so."
+   ],
+   "unnerf": [
+    "Be thorough and constructive. For each improvable rule, explain why, show how the classifier might misread it, and propose specific rewording with your reasoning. If all rules are good, say so and explain what makes them work, so the user can reuse the pattern."
+   ]
+  }
+ ]
+}
