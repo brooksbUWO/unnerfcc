@@ -10,6 +10,7 @@ CLI, so no subprocess is needed here.
 """
 import importlib.util
 import json
+import subprocess
 import sys
 from pathlib import Path
 
@@ -158,3 +159,48 @@ def test_unknown_extra_key_is_ignored(tmp_path):
         f.write("\n")
     result = MOD._load_rules(tmp_path)
     assert result[f"{rule_id}.md"][0].description == "d"
+
+
+# --- Regression checks: the three silent-failure modes RESEARCH.md names ---
+# (Task 4: loader-contract regression checks on the untouched surfaces)
+
+def test_loader_key_set_matches_baseline_ids_with_md_suffix():
+    """Pitfall 4 guard: a loader that forgets to re-append .md makes every
+    rule target a nonexistent path. Compare the live loader's key set
+    against the recorded pre-refactor baseline dump's id set, each with
+    .md appended."""
+    baseline_path = (
+        HERE.parent.parent
+        / ".claude" / "workspace" / "runs" / "2026-09-02T0043" / "scratchpad"
+        / "dump-rules-baseline-76b4f43.json"
+    )
+    baseline = json.loads(baseline_path.read_text(encoding="utf-8"))
+    baseline_keys = {f"{row['id']}.md" for row in baseline}
+    live_keys = set(MOD.RULES.keys())
+    assert live_keys == baseline_keys
+
+
+def test_only_flag_resolves_exactly_one_file():
+    """The --only contract still resolves: --only <id>.md --dry-run reports
+    work for exactly that one file and reports no missing file. --only
+    compares against the .md-suffixed key, so this proves the suffix
+    survived the refactor."""
+    proc = subprocess.run(
+        [sys.executable, str(SCRIPT), "--only", "agent-auto-mode-rule-reviewer.md", "--dry-run"],
+        cwd=str(HERE.parent),
+        capture_output=True,
+        text=True,
+        timeout=60,
+    )
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+    assert "Files processed : 1" in proc.stdout
+    assert "Missing files   : 0" in proc.stdout
+
+
+def test_no_loaded_body_contains_a_cr_character():
+    """A stray CR makes content.replace(rule.stock, rule.unnerf, 1) silently
+    fail to match; guard the whole live catalog against it."""
+    for filename, rules in MOD.RULES.items():
+        for rule in rules:
+            assert "\r" not in rule.stock, filename
+            assert "\r" not in rule.unnerf, filename
