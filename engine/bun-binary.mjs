@@ -93,7 +93,6 @@ const SIZEOF_SP = 8;
 const MODULE_NEW = 6 * SIZEOF_SP + 4; // 52
 const MODULE_OLD = 4 * SIZEOF_SP + 4; // 36
 const BLOB_HEADER_ALIGNMENT = 16384;
-const BYTECODE_PREFIX = "// @bun @bytecode";
 const MH_MAGIC_64 = 0xfeedfacf;
 const LC_SEGMENT_64 = 0x19;
 const ZSTD_MAGIC = Buffer.from([0x28, 0xb5, 0x2f, 0xfd]);
@@ -490,6 +489,7 @@ function rebuildBlobMulti(meta, replacements) {
   if (offsets.modulesPtr.offset > origCursor) push(blob.subarray(origCursor, offsets.modulesPtr.offset));
 
   const modulesListOffset = newOff;
+  let bytecodeCleared = 0;
   const modulesList = Buffer.alloc(modules.length * structSize);
   for (let i = 0; i < modules.length; i++) {
     const m = modules[i];
@@ -503,17 +503,23 @@ function rebuildBlobMulti(meta, replacements) {
     modulesList[eb] = m.encoding; modulesList[eb + 1] = m.loader;
     modulesList[eb + 2] = m.moduleFormat; modulesList[eb + 3] = m.side;
     // A replaced module's compiled-bytecode cache no longer matches its new
-    // source. The bytecode bytes themselves were preserved verbatim above
-    // like every other untouched field (harmless — nothing reads past a
-    // pointer's declared length), so zeroing just this struct entry's length
-    // here has the same effect as clearing the content, without needing a
-    // second pass or breaking the single gap-preserving walk above.
-    const replacement = replacements.get(i);
-    if (replacement && !replacement.subarray(0, BYTECODE_PREFIX.length).toString("latin1").startsWith(BYTECODE_PREFIX)) {
+    // source, and Bun runs the cache when one is present: JSC's cache holds the
+    // module's TOP-LEVEL code, so any string evaluated at module scope (a
+    // registry object literal, a top-level const) keeps its STOCK value while
+    // only lazily-compiled function bodies read the patched source. Observed on
+    // CC 2.1.258: the claude-in-chrome skill description stayed stock in a
+    // live session although the module's source was patched. Every module in
+    // that binary starts with the "// @bun @bytecode" pragma, so a check on that
+    // prefix never cleared anything; clear the cache for EVERY replaced module.
+    // The bytecode bytes stay in place (nothing reads past a zero length).
+    if (replacements.has(i)) {
       modulesList.writeUInt32LE(0, i * structSize + BYTECODE_FIELD * SIZEOF_SP + 4);
+      bytecodeCleared++;
     }
   }
   push(modulesList);
+  console.error(`  bytecode cache cleared for ${bytecodeCleared}/${replacements.size} replaced module(s)`);
+  if (bytecodeCleared !== replacements.size) throw fmtErr(`bytecode cache cleared for ${bytecodeCleared} module(s) but ${replacements.size} were replaced`);
 
   // Same reasoning as the per-field gaps above: whatever sits between the end
   // of the ORIGINAL modules struct table and the start of compileExecArgv
