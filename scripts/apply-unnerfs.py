@@ -136,7 +136,12 @@ def _load_rules(rules_dir: Path) -> dict[str, list[Rule]]:
     return, because both silently break the downstream text replace.
     """
     rules: dict[str, list[Rule]] = {}
-    for path in sorted(rules_dir.glob("*.json")):
+    if not rules_dir.is_dir():
+        raise SystemExit(f"error: {rules_dir}: rules directory does not exist")
+    rule_files = sorted(rules_dir.glob("*.json"))
+    if not rule_files:
+        raise SystemExit(f"error: {rules_dir}: no *.json rule files found")
+    for path in rule_files:
         pid = path.stem
         try:
             data = json.loads(path.read_text(encoding="utf-8"))
