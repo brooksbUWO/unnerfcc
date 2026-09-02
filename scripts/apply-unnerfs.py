@@ -79,6 +79,7 @@ from __future__ import annotations
 
 import argparse
 import difflib
+import json
 import re
 import sys
 from dataclasses import dataclass
@@ -87,6 +88,7 @@ from typing import Optional
 
 SCRIPT_VERSION = "1.0"
 DEFAULT_PROMPTS_DIR = Path(__file__).resolve().parent.parent / "system-prompts"
+RULES_DIR = Path(__file__).resolve().parent.parent / "rules"
 
 
 @dataclass(frozen=True)
@@ -125,7 +127,59 @@ class Result:
 #     text is structurally different.
 # ============================================================================
 
-RULES: dict[str, list[Rule]] = {
+
+def _load_rules(rules_dir: Path) -> dict[str, list[Rule]]:
+    """Load the rule catalog from rules_dir/*.json, one file per prompt id.
+
+    Fails loudly (SystemExit) on any malformed shape: bad JSON, a filename/id
+    mismatch, an empty or non-list stock/unnerf, a non-string description, or
+    an empty rules array. Rebuilds the same dict[str, list[Rule]] shape the
+    old in-source RULES literal provided, with the .md suffix re-added to
+    each key so apply_rules() and --only keep working unchanged.
+    """
+    rules: dict[str, list[Rule]] = {}
+    for path in sorted(rules_dir.glob("*.json")):
+        pid = path.stem
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as e:
+            raise SystemExit(f"error: malformed JSON in {path}: {e}")
+        if data.get("id") != pid:
+            raise SystemExit(
+                f"error: {path} declares id {data.get('id')!r}, filename stem is {pid!r}"
+            )
+        rule_entries = data.get("rules")
+        if not isinstance(rule_entries, list) or not rule_entries:
+            raise SystemExit(f"error: {path}: 'rules' must be a non-empty list")
+        entries: list[Rule] = []
+        for r in rule_entries:
+            description = r.get("description")
+            if not isinstance(description, str) or not description:
+                raise SystemExit(f"error: {path}: rule has a missing or non-string 'description'")
+            for field in ("stock", "unnerf"):
+                value = r.get(field)
+                if not isinstance(value, list) or not value:
+                    raise SystemExit(f"error: {path}: rule has a missing or empty list '{field}'")
+                if not all(isinstance(line, str) for line in value):
+                    raise SystemExit(f"error: {path}: rule field '{field}' has a non-string element")
+            entries.append(
+                Rule(
+                    stock="\n".join(r["stock"]),
+                    unnerf="\n".join(r["unnerf"]),
+                    description=description,
+                )
+            )
+        rules[f"{pid}.md"] = entries
+    return rules
+
+
+# Tracer migration in progress (task 1 of the RULES-catalog extraction):
+# the tracer id (agent-prompt-explore-speed-and-report) has moved to
+# unnerfcc/rules/agent-prompt-explore-speed-and-report.json and loads
+# through _load_rules(). Every other id still lives in this literal until
+# task 2 migrates and deletes it. Merge order: loader result first, then
+# the remaining literal entries, so nothing is lost while both coexist.
+_RULES_LITERAL: dict[str, list[Rule]] = {
     'agent-auto-mode-rule-reviewer.md': [
         Rule(
             stock='Be concise and constructive. Only comment on rules that could be improved. If all rules look good, say so.',
@@ -201,18 +255,6 @@ RULES: dict[str, list[Rule]] = {
             stock='Return a brief summary of what you consolidated, updated, or pruned. If nothing changed (memories are already tight), say so.',
             unnerf='Summarize thoroughly what you consolidated, updated, or pruned: which files changed, what signal drove each change, and any patterns you noticed. If nothing changed, say so and describe what you reviewed.',
             description='consolidation summary: thorough with reasoning (v2.1.116-compat)',
-        ),
-    ],
-    'agent-prompt-explore-speed-and-report.md': [
-        Rule(
-            stock='NOTE: You are meant to be a fast agent that returns output as quickly as possible. In order to achieve this you must:\n- Make efficient use of the tools that you have at your disposal: be smart about how you search for files and implementations\n- Wherever possible you should try to spawn multiple parallel tool calls for grepping and reading files',
-            unnerf="NOTE: Explore exhaustively. Completeness beats speed — a missed file costs more than the extra search time:\n- Search across multiple naming conventions, directory structures, and file types\n- Spawn parallel tool calls to grep and read files, covering more ground at once\n- Follow leads, cross-references, and related patterns wherever they go — don't stop at the first match\n- Read full files when relevant, not just snippets\n- Exhaust every reasonable search strategy before reporting back",
-            description='explore intro: exhaustive thoroughness over speed',
-        ),
-        Rule(
-            stock="Complete the user's search request efficiently and report your findings clearly.",
-            unnerf='Complete the search exhaustively and report in full detail: file paths, code excerpts, architectural observations, and any related patterns or edge cases you noticed.',
-            description='explore closing: exhaustive search with detailed report',
         ),
     ],
     'agent-prompt-general-purpose-short.md': [
@@ -1951,6 +1993,8 @@ RULES: dict[str, list[Rule]] = {
         ),
     ],
 }
+
+RULES: dict[str, list[Rule]] = {**_load_rules(RULES_DIR), **_RULES_LITERAL}
 
 
 # ============================================================================
