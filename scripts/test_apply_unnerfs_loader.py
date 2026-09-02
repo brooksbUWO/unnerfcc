@@ -204,3 +204,76 @@ def test_no_loaded_body_contains_a_cr_character():
         for rule in rules:
             assert "\r" not in rule.stock, filename
             assert "\r" not in rule.unnerf, filename
+
+
+# --- Cases A-D: malformed shapes that must fail loudly, not raise AttributeError ---
+# (fix-01 review: these five shapes escape today's validation and either crash
+# with an uncaught AttributeError or silently load a corrupting rule.)
+
+
+def test_non_object_top_level_exits_loud_case_a(tmp_path):
+    """Case A: a rules/<id>.json file whose top-level JSON value is a list,
+    not an object. Today: data.get("id") raises AttributeError because a
+    list has no .get method. Expected: SystemExit with an error: message
+    naming this file."""
+    bad = tmp_path / "case-a.json"
+    bad.write_text(json.dumps(["not", "an", "object"]), encoding="utf-8")
+    with pytest.raises(SystemExit) as exc_info:
+        MOD._load_rules(tmp_path)
+    msg = str(exc_info.value)
+    assert "error:" in msg
+    assert str(bad) in msg
+
+
+def test_non_object_rule_element_exits_loud_case_b(tmp_path):
+    """Case B: a rule entry inside the "rules" array that is a string, not
+    an object. Today: r.get("description") raises AttributeError because a
+    string has no .get method. Expected: SystemExit with an error: message
+    naming this file."""
+    rule_id = "case-b"
+    data = {
+        "id": rule_id,
+        "rules": [_one_rule(), "a stray string"],
+    }
+    path = tmp_path / f"{rule_id}.json"
+    with open(path, "w", encoding="utf-8", newline="\n") as f:
+        json.dump(data, f, indent=1, ensure_ascii=False)
+        f.write("\n")
+    with pytest.raises(SystemExit) as exc_info:
+        MOD._load_rules(tmp_path)
+    msg = str(exc_info.value)
+    assert "error:" in msg
+    assert str(path) in msg
+
+
+def test_stock_joins_to_empty_string_exits_loud_case_c(tmp_path):
+    """Case C: a "stock" array holding only one empty string, e.g. [""].
+    The array is non-empty and every element is a string, so today's
+    isinstance checks pass and the rule loads with Rule.stock == "". An
+    empty stock string matches "" in content unconditionally at apply time,
+    corrupting the target file. Expected: SystemExit with an error: message
+    naming this file."""
+    path = _write_rule_file(tmp_path, "case-c", [_one_rule(stock=[""])])
+    with pytest.raises(SystemExit) as exc_info:
+        MOD._load_rules(tmp_path)
+    msg = str(exc_info.value)
+    assert "error:" in msg
+    assert str(path) in msg
+
+
+def test_body_line_with_cr_exits_loud_case_d(tmp_path):
+    """Case D: a "stock" (or "unnerf") line array element that contains a
+    carriage return byte. Today it loads unchanged: the CR silently breaks
+    content.replace(rule.stock, rule.unnerf) at apply time because the
+    working-copy file on disk never contains a literal CR mid-line.
+    Expected: SystemExit with an error: message naming this file."""
+    path = _write_rule_file(
+        tmp_path,
+        "case-d",
+        [_one_rule(stock=["a line with a \r carriage return"])],
+    )
+    with pytest.raises(SystemExit) as exc_info:
+        MOD._load_rules(tmp_path)
+    msg = str(exc_info.value)
+    assert "error:" in msg
+    assert str(path) in msg
