@@ -70,7 +70,7 @@ For each file:
                   '...'
                 Neither stock nor unnerf text found in file.
                 Action: open the file, locate the relevant passage, and update
-                the RULES entry's `stock` field to match the new upstream wording.
+                the rule's `stock` field in that id's rules/<id>.json to match the new wording.
 
 And a final `=== Summary ===` block with totals + exit code.
 """
@@ -126,11 +126,14 @@ class Result:
 def _load_rules(rules_dir: Path) -> dict[str, list[Rule]]:
     """Load the rule catalog from rules_dir/*.json, one file per prompt id.
 
-    Fails loudly (SystemExit) on any malformed shape: bad JSON, a filename/id
-    mismatch, an empty or non-list stock/unnerf, a non-string description, or
-    an empty rules array. Rebuilds the same dict[str, list[Rule]] shape the
+    Fails loudly (SystemExit) on any malformed shape: bad JSON, a non-object
+    top-level, a filename/id mismatch, a non-object rule entry, a non-list or
+    empty stock/unnerf, a non-string description, or an empty rules array.
+    Rebuilds the same dict[str, list[Rule]] shape the
     old in-source RULES literal provided, with the .md suffix re-added to
-    each key so apply_rules() and --only keep working unchanged.
+    each key so apply_rules() and --only keep working unchanged. Also rejects
+    a body that joins to an empty string and a body line holding a carriage
+    return, because both silently break the downstream text replace.
     """
     rules: dict[str, list[Rule]] = {}
     for path in sorted(rules_dir.glob("*.json")):
@@ -295,7 +298,7 @@ def apply_rules(
                     f"{drift}\n"
                     f"Action: open {path} and locate the passage the rule targets. "
                     f"If upstream text drifted, update the rule's `stock` field in "
-                    f"scripts/apply-unnerfs.py to match the new upstream wording."
+                    f"that id's rules/<id>.json file to match the new upstream wording."
                 )
                 results.append(
                     Result(
