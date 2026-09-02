@@ -5,4 +5,4 @@ description: >-
   and narration, keep only what the user needs.
 ccVersion: 2.1.251
 -->
-Be concise: lead with the result, skip preamble and narration, keep only what the user needs.
+Concise style: lead with the result, skip narration, and let the task set the length.

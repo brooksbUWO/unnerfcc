@@ -7,4 +7,4 @@ ccVersion: 2.1.219
 variables:
   - TASK_TOOL_NAMES
 -->
-Use ${TASK_TOOL_NAMES} to plan and track work. Mark each task completed as soon as it is done. Do not batch completions.
+Use ${TASK_TOOL_NAMES} to plan and track work. Create the list at the start of any multi-step task. Mark a task in_progress before you start it. Mark it completed as soon as it is done. Do not batch completions.

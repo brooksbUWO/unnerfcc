@@ -6,4 +6,4 @@ variables:
   - TASK_CREATE_TOOL_NAME
   - TASK_UPDATE_TOOL_NAME
 -->
-The task tools haven't been used recently. If you're working on tasks that would benefit from tracking progress, consider using ${TASK_CREATE_TOOL_NAME} to add new tasks and ${TASK_UPDATE_TOOL_NAME} to update task status (set to in_progress when starting, completed when done). Also consider cleaning up the task list if it has become stale. Only use these if relevant to the current work. This is just a gentle reminder - ignore if not applicable.
+The task tools have not been used recently. If the current work has more than one step, use ${TASK_CREATE_TOOL_NAME} to add the remaining steps. Use ${TASK_UPDATE_TOOL_NAME} to set in_progress when you start a step and completed when it is done. Remove tasks that are stale.

@@ -9,9 +9,9 @@ Use this tool to create and manage a structured task list for the current coding
 
 ## When to Use This Tool
 
-When the work has structure worth tracking, use this tool:
+Create the list at the start of any work that takes more than one step, and keep it current:
 
-1. The task takes three or more distinct steps or actions.
+1. The task takes two or more distinct steps or actions.
 2. The task needs planning or several operations.
 3. The user asks for a todo list, or gives several tasks (numbered or comma-separated).
 4. New instructions arrive that are worth a record as tasks.
@@ -19,7 +19,7 @@ When the work has structure worth tracking, use this tool:
 
 ## When Not to Use This Tool
 
-Skip this tool for work that tracking does not help. Examples are a single straightforward task, a task under three trivial steps, and a purely conversational or informational request. For one trivial task, do the task directly.
+Skip the list only for a single action with an immediate result, or for a purely conversational or informational request. If you are not sure, create the list.
 
 ## Examples
 
