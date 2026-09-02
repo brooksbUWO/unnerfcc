@@ -207,7 +207,7 @@ const UNNERF_SENTINELS = [
   "never trade away rigor, depth, or correctness",
   "Spawn agents whenever parallel investigation",
   "investigate thoroughly, then be direct",
-  "thorough, clear, and rich with explanation",
+  "Complete what was asked thoroughly and correctly",
 ];
 
 // ---------------------------------------------------------------------------

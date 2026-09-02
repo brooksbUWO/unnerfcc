@@ -72,7 +72,7 @@ win_resolve_shim() {
 is_unnerfed() {
   local s
   for s in "senior-engineer standard" "never trade away rigor, depth, or correctness" \
-           "thorough, clear, and rich with explanation"; do
+           "investigate thoroughly, then be direct"; do
     grep -qaF "$s" "$1" 2>/dev/null && return 0
   done
   return 1
@@ -274,9 +274,11 @@ ok "patched binary boots"
 
 # --- sentinel verify (against the patched artifact, before install) --------
 MISS=0
+# Phrases this fork's rules emit (scripts/apply-unnerfs.py). Upstream's
+# "thorough, clear, and rich with explanation" is not one of them and warned on every run.
 for s in "senior-engineer standard" "never trade away rigor, depth, or correctness" \
          "Spawn agents whenever parallel investigation" "investigate thoroughly, then be direct" \
-         "thorough, clear, and rich with explanation"; do
+         "Complete what was asked thoroughly and correctly"; do
   grep -rqF "$s" "$PATCHED_JS" || { warn "sentinel missing: $s"; MISS=$((MISS+1)); }
 done
 [ $MISS -eq 0 ] && ok "all 5 un-nerf sentinels present" || \

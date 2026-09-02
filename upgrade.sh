@@ -30,7 +30,14 @@
 # the new layout.
 #
 # USAGE
-#   ./upgrade.sh [--version X.Y.Z] [--seed catalog.json] [--no-bucket-analyze] [--force] [--no-patch-verify] [--benchmark[=N]] [--yes]
+#   ./upgrade.sh [--version X.Y.Z] [--seed catalog.json] [--no-bucket-analyze] [--jobs N] [--ack-removed N] [--force] [--no-patch-verify] [--benchmark[=N]] [--yes]
+#
+# --jobs N: label up to N relabel chunks concurrently (default 1). Each chunk is
+#   one independent claude/gemini job writing its own labels-NNN.json, so they
+#   parallelize cleanly; about 5 min per chunk serially.
+# --ack-removed N: after verifying that a large id-removal is genuine upstream
+#   deletion (validate-catalog gate 6), pass the EXACT removed count to proceed.
+#   Same as the ACK_REMOVED environment variable; the flag wins when both are set.
 #
 # LLM_PROVIDER=gemini|claude  which model runs classify/relabel/bucket-analyze
 #   (default gemini; needs GOOGLE_GEMINI_API_KEY in the environment, ./.env, or
@@ -55,10 +62,15 @@ PROMPTS_DIR="$REPO/data/prompts"
 SYS_PROMPTS="$REPO/system-prompts"
 
 FORCE=0; PATCH_VERIFY=1; ASSUME_YES=0; WANT_VERSION=""; BENCHMARK=0; BENCH_N=10; SEED_OVERRIDE=""; BUCKET_ANALYZE_ON=1
+JOBS="${JOBS:-1}"
 while [ $# -gt 0 ]; do
   case "$1" in
     --version) WANT_VERSION="$2"; shift 2;;
     --seed) SEED_OVERRIDE="$2"; shift 2;;
+    --jobs) JOBS="$2"; shift 2;;
+    --jobs=*) JOBS="${1#*=}"; shift;;
+    --ack-removed) ACK_REMOVED="$2"; shift 2;;
+    --ack-removed=*) ACK_REMOVED="${1#*=}"; shift;;
     --no-bucket-analyze) BUCKET_ANALYZE_ON=0; shift;;
     --force) FORCE=1; shift;;
     --no-patch-verify) PATCH_VERIFY=0; shift;;
@@ -101,7 +113,7 @@ win_resolve_shim() {
 is_unnerfed() {
   local s
   for s in "senior-engineer standard" "never trade away rigor, depth, or correctness" \
-           "thorough, clear, and rich with explanation"; do
+           "investigate thoroughly, then be direct"; do
     grep -qaF "$s" "$1" 2>/dev/null && return 0
   done
   return 1
@@ -431,20 +443,28 @@ if [ -n "${PREV_CATALOG:-}" ]; then
     # every un-nerf rule is keyed to, so leaving it to whatever default is
     # configured would silently degrade the run. Both paths write the same
     # labels-NNN.json, so collect/merge below are provider-blind.
-    log "Labeling $N new/changed fragment(s) via $LLM_PROVIDER in $(ls "$RL_WORK"/chunk-*.json | wc -l) chunk(s)"
+    log "Labeling $N new/changed fragment(s) via $LLM_PROVIDER in $(ls "$RL_WORK"/chunk-*.json | wc -l) chunk(s), $JOBS at a time"
+    label_chunk() {   # $1 = chunk number; writes labels-$1.json; never fails the caller
+      local cn="$1"
+      if [ "$LLM_PROVIDER" = "gemini" ]; then
+        node "$REPO/scripts/relabel.mjs" label "$RL_WORK" "$cn" || true
+      else
+        ( cd "$RL_WORK" && "$CLAUDE_FOR_RELABEL" -p --dangerously-skip-permissions \
+            --model "$RELABEL_MODEL" \
+            "Read LABELING-TASK.md in this directory and follow it EXACTLY. Your assigned chunk file is chunk-$cn.json and you MUST write your labels to labels-$cn.json in this directory (a JSON array with exactly one object per item in chunk-$cn.json, echoing each ref verbatim — refs are global indices, they do not start at 0). Write the file as UTF-8 without a byte-order mark. The un-nerf guide is $REPO/UNNERF-GUIDE.md ; the previous catalog is $PREV_CATALOG . Also read removed.json (ids that vanished this release — a reworded prompt appears as a removed id plus a new worklist item, and you MUST re-use its id verbatim or its un-nerf rule is orphaned). Do not ask questions; complete the task and write the file." ) || true
+      fi
+    }
     for attempt in 1 2 3; do
+      running=0
       for chunk in "$RL_WORK"/chunk-*.json; do
         cn=$(basename "$chunk" .json); cn=${cn#chunk-}
         [ -f "$RL_WORK/labels-$cn.json" ] && continue   # already labeled (earlier attempt)
         log "  labeling chunk $cn (attempt $attempt)"
-        if [ "$LLM_PROVIDER" = "gemini" ]; then
-          node "$REPO/scripts/relabel.mjs" label "$RL_WORK" "$cn" || true
-        else
-          ( cd "$RL_WORK" && "$CLAUDE_FOR_RELABEL" -p --dangerously-skip-permissions \
-              --model "$RELABEL_MODEL" \
-              "Read LABELING-TASK.md in this directory and follow it EXACTLY. Your assigned chunk file is chunk-$cn.json and you MUST write your labels to labels-$cn.json in this directory (a JSON array with exactly one object per item in chunk-$cn.json, echoing each ref verbatim — refs are global indices, they do not start at 0). Write the file as UTF-8 without a byte-order mark. The un-nerf guide is $REPO/UNNERF-GUIDE.md ; the previous catalog is $PREV_CATALOG . Also read removed.json (ids that vanished this release — a reworded prompt appears as a removed id plus a new worklist item, and you MUST re-use its id verbatim or its un-nerf rule is orphaned). Do not ask questions; complete the task and write the file." ) || true
-        fi
+        label_chunk "$cn" &
+        running=$((running+1))
+        if [ "$running" -ge "$JOBS" ]; then wait -n; running=$((running-1)); fi
       done
+      wait
       if node "$REPO/scripts/relabel.mjs" collect "$RL_WORK" "$NEW_CATALOG"; then break; fi
       [ "$attempt" = 3 ] && die "relabel incomplete after 3 attempts (see $RL_WORK)"
       log "  re-running short chunks"
@@ -611,7 +631,11 @@ if [ "$PATCH_VERIFY" -eq 1 ] && [ -f "$PATCH_CLI" ]; then
   if "$PATCHED_BIN" --version >/dev/null 2>&1; then ok "patched binary boots"; else die "patched binary failed boot-check"; fi
   # sentinel spot-check
   MISS=0
-  for s in "senior-engineer standard" "never trade away rigor, depth, or correctness" "thorough, clear, and rich with explanation"; do
+  # Phrases this fork's rules emit (scripts/apply-unnerfs.py). Upstream's
+  # "thorough, clear, and rich with explanation" is not one of them.
+  for s in "senior-engineer standard" "never trade away rigor, depth, or correctness" \
+           "Spawn agents whenever parallel investigation" "investigate thoroughly, then be direct" \
+           "Complete what was asked thoroughly and correctly"; do
     grep -rqF "$s" "$PATCHED_JS" || { warn "sentinel missing from patched JS: $s"; MISS=$((MISS+1)); }
   done
   [ $MISS -eq 0 ] && ok "un-nerf sentinels present in patched binary"
