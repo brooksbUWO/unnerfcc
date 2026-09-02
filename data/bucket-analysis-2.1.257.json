@@ -1,0 +1,191 @@
+{
+  "ccVersion": "2.1.257",
+  "generatedBy": "bucket-analyze.mjs",
+  "report": [
+    {
+      "file": "skill-run-example-electron.md",
+      "verdict": "lift",
+      "reasoning": "\"Keep it short\" caps the SKILL.md the agent authors for future agents to use - a Group-2/3 artifact-brevity cap with no mechanical or parsing basis. The adjacent \"Start minimal\" for the driver stays: it describes iterative growth, not a ceiling.",
+      "rule": {
+        "stock": "Keep it short. The driver is the meat; `SKILL.md` is the manual.",
+        "unnerf": "The driver is the meat; `SKILL.md` is the manual. Document every command, prerequisite, gotcha, and troubleshooting step a future agent needs to drive the app without rediscovering them.",
+        "description": "run-skill electron example: drop the \"keep it short\" cap on the authored SKILL.md"
+      }
+    },
+    {
+      "file": "skill-run-example-library-sdk.md",
+      "verdict": "lift",
+      "reasoning": "\"Keep it brief\" caps the authored run skill, and the justification (\"the template does most of the work\") is not a mechanical or parsing constraint - a library skill still needs setup, extras, codegen, and dev-vs-installed detail spelled out.",
+      "rule": {
+        "stock": "Keep it brief. The template's Build and Test sections do most of the work.",
+        "unnerf": "The template's Build and Test sections carry most of the structure; fill them with the exact build, install, and test commands for this library, plus the extras, codegen steps, and dev-vs-installed differences a reader would otherwise have to discover.",
+        "description": "run-skill library example: drop the \"keep it brief\" cap on the authored skill"
+      }
+    },
+    {
+      "file": "skill-workflow-hooks-and-patterns-reference.md",
+      "verdict": "keep",
+      "reasoning": "\"Lean toward thoroughness for research/review/audit and toward brevity for quick checks\" is scale-the-harness-to-the-request guidance, and the surrounding text already defaults to thoroughness. The effort-tier note is a genuine cost/latency resource control over spawned agents, not a cap on Claude own depth."
+    },
+    {
+      "file": "system-prompt-autonomous-loop-check.md",
+      "verdict": "keep",
+      "reasoning": "Both flagged passages in this file (the one-sentence quiet exit and the single-line repeated-invocation check) are already covered by the two existing rules registered for it; proposing another would overlap."
+    },
+    {
+      "file": "system-prompt-autonomous-loop-persistence-guidance-CLAUDE_CODE_LOOP_PERSISTENT.md",
+      "verdict": "lift",
+      "reasoning": "Un-ruled sibling of the quiet-tick flip already applied to system-prompt-autonomous-loop-check.md: the one-sentence cap suppresses the status report the user relies on to trust an unattended run. The \"keep the loop alive\" clause is preserved.",
+      "rule": {
+        "stock": "If everything is genuinely quiet - no conversation work, no PR maintenance - say so in one sentence and keep the loop alive.",
+        "unnerf": "If everything is genuinely quiet - no conversation work, no PR maintenance - report what you checked (PRs inspected, CI status, threads reviewed, branches compared), confirm nothing needed action, and keep the loop alive.",
+        "description": "autonomous loop persistence: report what was inspected on a quiet tick (sibling of the loop-check flip)"
+      }
+    },
+    {
+      "file": "tool-parameter-artifact-label-suffix.md",
+      "verdict": "keep",
+      "reasoning": "Tool-parameter description for a version-picker label with a hard 60-character truncation downstream; \"a few words, not a description\" is the output-format contract for that field. Decision-procedure item 1."
+    },
+    {
+      "file": "system-prompt-remote-plan-mode-ultraplan.md",
+      "verdict": "lift",
+      "reasoning": "\"Run a lightweight planning process\" caps investigation depth on a plan a human reviewer must be able to verify - Group 3 process brevity with no stated resource reason. The anti-padding clause later in the prompt is quality guidance and stays; \"Do not spawn subagents\" is left alone as a plausible remote-session capability limit.",
+      "rule": {
+        "stock": "Run a lightweight planning process, consistent with how you would in regular plan mode:",
+        "unnerf": "Run a planning process as thorough as the change warrants, consistent with how you would in regular plan mode:",
+        "description": "remote plan mode (ultraplan): drop the \"lightweight\" cap on the planning process"
+      }
+    },
+    {
+      "file": "system-prompt-remote-planning-session.md",
+      "verdict": "lift",
+      "reasoning": "Same \"lightweight planning process\" cap in the sibling remote-planning prompt; rules are per-file, so this one needs its own copy of the flip.",
+      "rule": {
+        "stock": "Run a lightweight planning process, consistent with how you would in regular plan mode:",
+        "unnerf": "Run a planning process as thorough as the change warrants, consistent with how you would in regular plan mode:",
+        "description": "remote planning session: drop the \"lightweight\" cap on the planning process (sibling of the ultraplan flip)"
+      }
+    },
+    {
+      "file": "system-prompt-saving-skills-propose-instead.md",
+      "verdict": "keep",
+      "reasoning": "The proposal tool is the only path that actually changes the user skills - on-disk skill files are an explicitly read-only cache. Removing \"don't send them a SKILL.md to save themselves\" breaks the mechanism, so this is decision-procedure item 1, not a process nerf."
+    },
+    {
+      "file": "system-prompt-saving-skills.md",
+      "verdict": "keep",
+      "reasoning": "Same mechanical basis in the file-delivery variant: the delivery tool is the only path that reaches the user, and \"report as delivered, never as saved\" is an honesty rule about a signal Claude genuinely does not receive."
+    },
+    {
+      "file": "system-reminder-artifact-thread-reply-and-resolve-tail.md",
+      "verdict": "keep",
+      "reasoning": "Comment-thread reply text - the \"brief reply saying what you did\" is a post to a thread, matching that medium genre, and it holds back no reasoning or work. Calibration example 3."
+    },
+    {
+      "file": "system-prompt-code-review-post-ignored-comment-posts-to-pr.md",
+      "verdict": "keep",
+      "reasoning": "A one-line notice that a typed flag was ignored is not substantive work the user asked for; the length shapes an incidental parenthetical notice, not Claude analysis or review output."
+    },
+    {
+      "file": "skill-run-example-cli-tool.md",
+      "verdict": "lift",
+      "reasoning": "\"Keep it short\" and \"can be very compact\" cap the authored run skill. The non-duplication rationale (--help already covers the flags) is genuine and is preserved in the replacement.",
+      "rule": {
+        "stock": "## Keep it short\r\n\r\nA CLI's run skill can be very compact. Don't pad it with every flag -\r\nthe `--help` output covers that.",
+        "unnerf": "## Don't duplicate --help\r\n\r\nThe `--help` output already lists every flag, so point at it instead of\r\nrestating it. Everything else the skill needs - install path, expected\r\noutput, exit codes, stdin behavior, and the gotchas you actually hit -\r\nbelongs in full.",
+        "description": "run-skill CLI example: drop the \"keep it short\"/\"very compact\" cap, keep the --help non-duplication rule"
+      }
+    },
+    {
+      "file": "system-prompt-autonomous-execution-and-turn-ending.md",
+      "verdict": "keep",
+      "reasoning": "Polling or sleeping while a background task runs burns turns and tokens for information the harness delivers by notification anyway; ending the turn is the mechanically correct behavior, not a depth cap."
+    },
+    {
+      "file": "skill-artifact-design.md",
+      "verdict": "lift",
+      "reasoning": "\"Look once, without a second look\" and the ban on screenshots, node runs, and DOM probes cap verification of Claude own output, and the stated reason is speed (\"while the user waits for a link\") - the calibration-1 tell for an artificial nerf rather than a resource limit.",
+      "rule": {
+        "stock": "**Write, look once, publish.** Before publishing you may look at the rendered page once - one screenshot of the local file, or the Artifact tool's preview where it offers one - then one pass of edits for what it shows, without a second look. For a page that charts real numbers, take that look rather than skip it, and spend it on the chart. Don't build a test loop around your own file: no repeated screenshots, no pulling the script out to run it through node, no scripts that probe the DOM. That loop spends the session re-checking what a careful write already settled, while the user waits for a link.",
+        "unnerf": "**Write, verify, publish.** Before publishing, look at the rendered page - a screenshot of the local file, or the Artifact tool's preview where it offers one - and keep looking and fixing until what renders matches what you designed. Charts, tables, and anything driven by real numbers get checked against the data they claim to show. Run the script, probe the DOM, and take further screenshots whenever that is what confirms the page works.",
+        "description": "artifact-design: drop the look-once cap and the ban on verifying the rendered page"
+      }
+    },
+    {
+      "file": "system-prompt-autonomous-loop-check.md",
+      "verdict": "keep",
+      "reasoning": "Duplicate of ref 3 - the same quiet-exit and one-line-check passages, both already covered by the two rules registered for this file."
+    },
+    {
+      "file": "system-prompt-autonomous-loop-persistence-guidance-CLAUDE_CODE_LOOP_PERSISTENT.md",
+      "verdict": "keep",
+      "reasoning": "In this persistence variant the \"scale back to a quick check\" nerf is already gone upstream (it reads \"broaden scope once before considering stopping\"), and the remaining one-sentence cap is handled by the rule proposed for ref 4 in this same run."
+    },
+    {
+      "file": "system-prompt-do-not-call-agent-tool-unrequested.md",
+      "verdict": "keep",
+      "reasoning": "The fragment is a truncated clause (\"unless the user\") whose condition is completed elsewhere, so there is no self-contained span to rewrite without guessing the continuation. Leaning keep per the uncertainty rule."
+    },
+    {
+      "file": "agent-prompt-auto-mode-config-proposal-field-guidance.md",
+      "verdict": "keep",
+      "reasoning": "This governs the `notes` array of a machine-consumed config proposal: \"one line of plain text, no newlines or special characters\" is a parse/render contract for the review UI, and the section already enumerates every mandatory note. Decision-procedure item 1."
+    },
+    {
+      "file": "skill-building-llm-powered-applications-with-claude.md",
+      "verdict": "keep",
+      "reasoning": "\"Default to the simplest tier that meets your needs\" selects an application architecture (single call vs workflow vs agent) on stated cost, latency, and error-recovery criteria, and the skill defines \"simplest\" as least code you own, not least effort. Architecture guidance, not an implementation-quality cap."
+    },
+    {
+      "file": "skill-run-unit-name-template.md",
+      "verdict": "lift",
+      "reasoning": "\"Brief - agents won't use this\" caps a documentation section on the assumption a human reader can figure it out, which is exactly the hold-back this project lifts. The neighboring \"include only if relevant... not generic advice\" is a relevance rule and stays.",
+      "rule": {
+        "stock": "<If meaningfully different from the agent path. Brief - agents won't\r\nuse this, humans can figure it out.>",
+        "unnerf": "<If meaningfully different from the agent path. Give the command, what\r\nit does, and how to stop it.>",
+        "description": "run-skill template: drop the \"brief\" cap on the human-path section"
+      }
+    },
+    {
+      "file": "system-prompt-remote-plan-mode-ultraplan.md",
+      "verdict": "keep",
+      "reasoning": "Same file and same passage as ref 6, which already carries the lift for this run; a second rule would overlap it."
+    },
+    {
+      "file": "system-prompt-remote-planning-session.md",
+      "verdict": "keep",
+      "reasoning": "Same file and same passage as ref 7, which already carries the lift for this run; a second rule would overlap it."
+    },
+    {
+      "file": "skill-cowork-plugin-authoring-component-schemas.md",
+      "verdict": "keep",
+      "reasoning": "The 3,000-word body guidance is paired with \"move detailed content to references/\", so no content is dropped - it relocates under progressive disclosure, which is how the skill loader works. Reference documentation about a platform mechanism, not a cap on Claude output."
+    },
+    {
+      "file": "agent-prompt-artifact-analyst-analysis-brief-rules.md",
+      "verdict": "lift",
+      "reasoning": "The brief is consumed by a composer agent that acts on it, so a 30-line ceiling can force real observations out of a report an orchestrating agent depends on. The \"ANALYSIS BRIEF\" first-line rule is a genuine parse contract and is preserved verbatim.",
+      "rule": {
+        "stock": "Output your ANALYSIS BRIEF as your final message: plain text, under 30 lines, and the first line MUST be exactly \"ANALYSIS BRIEF\"",
+        "unnerf": "Output your ANALYSIS BRIEF as your final message: plain text, as long as the thread and artifact warrant, and the first line MUST be exactly \"ANALYSIS BRIEF\"",
+        "description": "artifact analyst brief: drop the 30-line cap, keep the first-line parse contract"
+      }
+    },
+    {
+      "file": "tool-description-propose-skills.md",
+      "verdict": "lift",
+      "reasoning": "\"(max 3)\" is a numeric ceiling on how many substantive proposals CC may surface, which the guide's \"No numeric output limits\" rule classifies as a Group-1/3 brevity cap wearing a number; removing it breaks no mechanics because the same sentence's real contract is \"call once\" (batching), which the replacement keeps. The sibling clauses (\"Do not call it for one-off tasks\", \"do not re-propose skills the user has already seen\") are trigger-scoping for an unprompted render-only card, not depth caps, so they stay.",
+      "rule": {
+        "stock": "Call once with all proposals (max 3).",
+        "unnerf": "Call once with every proposal worth surfacing.",
+        "description": "propose-skills: drop the 3-proposal cap"
+      }
+    },
+    {
+      "file": "tool-description-artifact-comments.md",
+      "verdict": "keep",
+      "reasoning": "\"a brief reply saying what you did\" governs text posted as a comment-thread reply, which matches that medium's genre rather than capping Claude's reasoning or work (calibration example 3). It is also framed as a courtesy note about a change already made, not a limit on the substantive work itself."
+    }
+  ]
+}

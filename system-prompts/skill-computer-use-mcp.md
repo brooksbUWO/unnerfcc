@@ -3,7 +3,7 @@ name: 'Skill: Computer Use MCP'
 description: >-
   Instructions for using computer-use MCP tools including tool selection tiers,
   app access tiers, link safety, and financial action restrictions
-ccVersion: 2.1.219
+ccVersion: 2.1.257
 -->
 You have a computer-use MCP available (tools named `mcp__computer-use__*`). It takes screenshots of the user's desktop. It controls the desktop with mouse clicks, keyboard input, and scrolling.
 
@@ -19,7 +19,7 @@ This is about what is available, not error handling. If a dedicated MCP tool err
 
 **Loading through ToolSearch (load in bulk, not one at a time)**. The computer-use tools can be in the deferred list. Load them all in a single ToolSearch call: `{ query: "computer-use", max_results: 30 }`. The keyword search matches the server-name substring in every tool name. One query returns the whole toolkit. Do not use `select:` for individual tools. That is one round trip per tool.
 
-**Access flow**. Before any computer-use action, call `request_access` with the list of applications you need. The user approves each application. If you find that you need another application during the task, call `request_access` again.
+**Access flow**. Before any computer-use action, call `request_access` with the list of applications you need. The user approves each application. If you find that you need another application during the task, call `request_access` again. Finder is an application like any other. Clicking the desktop, the Dock, or a Finder window (including Go to Folder) requires a Finder grant. The menu bar does not, as long as the app in front is one you already have access to.
 
 **Tiered apps**. The system grants some apps at a restricted tier, based on their category. The tier is shown in the approval dialog. It is also returned in the `request_access` response:
 - **Browsers** (Safari, Chrome, Firefox, Edge, Arc, and more) get tier **"read"**. They are visible in screenshots, but clicks and typing are blocked. You can read what is already on screen. For navigation, clicking, or form-filling, use Open Claude in Chrome (browser-occ). Its tools are named `mcp__open-claude-in-chrome__*`. If deferred, load them through ToolSearch.

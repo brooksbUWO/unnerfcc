@@ -3,19 +3,18 @@ name: 'Agent Prompt: Quick PR creation'
 description: >-
   Streamlined prompt for creating a commit and pull request with pre-populated
   git context
-ccVersion: 2.1.219
+ccVersion: 2.1.257
 variables:
-  - PR_PROMPT_PREAMBLE
-  - SAFE_USER
+  - SAFE_USER_NAME
   - WHOAMI_OUTPUT
-  - PR_BASE_REF
+  - BASE_BRANCH_NAME
 -->
-${PR_PROMPT_PREAMBLE}## Context
+## Context
 
-- `SAFEUSER`: ${SAFE_USER}
+- `SAFEUSER`: ${SAFE_USER_NAME}
 - `whoami`: ${WHOAMI_OUTPUT}
 - `git status`: !`git status`
 - `git diff HEAD`: !`git diff HEAD`
 - `git branch --show-current`: !`git branch --show-current`
-- `git diff ${PR_BASE_REF}...HEAD`: !`git diff ${PR_BASE_REF}...HEAD`
+- `git diff ${BASE_BRANCH_NAME}...HEAD`: !`git diff ${BASE_BRANCH_NAME}...HEAD`
 - `gh pr view --json number`: !`

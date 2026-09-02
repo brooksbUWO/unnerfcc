@@ -2,11 +2,13 @@
 name: 'Tool Description: Use the question tool only to clarify'
 description: >-
   Restricts the question tool to clarifying requirements or choosing between
-  approaches, contrasting it with the tool named next.
-ccVersion: 2.1.219
+  approaches, routing all plan-approval requests to the plan-approval tool
+  instead of text questions.
+ccVersion: 2.1.257
 variables:
   - ASK_USER_QUESTION_TOOL_NAME
+  - EXIT_PLAN_MODE_TOOL_NAME
 -->
  reasons
 
-**Important:** Use ${ASK_USER_QUESTION_TOOL_NAME} ONLY to clarify requirements or choose between approaches. Use 
+**Important:** Use ${ASK_USER_QUESTION_TOOL_NAME} ONLY to clarify requirements or choose between approaches. Use ${EXIT_PLAN_MODE_TOOL_NAME} to request plan approval. Do NOT ask about plan approval in any other way - no text questions, no AskUserQuestion. Phrases like "Is this plan okay?", "Should I proceed?", "How does this plan look?", "Any changes before we start?", or similar MUST use ${EXIT_PLAN_MODE_TOOL_NAME}.

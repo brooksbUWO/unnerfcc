@@ -1,13 +1,12 @@
 <!--
 name: Git Guidance Block
 description: >-
-  Model-facing system-prompt `# Git` guidance block listing the
-  interactive-flag, gh-CLI, and commit rules for this environment.
-ccVersion: 2.1.219
-variables:
-  - GIT_BLOCK_PREFIX
+  Environment git guidance — interactive git flags are unsupported here, use the
+  gh CLI for GitHub operations, and commit or push only when asked, branching
+  first if on the default branch.
+ccVersion: 2.1.257
 -->
-${GIT_BLOCK_PREFIX}# Git
+# Git
 - Interactive flags (`-i`, e.g. `git rebase -i`, `git add -i`) are not supported in this environment.
 - Use the `gh` CLI for GitHub operations (PRs, issues, API).
-- Commit or push only when the user asks
+- Commit or push only when the user asks. If on the default branch, branch first.

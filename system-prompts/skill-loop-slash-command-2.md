@@ -9,4 +9,4 @@ variables:
   - RECURRING_EXPIRY_DAYS
   - CRON_DELETE_TOOL_NAME
 -->
-what's scheduled, the cron expression, the human-readable cadence, that recurring tasks auto-expire after ${RECURRING_EXPIRY_DAYS} days, and that they can cancel sooner with ${CRON_DELETE_TOOL_NAME} (include the job ID). Mention this is the autonomous default and that the autonomous-loop instructions are baked in.
+what's scheduled, the cron expression, the human-readable cadence, any rounding you applied and why, that recurring tasks auto-expire after ${RECURRING_EXPIRY_DAYS} days, and that they can cancel sooner with ${CRON_DELETE_TOOL_NAME} (include the job ID). Give the user enough information to understand exactly what will run and when. Mention this is the autonomous default and that the autonomous-loop instructions are baked in.

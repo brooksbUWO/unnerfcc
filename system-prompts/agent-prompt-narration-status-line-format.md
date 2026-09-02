@@ -1,9 +1,8 @@
 <!--
 name: 'Agent Prompt: Narration status line format'
 description: >-
-  Opens the narration prompt — the status line is for a user glancing at the
-  screen, and the reply is at most the two named lines with no markdown and no
-  tools.
-ccVersion: 2.1.235
+  Tells the narration model to write one status line of at most 20 words for the
+  user glancing at the screen, with no label, markdown, or anything else.
+ccVersion: 2.1.257
 -->
-Status line for the user, who is glancing at the screen. Reply with at most these two lines and nothing else — no markdown, no tools:
+Write the status line for the user, who is glancing at the screen: ONE sentence, at most 20 words, no label, no markdown, nothing else.

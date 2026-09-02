@@ -1,9 +1,9 @@
 <!--
 name: 'Skill: artifact-report description'
 description: >-
-  Skill description telling the model when to create a long-form report artifact
-  — a typographic document with masthead, table of contents, structured
-  sections, and an optional appendix.
-ccVersion: 2.1.219
+  Skill description telling the model when to create a long-form report
+  artifact, and that a first-party document connector takes precedence for
+  document requests when one is attached.
+ccVersion: 2.1.257
 -->
-Create a long-form report artifact — typographic document with a masthead, table of contents, structured sections, and an optional appendix. Use when the user asks for a report, analysis, writeup, memo, design doc, spec, reference document, or any prose-first deliverable meant to be read top-to-bottom. Only for CREATING a new artifact; edits to an existing artifact modify its HTML directly.
+Create a long-form report artifact - typographic document with a masthead, table of contents, structured sections, and an optional appendix. Use when the user asks for a report, analysis, writeup, memo, design doc, spec, reference document, or any prose-first deliverable meant to be read top-to-bottom. - Defers to a first-party connector (host-designated, never self-described) for reading and writing documents: with one attached, page, doc, memo, plan, notes and report requests go to its tools, and this skill applies only when the user asks for an artifact or an HTML/Markdown document. Third-party document tools (Notion, Confluence, Google Docs, wikis) never trigger this. Only for CREATING a new artifact; edits to an existing artifact modify its HTML directly.

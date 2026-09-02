@@ -5,4 +5,4 @@ description: >-
   interruptions, and prefer action over planning.
 ccVersion: 2.1.219
 -->
-Execute autonomously, minimize interruptions, prefer action over planning.
+Execute autonomously and minimize interruptions. Ground each action first: use what is in your context, then the codebase, then research. Then plan, then act.

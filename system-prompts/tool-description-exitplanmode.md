@@ -19,7 +19,9 @@ Use this tool when you are in plan mode and have finished writing your plan to t
 IMPORTANT: Only use this tool when the task requires planning the implementation steps of a task that requires writing code. For research tasks where you're gathering information, searching files, reading files or in general trying to understand the codebase - do NOT use this tool.
 
 ## Before Using This Tool
-Ensure your plan is complete and unambiguous:
+Make sure that your plan is complete and unambiguous:
+- State the consequential assumptions you made, marked so the user can flag a wrong one
+- List the top risks, and at most 3 open questions that only the user can decide
 - If you have unresolved questions about requirements or approach, use ${ASK_USER_QUESTION_TOOL_NAME} first (in earlier phases)
 - Once your plan is finalized, use THIS tool to request approval
 

@@ -1,11 +1,9 @@
 <!--
 name: Memory Deletion Concurrent-Write Conflict
 description: >-
-  Model-facing PostToolUse additionalContext telling the model its memory-file
-  deletion was not applied due to a concurrent-write conflict and to re-read and
-  delete again.
-ccVersion: 2.1.201
-variables:
-  - TOOL_RESULT_MEMORY_DELETION_CONFLICT_VAR_0
+  Tells the model its memory deletion was not applied because another session
+  updated the file first, that the server's current version has been restored,
+  and to re-read and delete again if that is still wanted.
+ccVersion: 2.1.257
 -->
-Your recent deletion of the memory file ${TOOL_RESULT_MEMORY_DELETION_CONFLICT_VAR_0} was NOT applied to shared memory: another session updated the file first (concurrent-write conflict). The file on disk has been restored with the server's current version. Re-read it and delete it again if that is still wanted.
+ was NOT applied to shared memory: another session updated the file first (concurrent-write conflict). The file on disk has been restored with the server's current version. Re-read it and delete it again if that is still wanted.

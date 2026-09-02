@@ -25,7 +25,7 @@ ${CONTEXT_HEADER}
    - `cron`: the expression from step 1
    - `prompt`: the literal string `${TASK_PROMPT}` — ${TASK_PROMPT_EXPLANATION}
    - `recurring`: `true`
-3. Briefly confirm: ${CONFIRMATION_TEXT}
+3. Confirm thoroughly: ${CONFIRMATION_TEXT}
 4. **Then immediately run ${TASK_NAME} now**, following the instructions inlined below. Don't wait for the first cron fire.
 
 ${TASK_INSTRUCTIONS}

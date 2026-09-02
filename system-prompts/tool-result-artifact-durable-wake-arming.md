@@ -1,9 +1,10 @@
 <!--
 name: 'Tool Result: Durable wake subscription arming'
 description: >-
-  Tells the model the durable wake subscription is arming in the background and,
-  once armed, wakes this session when another session republishes the artifact
-  or anyone sends a comment on it to Claude.
-ccVersion: 2.1.231
+  Tells the model a durable wake subscription is still arming in the background,
+  so it is not a subscription until `status` lists it.
+ccVersion: 2.1.257
+variables:
+  - DURABLE_WAKE_BEHAVIOR
 -->
-Durable wake subscription: arming in the background — once armed, this session is woken by a new turn when another session republishes this artifact, or when anyone sends a comment on it to Claude.
+Durable wake subscription: arming in the background — not registered yet, so this is not a subscription until `status` lists it (you are told if it cannot be registered). Once registered, ${DURABLE_WAKE_BEHAVIOR}.

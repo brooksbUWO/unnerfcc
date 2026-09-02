@@ -1,10 +1,11 @@
 <!--
 name: 'System Reminder: File truncated'
 description: >-
-  Notification that a file was truncated to the first N lines because it was too
-  large, pointing at the read tool for the rest.
-ccVersion: 2.1.235
+  Tells the model the file was truncated to its first N lines, not to mention
+  the truncation, and which tool to use to read more.
+ccVersion: 2.1.257
 variables:
-  - MAX_LINES
+  - TRUNCATED_LINE_COUNT
+  - FILE_READ_TOOL_NAME
 -->
- was too large and has been truncated to the first ${MAX_LINES} lines. If the truncation can affect your answer, tell the user. Use 
+ was too large and has been truncated to the first ${TRUNCATED_LINE_COUNT} lines. If the truncation can affect your answer, tell the user. Use ${FILE_READ_TOOL_NAME} to read more of the file if you need.

@@ -1,10 +1,8 @@
 <!--
-name: 'Tool Description: Watching for republishes (remote session)'
+name: 'Tool Description: Watching for republishes unavailable in this session'
 description: >-
-  Remote-session branch of the Artifact tool description, telling the model
-  republish watching is not supported yet so nothing notifies this session when
-  another session republishes an artifact.
-ccVersion: 2.1.235
+  Tells the model watching for republishes is not available in this session, so
+  nothing notifies it when an artifact is republished elsewhere.
+ccVersion: 2.1.257
 -->
-
-**Watching for republishes**: not supported yet from this remote session — nothing notifies it when another session republishes an artifact
+**Watching for republishes**: not available in this session — nothing notifies it when an artifact is republished elsewhere

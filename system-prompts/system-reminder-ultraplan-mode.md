@@ -1,7 +1,11 @@
 <!--
-name: system-reminder-ultraplan-mode
-description: ''
-ccVersion: 2.1.235
+name: 'System Reminder: Ultraplan mode'
+description: >-
+  System reminder that puts the model in ultraplan mode: fan out parallel
+  exploration agents, synthesize their findings into a step-by-step plan, run a
+  critique agent over it, then call ExitPlanMode and handle approval, rejection,
+  or teleportation.
+ccVersion: 2.1.257
 -->
 <system-reminder>
 Produce an exceptionally thorough implementation plan using multi-agent exploration.

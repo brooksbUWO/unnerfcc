@@ -3,7 +3,7 @@ name: 'Skill: /insights report output'
 description: >-
   Formats and displays the insights usage report results after the user runs the
   /insights slash command
-ccVersion: 2.1.139
+ccVersion: 2.1.257
 variables:
   - INSIGHTS_DATA
   - REPORT_URL
@@ -24,11 +24,9 @@ Facets directory: ${FACETS_DIRECTORY}
 At-a-glance summary (for your context only — the user has not seen any output yet):
 ${AT_A_GLANCE_SUMMARY}${ADDITIONAL_CONTEXT_BLOCK}
 
-Output the text between <message> tags verbatim as your entire response. Do not omit any line:
+Respond with exactly the following, and nothing else. Do not add, omit, or reword any line:
 
-<message>
 Your shareable insights report is ready:
 ${REPORT_URL}
 
 Want to dig into any section or try one of the suggestions?
-</message>

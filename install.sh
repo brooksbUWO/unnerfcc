@@ -58,6 +58,25 @@ ok()   { printf '%s  ✓%s %s\n' "$B$G" "$N" "$*"; }
 warn() { printf '%s!! %s%s\n' "$Y" "$*" "$N" >&2; }
 die()  { printf '%sERROR:%s %s\n' "$R$B" "$N" "$*" >&2; exit 1; }
 run()  { if [ "$DRY_RUN" = 1 ]; then printf '%s[dry-run]%s %s\n' "$B" "$N" "$*"; else eval "$@"; fi; }
+# Windows/Git Bash: `claude` on PATH is npm's sh shim (a "#!" script in the
+# npm prefix), not the native PE, and readlink cannot see through it. If the
+# shim's own prefix holds the real exe, return that; else return $1 unchanged.
+# No-op on Linux/macOS (the derived path does not exist there).
+win_resolve_shim() {
+  local exe="$(dirname "$1")/node_modules/@anthropic-ai/claude-code/bin/claude.exe"
+  case "$1" in *.exe) echo "$1";; *) if [ -f "$exe" ]; then echo "$exe"; else echo "$1"; fi;; esac
+}
+# True if $1 is a binary we have already patched. The un-nerf sentinels are plain
+# text in the module blob, so a raw grep of the executable finds them; no stock
+# build contains any of them.
+is_unnerfed() {
+  local s
+  for s in "senior-engineer standard" "never trade away rigor, depth, or correctness" \
+           "thorough, clear, and rich with explanation"; do
+    grep -qaF "$s" "$1" 2>/dev/null && return 0
+  done
+  return 1
+}
 bun_incompatible() {
   printf '%s\nBUN FORMAT INCOMPATIBLE — engine/bun-binary.mjs could not parse this\n' "$R$B" >&2
   printf 'Claude Code binary. Bun likely changed its standalone container format.\n' >&2
@@ -156,20 +175,31 @@ if [ "$DRY_RUN" = 1 ] && ! command -v claude >/dev/null; then
 else
   LAUNCHER="$(command -v claude)"
   CC_BIN="$(readlink -f "$LAUNCHER" 2>/dev/null || echo "$LAUNCHER")"
-  # Windows/Git Bash: `claude` on PATH is npm's sh shim (a "#!" script sitting
-  # in the npm prefix), not the native PE, and readlink cannot see through it.
-  # If the shim's own prefix holds the real exe, target that instead. No-op on
-  # Linux/macOS (the derived path doesn't exist there).
-  NPM_EXE="$(dirname "$CC_BIN")/node_modules/@anthropic-ai/claude-code/bin/claude.exe"
-  case "$CC_BIN" in
-    *.exe) : ;;
-    *) [ -f "$NPM_EXE" ] && CC_BIN="$NPM_EXE" ;;
-  esac
+  CC_BIN="$(win_resolve_shim "$CC_BIN")"
   [ -f "$CC_BIN" ] || die "could not resolve the claude binary from $LAUNCHER"
   RESOLVED_VERSION="$(claude --version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)"
   [ "$RESOLVED_VERSION" = "$CC_VERSION" ] || \
     warn "resolved binary reports v$RESOLVED_VERSION but targeting v$CC_VERSION — a stale launcher may be shadowing it"
   ok "binary: $CC_BIN (v$CC_VERSION)"
+  # Re-patching our own output is not a no-op: the un-nerfs have no stock anchor
+  # left to match, so every one of them silently drops (patched=0), and the
+  # repack has to re-locate a blob pointer whose value we ourselves chose --
+  # a round vaddr that occurs by chance dozens of times in the binary's data,
+  # which the repack correctly refuses to guess between. Restore stock first;
+  # this is the same "reinstall stock CC before re-patching" the splice step
+  # tells you to do by hand.
+  if [ "$DRY_RUN" != 1 ] && is_unnerfed "$CC_BIN"; then
+    command -v npm >/dev/null || die "the installed v$CC_VERSION binary is already un-nerfed and npm is unavailable to restore a stock copy — reinstall Claude Code manually, then re-run"
+    log "Installed binary is already un-nerfed — restoring stock v$CC_VERSION before re-patching"
+    run "npm install -g '@anthropic-ai/claude-code@$CC_VERSION'"
+    hash -r 2>/dev/null || true
+    LAUNCHER="$(command -v claude)"
+    CC_BIN="$(readlink -f "$LAUNCHER" 2>/dev/null || echo "$LAUNCHER")"
+    CC_BIN="$(win_resolve_shim "$CC_BIN")"
+    [ -f "$CC_BIN" ] || die "could not resolve the claude binary from $LAUNCHER after restoring stock"
+    is_unnerfed "$CC_BIN" && die "restored v$CC_VERSION from npm but the binary still contains un-nerf sentinels — refusing to patch it twice"
+    ok "restored stock binary: $CC_BIN"
+  fi
 fi
 
 # --- rebuild stock + replay un-nerfs ---------------------------------------
@@ -188,12 +218,17 @@ if [ "$DRY_RUN" = 1 ]; then log "[dry-run] would unpack, patch, repack, boot-che
 WORK="$(mktemp -d "${TMPDIR:-/tmp}/unnerfcc-install-XXXX")"; trap 'rm -rf "$WORK"' EXIT
 
 # --- unpack -> patch -> repack ---------------------------------------------
-CLI_JS="$WORK/cli.js"; PATCHED_JS="$WORK/patched.js"; PATCHED_BIN="$WORK/claude.patched"
+# CLI_JS/PATCHED_JS are directories (one file per Bun module) since v2.1.251's
+# multi-module build; see engine/bun-binary.mjs unpackToDir/repackFromDir.
+CLI_JS="$WORK/cli-js"; PATCHED_JS="$WORK/patched-js"; PATCHED_BIN="$WORK/claude.patched"
 log "Unpacking JS bundle"
 set +e; OUT="$(node "$NATIVE_CLI" unpack "$CC_BIN" "$CLI_JS" 2>&1)"; RC=$?; set -e
 echo "$OUT" | grep -q BUN_FORMAT_INCOMPATIBLE && bun_incompatible "$OUT"; [ $RC -eq 3 ] && bun_incompatible "$OUT"
 [ $RC -eq 0 ] || die "unpack failed: $OUT"
-ok "unpacked $(wc -c < "$CLI_JS" | awk '{printf "%.1fMB", $1/1048576}')"
+# Total size comes from unpack's own "bytes=<n>" stdout line, not `wc -c` on a
+# single file, since CLI_JS is now a directory of many module files.
+UNPACK_BYTES="$(echo "$OUT" | grep -oE 'bytes=[0-9]+' | grep -oE '[0-9]+' || echo 0)"
+ok "unpacked $(awk -v b="$UNPACK_BYTES" 'BEGIN{printf "%.1fMB", b/1048576}')"
 
 log "Splicing un-nerfed prompts into the bundle"
 # Exit codes: 0 ok · 2 output is invalid JS (must NOT repack) · 3 a real un-nerf
@@ -212,11 +247,15 @@ esac
 # Lift CC's silent effort caps (mid-tier model default, /effort capped below the
 # ceiling). Runs on the already-prompt-patched bundle; if an anchor drifted, it
 # reports and we ship the prompt un-nerfs alone. See engine/apply-code-patches.mjs.
-EFF_JS="$WORK/patched.effort.js"
+EFF_JS="$WORK/patched-effort-js"
 log "Applying effort un-nerfs (best-effort)"
-set +e; EFF_OUT="$(node "$REPO/engine/apply-code-patches.mjs" apply "$PATCHED_JS" "$EFF_JS" 2>&1)"; set -e
+# 3 dirs, not 2: apply-code-patches.mjs runs downstream of patch-prompts.mjs's
+# SPARSE output (only the modules it changed), so it needs the pristine unpack
+# (CLI_JS) to search across every module for the effort-config code, plus that
+# sparse output (PATCHED_JS) to know what's already changed.
+set +e; EFF_OUT="$(node "$REPO/engine/apply-code-patches.mjs" apply "$CLI_JS" "$PATCHED_JS" "$EFF_JS" 2>&1)"; set -e
 echo "$EFF_OUT" | sed 's/^/    /'
-if [ -s "$EFF_JS" ]; then
+if [ -d "$EFF_JS" ]; then
   PATCHED_JS="$EFF_JS"   # ship prompt + effort un-nerfs
   echo "$EFF_OUT" | grep -q 'SOME MISSING' && \
     warn "effort un-nerf incomplete — CC's effort code likely changed; prompt un-nerfs are unaffected"
@@ -238,7 +277,7 @@ MISS=0
 for s in "senior-engineer standard" "never trade away rigor, depth, or correctness" \
          "Spawn agents whenever parallel investigation" "investigate thoroughly, then be direct" \
          "thorough, clear, and rich with explanation"; do
-  grep -qF "$s" "$PATCHED_JS" || { warn "sentinel missing: $s"; MISS=$((MISS+1)); }
+  grep -rqF "$s" "$PATCHED_JS" || { warn "sentinel missing: $s"; MISS=$((MISS+1)); }
 done
 [ $MISS -eq 0 ] && ok "all 5 un-nerf sentinels present" || \
   warn "$MISS sentinel(s) missing — patch may be partial for v$CC_VERSION (continuing; the binary boots)"

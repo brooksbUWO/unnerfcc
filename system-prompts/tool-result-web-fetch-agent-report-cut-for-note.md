@@ -1,12 +1,12 @@
 <!--
-name: 'Tool Result: Report cut so the harness note fits'
+name: 'Tool Result: Subagent report cut so the note fits'
 description: >-
-  Harness note telling the model the agent's report above was cut to its first
-  stretch of characters so that the report and the note could arrive together.
-ccVersion: 2.1.232
+  Harness note telling the model the subagent's report was truncated to its
+  first N characters so that it and the following note arrive together.
+ccVersion: 2.1.257
 variables:
-  - HARNESS_NOTE_LEAD_IN
+  - NOTE_PREFIX
   - ORIGINAL_REPORT_LENGTH
-  - TRUNCATED_REPORT_CHARACTERS
+  - TRUNCATED_REPORT_LENGTH
 -->
-${HARNESS_NOTE_LEAD_IN}the report above was cut from ${ORIGINAL_REPORT_LENGTH} to its first ${TRUNCATED_REPORT_CHARACTERS} characters so that it and the note below arrive together.]
+${NOTE_PREFIX}the subagent's report was cut from ${ORIGINAL_REPORT_LENGTH} to its first ${TRUNCATED_REPORT_LENGTH} characters so that it and the note below arrive together.]

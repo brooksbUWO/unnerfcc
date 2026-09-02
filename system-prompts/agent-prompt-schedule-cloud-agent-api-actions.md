@@ -5,18 +5,13 @@ description: >-
   Claude Code agents — list, get, create, update, run, plus the run-listing and
   run-log actions for debugging a routine that misbehaved — along with the
   create-body shape and the fact that routines cannot be deleted from here.
-ccVersion: 2.1.231
+ccVersion: 2.1.257
 variables:
-  - FIRST_STEP_PRIMARY_INSTRUCTION
-  - FIRST_STEP_SECONDARY_INSTRUCTION
+  - FIRST_STEP_INSTRUCTIONS
   - CLOUD_ROUTINES_TOOL_NAME
 -->
-. The agent runs in a sandboxed environment with its own git checkout, tools, and optional MCP connections.
 
-## First Step
-
-${FIRST_STEP_PRIMARY_INSTRUCTION}
-${FIRST_STEP_SECONDARY_INSTRUCTION}
+${FIRST_STEP_INSTRUCTIONS}
 
 ## What You Can Do
 

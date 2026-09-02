@@ -4,9 +4,12 @@ description: >-
   Bash-tool commit workflow (the non-/commit branch of the old conditional): the
   git safety protocol, the commit-only-when-asked rule, and the numbered
   parallel-command status/diff/log then stage-and-commit sequence.
-ccVersion: 2.1.219
+ccVersion: 2.1.257
 variables:
   - BASH_TOOL_NAME
+  - COMMIT_MESSAGE_FORMAT_CLAUSE
+  - FILE_READ_TOOL_NAME
+  - FILE_SEARCH_TOOL_NAME
 -->
 # Committing changes with git
 
@@ -33,4 +36,19 @@ Git safety rules. These rules protect the user's work from agent mistakes. An ex
   - Ensure it accurately reflects the changes and their purpose
 3. Run the following commands in parallel:
    - Add relevant untracked files to the staging area.
-   - Create the commit with a message
+   - Create the commit with a message${COMMIT_MESSAGE_FORMAT_CLAUSE}
+   - Run git status after the commit completes to verify success.
+   Note: git status depends on the commit completing, so run it sequentially after the commit.
+4. If the commit fails due to pre-commit hook: fix the issue and create a NEW commit
+
+Important notes:
+- Run only git bash commands. Do not read or explore code with other commands.
+- Do not use the ${FILE_READ_TOOL_NAME} or ${FILE_SEARCH_TOOL_NAME} tools.
+- Push to the remote repository only when the user explicitly asks for it.
+- Do not use git commands with the -i flag (git rebase -i, git add -i). They require interactive input, which is not supported.
+- Do not use --no-edit with git rebase commands. The --no-edit flag is not a valid option for git rebase.
+- If there are no changes to commit (no untracked files, no modifications), do not create an empty commit.
+- To keep the message format correct, always pass the commit message with a HEREDOC, as in this example:
+<example>
+git commit -m "$(cat <<'EOF'
+   Commit message here.
