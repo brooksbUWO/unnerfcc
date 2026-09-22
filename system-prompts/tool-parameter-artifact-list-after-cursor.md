@@ -1,6 +1,6 @@
 <!--
 name: 'Tool Parameter: Artifact list after cursor'
-description: Describes the after cursor parameter for paginating asset listings.
-ccVersion: 2.1.257
+description: Describes the cursor parameter that continues a previous 'assets' listing.
+ccVersion: 2.1.280
 -->
-list with scope 'assets' only: the `next` value from a previous listing, to continue it.
+list with scope 'assets' only: the `next` value from a previous listing, passed to continue it.

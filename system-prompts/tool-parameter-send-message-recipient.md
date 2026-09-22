@@ -1,9 +1,8 @@
 <!--
 name: SendMessage to
 description: >-
-  Description of the 'to' input parameter in the SendMessage tool's inputSchema
-  (recipient teammate name); model-facing as part of the tool definition
-  serialized to the model.
-ccVersion: 2.1.191
+  Description of the SendMessage 'to' parameter naming a background agent,
+  teammate, or the main session as the recipient.
+ccVersion: 2.1.280
 -->
-Recipient: teammate name
+Recipient: a background agent's name or agentId, a teammate name, or "main"

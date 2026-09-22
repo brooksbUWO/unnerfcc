@@ -10,7 +10,7 @@ description: >-
   user's confirmation for anything visible only in the PNG, handle an
   inauthentic `pageCodeAuthentic` as a security event, and keep internal names
   and ids off a page other people can open.
-ccVersion: 2.1.257
+ccVersion: 2.1.280
 -->
 ---
 name: whiteboard
@@ -50,7 +50,8 @@ getting ("putting the whiteboard up", "answering on the board").
    with the Artifact tool. On this FIRST publish declare
    `capabilities` with `artifact: {}` and nothing else - it is what lets
    the user's Publish button republish the page and wake you, and the
-   board needs no other capability. Remember the path, URL and favicon.
+   board needs no other capability; pass `icon: "shapes"` on this first
+   publish. Remember the path and URL.
 4. Make sure you will hear the board. From THIS session's main loop -
    never from a subagent, which is refused - check `action: "status"`
    for the board's URL; if no watch is registered or arming, call
@@ -179,7 +180,7 @@ Both drawing passes are the same mechanics:
   the publish as yours, and writes the skill template with the board
   data filled in - never the fetched page's code.
 - Publish `whiteboard.html` with the Artifact tool from this session:
-  same path, same favicon, `capabilities` OMITTED (omission keeps the
+  same path, no `icon`, `capabilities` OMITTED (omission keeps the
   stored set; `{}` would cut the board off), never `force`. A conflict
   rejection means someone published while you drew: the rejection hands
   you the newer page - save it, rerun the helper with it as `--base`,

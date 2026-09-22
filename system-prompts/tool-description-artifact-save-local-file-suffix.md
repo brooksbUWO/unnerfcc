@@ -1,6 +1,8 @@
 <!--
 name: 'Tool Description: Artifact save to local file suffix'
-description: Suffix indicating large artifact read output is saved to a local file.
-ccVersion: 2.1.257
+description: >-
+  Suffix indicating large artifact read output is saved to a local file and
+  where it was put.
+ccVersion: 2.1.280
 -->
- to a local file instead and says where.
+ instead and says where it put it

@@ -2,12 +2,14 @@
 name: 'System Reminder: Large file full-content reading guidance'
 description: >-
   Advises how to read full large-file content for analysis, preferably inside a
-  subagent when the Agent tool is available
-ccVersion: 2.1.178
+  subagent when the Agent tool is available.
+ccVersion: 2.1.280
 variables:
   - FULL_CONTENT_READING_INSTRUCTION
   - AGENT_TOOL_NAME
   - SUBAGENT_READING_INSTRUCTION_EXAMPLE
+  - TRAILING_GUIDANCE_LINE
 -->
 - For analysis or summarization that requires reading the full content: ${FULL_CONTENT_READING_INSTRUCTION}
 - With the ${AGENT_TOOL_NAME} tool available, do this inside a subagent. The full output then stays out of your main context. Give it the instruction above verbatim, and be explicit about what it must return. Example: "${SUBAGENT_READING_INSTRUCTION_EXAMPLE}" A vague "summarize this" can lose detail.
+${TRAILING_GUIDANCE_LINE}

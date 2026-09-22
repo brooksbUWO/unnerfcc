@@ -4,10 +4,10 @@ description: >-
   Shows the JSON job_config/events payload shape (allowed tools and seed user
   event) used when creating a cloud routine, followed by the connected-connector
   list and the environment the routine must run in.
-ccVersion: 2.1.257
+ccVersion: 2.1.280
 variables:
-  - CONNECTED_MCP_CONNECTORS_LIST
-  - AVAILABLE_ENVIRONMENTS_LIST
+  - CONNECTOR_LIST
+  - ENVIRONMENT_LIST
 -->
 "}}
         ],
@@ -31,13 +31,13 @@ For a one-time run, replace `"cron_expression": "CRON_EXPR"` with `"run_once_at"
 
 Generate a fresh lowercase UUID for `events[].data.uuid` yourself.
 
-Every `events[].data.message` must be the API message shape `{"role": "user", "content": "..."}` — the `role` field is required, never omit it.
+Every `events[].data.message` must be the API message shape `{"role": "user", "content": "..."}` — the `role` field is required, never omit it. If you instead write the body in the `session_request` form that list and get return, the same rule applies to `session_request.events[].payload.message`.
 
 ## Available MCP Connectors
 
 These are the user's currently connected claude.ai MCP connectors:
 
-${CONNECTED_MCP_CONNECTORS_LIST}
+${CONNECTOR_LIST}
 
 When attaching connectors to a routine, use the `connector_uuid` and `name` shown above (the name is already sanitized to only contain letters, numbers, hyphens, and underscores), and the connector's URL. The `name` field in `mcp_connections` must only contain `[a-zA-Z0-9_-]` — dots and spaces are NOT allowed.
 
@@ -47,6 +47,6 @@ When attaching connectors to a routine, use the `connector_uuid` and `name` show
 
 Every routine requires an `environment_id` in the job config. This determines where the cloud agent runs. Ask the user which environment to use.
 
-${AVAILABLE_ENVIRONMENTS_LIST}
+${ENVIRONMENT_LIST}
 
 Use the `id` value as the `environment_id` in `job_config.ccr.environment_id`.

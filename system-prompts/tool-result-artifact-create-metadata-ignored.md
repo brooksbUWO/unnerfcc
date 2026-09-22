@@ -1,8 +1,8 @@
 <!--
 name: 'Tool Result: Artifact create metadata ignored'
 description: >-
-  Artifact tool result note explaining that icon and description are ignored on
-  creation and can be passed on subsequent publishes.
-ccVersion: 2.1.251
+  Notes that icon and description are ignored on create and must be passed when
+  publishing files to the new Artifact.
+ccVersion: 2.1.280
 -->
- ignored on create — a create takes only the type and an optional title (the icon and description start as the type's); pass them when you publish files to it.
+ ignored on create — a create takes only the type and an optional title (the description starts as the type's); pass them when you publish files to it.

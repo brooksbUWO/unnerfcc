@@ -1,8 +1,8 @@
 <!--
 name: 'Tool Parameter: Artifact label suffix'
 description: >-
-  Suffix describing the artifact version label parameter constraints and
-  purpose.
-ccVersion: 2.1.257
+  Describes the optional short publish label parameter, its 60-character cap,
+  and that it is a few words rather than a description.
+ccVersion: 2.1.280
 -->
- makes, max 60 chars (e.g. "Draft to legal"). Shown in the version picker. Optional — a few words, not a description.
+A short name for this publish, max 60 chars (e.g. "Draft to legal"). Optional — a few words, not a description.

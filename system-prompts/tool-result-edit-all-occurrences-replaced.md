@@ -3,10 +3,11 @@ name: Edit all-occurrences replaced result
 description: >-
   Edit tool_result content sent to the model confirming the file was updated and
   all occurrences were successfully replaced; model-facing.
-ccVersion: 2.1.191
+ccVersion: 2.1.280
 variables:
-  - TOOL_RESULT_EDIT_ALL_OCCURRENCES_REPLACED_VAR_0
-  - TOOL_RESULT_EDIT_ALL_OCCURRENCES_REPLACED_VAR_1
-  - TOOL_RESULT_EDIT_ALL_OCCURRENCES_REPLACED_VAR_2
+  - UPDATED_FILE_PATH
+  - FILE_STATE_SUFFIX
+  - USER_MODIFIED_SUFFIX
+  - TRAILING_NOTE_SUFFIX
 -->
-The file ${TOOL_RESULT_EDIT_ALL_OCCURRENCES_REPLACED_VAR_0} has been updated${TOOL_RESULT_EDIT_ALL_OCCURRENCES_REPLACED_VAR_1}. All occurrences were successfully replaced.${TOOL_RESULT_EDIT_ALL_OCCURRENCES_REPLACED_VAR_2}
+The file ${UPDATED_FILE_PATH} has been updated${FILE_STATE_SUFFIX}. All occurrences were successfully replaced.${USER_MODIFIED_SUFFIX}${TRAILING_NOTE_SUFFIX}

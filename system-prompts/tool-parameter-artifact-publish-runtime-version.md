@@ -1,8 +1,8 @@
 <!--
 name: 'Tool Parameter: Artifact publish runtime version'
 description: >-
-  Describes the runtime version parameter for publish to manage artifact engine
-  version.
-ccVersion: 2.1.257
+  Describes the runtime version parameter for publish, which keeps, upgrades,
+  pins or rolls back the artifact's runtime.
+ccVersion: 2.1.280
 -->
-publish: the artifact's runtime version — omit to keep it (the default), 'latest' to upgrade, an exact version to pin or roll back. Changes how the published page behaves: pass only when the author explicitly intends that.
+publish: the artifact's runtime version. Leaving it out keeps the current version (the default), 'latest' upgrades, and an exact version pins or rolls back. It changes how the published page behaves, so Claude passes it only when the author explicitly intends that change.

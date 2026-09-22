@@ -1,11 +1,12 @@
 <!--
 name: 'Tool Result: Memory sync paused for store'
 description: >-
-  Warns that sync is paused for one memory store, so affected writes are not
-  persisted and will be lost when the machine is recycled.
-ccVersion: 2.1.219
+  Tells the model that sync is paused for a named memory store and that affected
+  memory writes are not being persisted to shared memory.
+ccVersion: 2.1.280
 variables:
   - MEMORY_STORE_NAME
   - PAUSE_REASON
+  - TRAILING_DETAIL_CLAUSE
 -->
-Memory sync is paused for one of your memory stores (${MEMORY_STORE_NAME}): ${PAUSE_REASON} Affected memory writes are NOT being persisted to shared memory and will be lost when this session's machine is recycled.
+Memory sync is paused for one of your memory stores (${MEMORY_STORE_NAME}): ${PAUSE_REASON}${TRAILING_DETAIL_CLAUSE} Affected memory writes are NOT being persisted to shared memory and will be lost when this session's machine is recycled.

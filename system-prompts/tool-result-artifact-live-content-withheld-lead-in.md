@@ -1,8 +1,8 @@
 <!--
 name: 'Tool Result: Live Content Withheld Lead-in'
 description: >-
-  Lead-in explaining that live artifact content was withheld by a policy or
-  permission setting.
-ccVersion: 2.1.251
+  Lead-in explaining that the artifact's live content was withheld by a policy
+  or permission setting.
+ccVersion: 2.1.280
 -->
-The live content was withheld here by your 
+The live content was withheld here by 

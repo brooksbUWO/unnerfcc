@@ -9,7 +9,7 @@ description: >-
   the page's decisions by posting marker-guarded GitHub comments while never
   submitting an approve/request-changes verdict without explicit user
   confirmation.
-ccVersion: 2.1.257
+ccVersion: 2.1.280
 -->
 ---
 name: artifact-pr-review
@@ -559,8 +559,8 @@ that the artifact "appears to have been republished elsewhere (by another
 session, or by someone saving from the page itself)" - the pill click is
 the page saving itself, so that notice is your signal (it names how to
 re-read it). The subscription runs in
-interactive sessions and SDK main loops - not in cloud sessions,
-subagents, background, or print mode - and the socket dies within minutes
+interactive, SDK, and background (claude agents) sessions - not in cloud
+sessions, subagents, or print mode - and the socket dies within minutes
 when the machine sleeps, so a notice can simply be missed. Pull: on any
 re-run, resume, or when the user asks about decisions, read the page. Run
 OFFLINE-FIRST: the published artifact IS the durable record of what was

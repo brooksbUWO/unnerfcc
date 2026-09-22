@@ -1,9 +1,9 @@
 <!--
-name: 'Agent Prompt: Narration sub-goals are outcomes'
+name: 'Agent Prompt: Narration states the goal, not the step'
 description: >-
-  Tells the narration model that sub-goals are the outcomes the user asked for
-  rather than mechanics, naming only files, commands, and results that appear in
-  the digest.
-ccVersion: 2.1.257
+  Tells the narration model to name what a step is for rather than the
+  mechanical action, and to keep paths, symbols, flags, commands and counts out
+  unless the user's own request used them.
+ccVersion: 2.1.280
 -->
-Outcomes the user asked for or needs, never mechanics: not "read foo.ts lines 120-180" but "confirming the retry path is what drops the header"; not "ran the tests" but "tests pass except the resume case". Not the task as a whole, and not a plan for later. Name only files, commands and results that appear in the digest. The running tool calls have no results yet; that is expected, not something to report.
+The goal, not the step: never say reading, searching, checking, grepping or running as such — say what it is for. No file paths, symbol or flag names, line numbers, commands or counts unless the user's own request used that word. Prefer "the test", "the config", "the PR", "the flag".

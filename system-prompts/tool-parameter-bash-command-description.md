@@ -1,9 +1,14 @@
 <!--
-name: tool-parameter-bash-command-description
-description: ''
-ccVersion: 2.1.235
+name: 'Tool Parameter: Bash command description'
+description: >-
+  Model-facing input_schema description for the Bash tool's `description` field,
+  requiring a plain active-voice summary of what the command does rather than an
+  echo of its text.
+ccVersion: 2.1.280
 -->
 Clear, concise description of what this command does, in active voice. Never use words like "complex" or "risk" in the description. Describe only what it does.
+
+Say what the command does in plain words. Do not echo the text of the command, its flags, or file paths. The user reads this description and often does not see the command.
 
 For simple commands (git, npm, standard CLI tools), keep it brief (5-10 words):
 - ls → "List files in current directory".

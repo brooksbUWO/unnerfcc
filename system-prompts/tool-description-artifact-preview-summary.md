@@ -1,6 +1,8 @@
 <!--
 name: 'Tool Description: Artifact preview summary'
-description: Short summary of the artifact preview and diagnostics tool.
-ccVersion: 2.1.257
+description: >-
+  Short summary of the action that reads viewers' runtime diagnostics for a
+  published page.
+ccVersion: 2.1.280
 -->
-preview a page locally and read viewers' runtime diagnostics
+read viewers' runtime diagnostics

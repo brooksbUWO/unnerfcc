@@ -1,10 +1,11 @@
 <!--
 name: 'System Prompt: Deferred tools no longer available'
 description: >-
-  Informs the model that specific deferred tools are no longer available and
-  that tool search will return no match.
-ccVersion: 2.1.251
+  Informs the model that specific deferred tools are no longer available in this
+  session, followed by the do-not-search clause.
+ccVersion: 2.1.280
 variables:
-  - TOOL_SEARCH_TOOL_NAME
+  - DEFERRED_TOOL_NOUN
+  - DO_NOT_SEARCH_CLAUSE
 -->
-The following deferred tools are no longer available in this session. Do not search for them — ${TOOL_SEARCH_TOOL_NAME} will return no match:
+The following ${DEFERRED_TOOL_NOUN}s are no longer available in this session. ${DO_NOT_SEARCH_CLAUSE}:

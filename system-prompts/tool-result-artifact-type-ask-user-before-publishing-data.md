@@ -1,8 +1,8 @@
 <!--
 name: 'Tool Result: Ask User Before Publishing Data To Artifact Type'
 description: >-
-  Advises asking the user before publishing data to an artifact type if expected
-  files are unclear.
-ccVersion: 2.1.251
+  Advises asking the user before writing data to an artifact type when the file
+  names do not make clear what it expects.
+ccVersion: 2.1.280
 -->
-. If the expected files aren't clear from their names, ask the user before publishing data to it.]
+. If what it expects isn't clear from the file names, ask the user before writing data to it.]

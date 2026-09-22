@@ -1,10 +1,11 @@
 <!--
 name: 'System Reminder: Deferred tools no longer available'
 description: >-
-  Reminder that deferred tools are gone because their MCP server disconnected
-  and that searching for them will return no match.
-ccVersion: 2.1.219
+  Reminder that deferred tools are gone because their MCP server disconnected,
+  followed by the do-not-search clause.
+ccVersion: 2.1.280
 variables:
-  - TOOL_SEARCH_TOOL_NAME
+  - DEFERRED_TOOL_NOUN
+  - DO_NOT_SEARCH_CLAUSE
 -->
-The following deferred tools are no longer available (their MCP server disconnected). Do not search for them — ${TOOL_SEARCH_TOOL_NAME} will return no match:
+The following ${DEFERRED_TOOL_NOUN}s are no longer available (their MCP server disconnected). ${DO_NOT_SEARCH_CLAUSE}:

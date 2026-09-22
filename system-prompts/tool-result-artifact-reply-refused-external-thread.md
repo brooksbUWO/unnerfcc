@@ -1,0 +1,8 @@
+<!--
+name: 'Tool Result: Artifact Reply Refused External Thread'
+description: >-
+  Rejects reply action because the artifact's page maintains its own comment
+  threads and instructs posting there instead.
+ccVersion: 2.1.272
+-->
+Reply not posted: this artifact's page keeps and shows its own comment threads, and a reply on this thread would never appear there. Nothing was posted; do not retry this reply. An answer belongs in the page's own comment thread (a comment there, not an edit to the page's content), through the document's own connector tools (search the available tools for them if they are not in view) and under those tools' own permissions; if there are none, answer here in the session and tell the user you cannot reply in the page from here.

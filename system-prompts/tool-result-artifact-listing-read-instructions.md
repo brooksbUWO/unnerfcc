@@ -1,10 +1,10 @@
 <!--
 name: 'Tool Result: Artifact listing read instructions'
 description: >-
-  Instructs the model how to read listed artifacts to use them, noting nothing
-  is applied automatically.
-ccVersion: 2.1.257
+  Instructs the model that each listed artifact is ordinary and must be read by
+  its link before use, because listing applies nothing by itself.
+ccVersion: 2.1.280
 -->
 
 
-Each is an ordinary Artifact: read one by its link (action "read", or "list_files" then "read_file") to use it; nothing here is applied unless you do.
+Each is an ordinary Artifact, and listing applies nothing by itself: read the one you use by its link (action "read"

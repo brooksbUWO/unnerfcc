@@ -1,10 +1,11 @@
 <!--
 name: 'Tool Description: Artifact watch and republish'
 description: >-
-  Explains that publishing an artifact starts a background live-changes
-  subscription, how to watch an artifact it did not just publish, and that a
-  republish from elsewhere arrives as a notification telling it to re-read
-  before editing.
-ccVersion: 2.1.257
+  Explains that publishing starts a background live-changes subscription, how to
+  watch an artifact it did not just publish, and to re-read the artifact URL and
+  merge before republishing when a newer version exists.
+ccVersion: 2.1.280
+variables:
+  - ARTIFACT_TOOL_NAME
 -->
-**Watching for republishes**: publishing an artifact starts subscribing this session to its live changes in the background, and the result line says whether that began, was skipped, or was already connected — `status` shows whether it actually connected, and you are told if it cannot; watches reconnect on their own if the connection drops. To watch an artifact you did not just publish (or to restart a stopped watch), pass `action: "watch"` with its `url`; a later republish from elsewhere — another session, or someone saving from a page that can publish new versions of itself — arrives as a notification telling you to re-read it before editing.
+**Watching for republishes**: publishing an artifact starts subscribing this session to its live changes in the background, and the result line says whether that began, was skipped, or was already connected — `status` shows whether it actually connected, and you are told if it cannot; watches reconnect on their own if the connection drops. To watch an artifact you did not just publish (or to restart a stopped watch), pass `action: "watch"` with its `url`; a later republish from elsewhere — another session, or someone saving from a page that can publish new versions of itself — starts no turn and sends no notification. Some Artifact results open with one line saying a newer version was published; when one does, fetch the artifact's URL again (the `${ARTIFACT_TOOL_NAME}` tool's `action: "read"`, not your local file) and merge your edits onto that version before publishing. When a publish is refused because the artifact changed, follow the refusal, which usually hands you that version to merge.

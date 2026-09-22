@@ -1,8 +1,6 @@
 <!--
 name: 'Tool Parameter: Artifact list scope options'
-description: >-
-  Describes the scope parameter options for the list action ('mine', 'shared',
-  'all').
-ccVersion: 2.1.257
+description: 'Describes which listing the list action returns, with ''mine'' as the default.'
+ccVersion: 2.1.280
 -->
-list: which listing — 'mine' (default), 'shared', 'all'
+list: which listing to return. 'mine' is the default. The others are 

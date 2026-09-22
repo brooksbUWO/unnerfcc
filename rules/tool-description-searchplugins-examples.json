@@ -1,0 +1,18 @@
+{
+ "id": "tool-description-searchplugins-examples",
+ "rules": [
+  {
+   "description": "searchplugins examples: end each example with a period (STE list form)",
+   "stock": [
+    "Examples:",
+    "- \"use the deploy plugin\" → keywords [\"deploy\"]",
+    "- \"is there something for linting?\" → keywords [\"lint\", \"format\", \"code quality\"]"
+   ],
+   "unnerf": [
+    "Examples:",
+    "- \"use the deploy plugin\" → keywords [\"deploy\"].",
+    "- \"is there something for linting?\" → keywords [\"lint\", \"format\", \"code quality\"]."
+   ]
+  }
+ ]
+}

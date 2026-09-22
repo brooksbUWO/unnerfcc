@@ -1,9 +1,10 @@
 <!--
 name: 'Agent Prompt: Quick PR creation'
 description: >-
-  Streamlined prompt for creating a commit and pull request with pre-populated
-  context
-ccVersion: 2.1.219
+  Quick PR agent prompt carrying the git safety protocol and the task of
+  analyzing every commit in the diff before branching and opening the pull
+  request.
+ccVersion: 2.1.280
 variables:
   - PR_CONTEXT
   - BASE_BRANCH
@@ -18,6 +19,7 @@ variables:
 - Do not force push to main or master. If the user asks for it, warn the user first.
 - Do not commit files that likely contain secrets (.env, credentials.json).
 - Do not use git commands with the -i flag (git rebase -i, git add -i). They require interactive input, which is not supported
+- When staging files, add specific files by name rather than using "git add -A" or "git add ." — bulk adds can accidentally include sensitive files (.env, credentials) or large binaries
 
 ## Your task
 

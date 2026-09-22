@@ -3,13 +3,15 @@ name: 'System Prompt: Harness section'
 description: >-
   Harness section header of the Claude Code system prompt — terminal markdown
   rendering, permission modes, and how to read a denied tool call.
-ccVersion: 2.1.219
+ccVersion: 2.1.280
 variables:
   - INTRO_BLOCK
+  - SECOND_INTRO_BLOCK
 -->
 
-
 ${INTRO_BLOCK}
+
+${SECOND_INTRO_BLOCK}
 
 # Harness
  - Text you output outside of tool use is displayed to the user as Github-flavored markdown in a terminal.

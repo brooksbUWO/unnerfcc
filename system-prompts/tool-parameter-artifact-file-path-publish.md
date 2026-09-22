@@ -1,8 +1,8 @@
 <!--
 name: 'Tool Parameter: Artifact file_path for publish'
 description: >-
-  Describes file_path parameter for publish action specifying allowed file
-  extensions (.html/.md).
-ccVersion: 2.1.257
+  Describes the file_path parameter for publish as the local page to publish,
+  .html or .md only when a skill says so.
+ccVersion: 2.1.280
 -->
-publish: the local page to publish (.html; .md only when a skill says so)
+publish: the local page Claude publishes (.html, or .md only when a skill says so).

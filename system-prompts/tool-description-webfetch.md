@@ -1,7 +1,9 @@
 <!--
 name: 'Tool Description: WebFetch'
-description: Tool description for web fetch functionality.
-ccVersion: 2.1.235
+description: >-
+  Tool description for web fetch functionality — retrieves a URL, converts it to
+  markdown, and processes it with a prompt through a small fast model.
+ccVersion: 2.1.280
 -->
 
 - Fetches content from a specified URL and processes it using an AI model
@@ -16,6 +18,7 @@ Usage notes:
   - A bot wall, a 403, or an empty body is a signal to change instrument, not a verdict on the page. On the first blocked fetch, go to a real browser tool if one is available.
   - The URL must be a fully-formed valid URL
   - HTTP URLs will be automatically upgraded to HTTPS
+  - localhost and other hostnames without a dot are not supported; for a local server, use curl via Bash
   - The prompt should describe what information you want to extract from the page
   - This tool is read-only and does not modify any files
   - Results may be summarized if the content is very large

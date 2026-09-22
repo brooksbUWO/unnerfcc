@@ -1,17 +1,16 @@
 <!--
-name: 'Skill: Setup Cowork'
+name: 'Skill: Guided setup'
 description: >-
-  Bundled setup-cowork skill — walks the user through the six onboarding steps
-  (role, plugins, connectors, trying a skill, writing voice, wrap-up) with a
-  TODO checklist, driving the plugin, connector, and writing-style tools and
-  never presuming a tool result before the tool runs.
-ccVersion: 2.1.219
+  Bundled guided-setup skill that walks the user through six onboarding steps
+  with a TODO checklist, driving the plugin, connector, skill and writing-voice
+  tools and never presuming a tool result before the tool runs.
+ccVersion: 2.1.280
 variables:
-  - ROLE_SELECTION_STEP
+  - ROLE_STEP_SECTION
 -->
-# Setup Cowork
+# Guided setup
 
-Help the user get Cowork configured for their work. Six steps — role, plugins, connectors, try a skill, writing voice, wrap.
+Help the user get Claude set up for their work. Six steps — role, plugins, connectors, try a skill, writing voice, wrap.
 
 ## Step 0 — Checklist
 
@@ -26,17 +25,17 @@ Before your first user-facing message, create a TODO list with these items so th
 
 Mark each one complete as you finish it. Keep it to these six — don't add sub-items.
 
-${ROLE_SELECTION_STEP}
+${ROLE_STEP_SECTION}
 
 ## Step 2 — Suggest plugins
 
-The role picker tool result will contain their selection. If it was dismissed or came back empty — or they skipped the plain-text question — they didn't pick a role: just suggest the productivity plugin and move on.
+The role picker tool result will contain their selection. If it was dismissed or came back empty — or they skipped the plain-text question — they didn't pick a role: just suggest the productivity plugin and move on (after the ListPlugins check below, find it with SearchPlugins using keywords ["productivity"]; if nothing comes back, skip the recommendations widget).
 
 **Always** check for already-installed plugins before doing anything else — this is not optional. Call ListPlugins **without any intro text** — do not write "Looks like you already have…" before you know the result. The tool renders the installed plugins as a widget on its own; let it speak for itself. After it returns, react to what actually came back: if plugins appeared, acknowledge them below the widget ("Those are already on your account — here's what else fits your role."); if it's empty, just say "No plugins yet — let's fix that." Never write text that presumes a non-empty result before the tool runs. Do not pass installed plugins to SuggestPluginInstall afterward or you'll show them twice. Admin-provisioned plugins will appear in this list automatically; never skip the call. Then, regardless of what's installed, still recommend new role-matched plugins below in a separate widget.
 
 Search the plugin marketplace for their role with SearchPlugins. **Exclude anything already installed** — the installed-plugins widget above already covers those, so the recommendations widget must only contain plugins the user does not yet have. Never show the same plugin in both widgets. **Organization plugins always come first.** If the user's org has published its own plugins, those are the recommendation — they're built for this company's actual tools, data, and workflows, and someone internal decided they matter. An org-built plugin that's even loosely relevant to the role outranks any generic marketplace plugin, full stop. Lead with org plugins, and only reach for generic ones to fill empty slots when the org catalog has nothing close. Never bury an org plugin under a generic one.
 
-Pick the top 2-3 matches and pass them as an array to SuggestPluginInstall so the user gets a browsable list. If only one is a strong fit, passing one is fine. If the search comes up empty, fall back to the productivity plugin. If every good match is already installed, skip the recommendations widget entirely and just say "You've already got the best plugin for [role] — let's move on to connectors."
+Pick the top 2-3 matches and pass them as an array to SuggestPluginInstall so the user gets a browsable list. If only one is a strong fit, passing one is fine. Leave its trigger unset: a setup card is neither a request for plugins nor an unprompted offer. If the search comes up empty, search again with keywords ["productivity"] and suggest the productivity plugin it returns (SuggestPluginInstall only shows plugins the catalog confirms, so never invent an id); if that search is empty too, skip the recommendations widget and go on to connectors. If every good match is already installed, skip the recommendations widget entirely and just say "You've already got the best plugin for [role] — let's move on to connectors."
 
 Above the widget, introduce it in one line: "Here are plugins built for [role] work — each one adds a set of skills you can run with `/`." The card shows Add or Manage depending on whether each plugin is already installed — don't describe the button. Below the widget, reinforce what they're for and tie it to the next step: "Installing one drops its skills straight into your `/` menu so you can run them anytime. Once you've picked one, want me to pull up the connectors it uses so those skills have your real data behind them?" — phrased so it works whether they're installing fresh or already have it. End your turn.
 
@@ -60,7 +59,7 @@ If they wave it off at either point, that's fine — go to Step 5.
 
 ## Step 5 — Writing voice
 
-Everything so far taught Cowork about the user's *tools*. This step teaches it about the *user*. This matters because so much of what Cowork produces is prose the user will send under their own name.
+Everything so far taught Claude about the user's *tools*. This step teaches it about the *user*. This matters because so much of what Claude produces here is prose the user will send under their own name.
 
 **First, settle which opener you're writing — the account's full skills list decides.** Check the skills in your system context, or call ListSkills with no keywords; the plugin-filtered card from Step 4 covered one plugin and can't answer this. If `my-writing-style` is there (the saved profile — not `setup-writing-style`, the flow that creates it) — or the user says they've already set one up — your whole message is one line ("You've already got a voice profile, so anything I draft for you will use it") and you go to Step 6. Only if it's absent do you offer setup. Re-running the flow on someone who's already done it wastes their time and risks overwriting a profile they've tuned. If they *want* to update or redo it, that counts as a yes — invoke the skill the same way.
 
@@ -76,7 +75,7 @@ Otherwise, offer it. Make the case in two or three sentences of prose — these 
 
 Phrase the ask so passing is obviously fine — "Want to do that now, or skip it?" A user who feels cornered into a two-minute detour at the end of setup will just abandon the whole thing.
 
-**If they say yes:** invoke the `setup-writing-style` skill (via the Skill tool — don't improvise its flow from memory) and let it run end to end. Don't paraphrase its steps, re-explain consent, or interleave your own commentary — it opens with its own framing, and a second voice narrating over it is confusing. Cowork setup is paused, not over. The voice flow counts as finished when one of three things happens: the save tool reports success; the user confirms the profile is saved (when saving happens via a Save skill button, you can't see the click and the new skill won't appear in your skills list until their next session — the flow already has you ask them to click it, so their answer is your signal; don't ask twice); or they ask to skip or move on to something else. Only then mark this TODO done and move to Step 6 — invoking the skill starts this step; it doesn't complete it.
+**If they say yes:** invoke the `setup-writing-style` skill (via the Skill tool — don't improvise its flow from memory) and let it run end to end. Don't paraphrase its steps, re-explain consent, or interleave your own commentary — it opens with its own framing, and a second voice narrating over it is confusing. Setup is paused, not over. The voice flow counts as finished when one of three things happens: the save tool reports success; the user confirms the profile is saved (when saving happens via a Save skill button, you can't see the click and the new skill won't appear in your skills list until their next session — the flow already has you ask them to click it, so their answer is your signal; don't ask twice); or they ask to skip or move on to something else. Only then mark this TODO done and move to Step 6 — invoking the skill starts this step; it doesn't complete it.
 
 **If they say no or defer:** mark the TODO done and tell them they can always create their voice profile later by simply asking — e.g. "No problem. Whenever you want drafts to sound like you, just ask me to learn your writing voice." Then Step 6. Don't sell it twice.
 

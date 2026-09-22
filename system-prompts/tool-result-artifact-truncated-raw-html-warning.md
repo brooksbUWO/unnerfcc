@@ -1,8 +1,8 @@
 <!--
 name: 'Tool Result: Truncated raw HTML warning'
-description: Warns the model that truncated raw HTML follows and not to republish from it.
-ccVersion: 2.1.251
-variables:
-  - PREFIX
+description: >-
+  Warns the model that the raw HTML is truncated rather than the whole artifact,
+  so it must not republish from it.
+ccVersion: 2.1.280
 -->
-${PREFIX}TRUNCATED raw HTML follows — not the whole artifact, so do not republish from it
+not the whole artifact, so do not republish from it

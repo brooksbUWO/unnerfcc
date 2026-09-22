@@ -1,7 +1,7 @@
 <!--
-name: 'Data: Tool use reference — C#'
+name: 'Data: Tool use reference - C#'
 description: Tool-use API reference doc (C# bindings).
-ccVersion: 2.1.257
+ccVersion: 2.1.280
 -->
 # Tool Use - C#
 
@@ -19,7 +19,7 @@ using Anthropic.Models.Messages;
 
 var parameters = new MessageCreateParams
 {
-    Model = Model.ClaudeSonnet4_6,
+    Model = "{{OPUS_ID}}",
     MaxTokens = 16000,
     Tools = [
         new Tool {

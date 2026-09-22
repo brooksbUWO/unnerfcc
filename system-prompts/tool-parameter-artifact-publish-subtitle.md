@@ -1,6 +1,6 @@
 <!--
 name: 'Tool Parameter: Artifact publish subtitle'
-description: Describes the subtitle parameter for the artifact gallery card.
-ccVersion: 2.1.257
+description: Describes the one-sentence subtitle shown on the artifact's gallery card.
+ccVersion: 2.1.280
 -->
-publish: one sentence for the gallery card's subtitle.
+publish: one sentence for the subtitle on the gallery card.

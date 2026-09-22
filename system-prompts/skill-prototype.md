@@ -7,7 +7,7 @@ description: >-
   front, build the core interaction for real and mock the rest, iterate on
   feedback by republishing the same artifact, and close with an approval-gated
   gaps list that scopes what a real build would still need.
-ccVersion: 2.1.257
+ccVersion: 2.1.280
 -->
 ---
 name: prototype
@@ -118,14 +118,18 @@ break the demo - an unclosed tag, a handler wired to nothing, a script
 error - and fix what that read turns up. One read and its fixes are the
 whole pre-publish check: do not spin up browsers, servers, or test
 harnesses to drive the page, and do not start a second polish pass.
-After publishing, if the Artifact tool offers a "verify" action, that is
-the one sanctioned runtime check: it reads the console output and errors
-a viewer's browser captured for the published version. An empty result
-can mean no viewer has opened the page yet - that is not evidence the
-demo works, so say what you checked rather than claiming it works.
+After publishing, where this session offers a diagnostics read (the
+`ArtifactCheck` tool's `action: "verify"`, or the Artifact tool's own
+`action: "verify"` where there is no separate `ArtifactCheck` tool), that is the one
+sanctioned runtime check: it reads the console output and errors a
+viewer's browser captured for the published version, and an empty result
+can mean no viewer has opened the page yet. Without it, exercise once
+what the page stores or serves (read the data back, call a read-only GET
+endpoint). Either way, say what you checked rather than claiming the demo
+works.
 
 Then publish with the Artifact tool, following its own instructions - a
-short stable title, a favicon emoji, and a one-sentence description. If the
+short stable title, a one-word `icon`, and a one-sentence description. If the
 Artifact tool is unavailable, say so in one plain line and point the
 user at the file instead - do not hunt for another way to host it.
 Give the user the link plus a summary of what the prototype shows,

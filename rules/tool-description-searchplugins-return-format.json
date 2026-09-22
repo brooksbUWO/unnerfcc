@@ -1,0 +1,14 @@
+{
+ "id": "tool-description-searchplugins-return-format",
+ "rules": [
+  {
+   "description": "searchplugins return format: plain sentences, no \"already\", condition before command",
+   "stock": [
+    "Returns a ranked list with id, name, description, and whether the plugin is already enabled for this session (in a channel session, whether the channel has it). When results fit and SuggestPluginInstall is among your tools, call it to render the install card; otherwise relay the relevant results in text instead. If nothing relevant, proceed without mentioning that you searched."
+   ],
+   "unnerf": [
+    "This tool returns a ranked list with id, name, description, and whether the plugin is enabled for this session (in a channel session, whether the channel has it). If the results fit and SuggestPluginInstall is one of your tools, call it to show the install card. If not, relay the relevant results in text. If nothing is relevant, continue and do not mention the search."
+   ]
+  }
+ ]
+}

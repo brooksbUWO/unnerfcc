@@ -1,15 +1,16 @@
 <!--
 name: 'Tool Description: Bash — committing changes with git'
 description: >-
-  Bash-tool commit workflow (the non-/commit branch of the old conditional): the
-  git safety protocol, the commit-only-when-asked rule, and the numbered
-  parallel-command status/diff/log then stage-and-commit sequence.
-ccVersion: 2.1.257
+  Bash tool section describing the git commit workflow: parallel status and diff
+  inspection, the git safety protocol, HEREDOC commit messages, and the tools
+  that must not be used while committing.
+ccVersion: 2.1.280
 variables:
   - BASH_TOOL_NAME
   - COMMIT_MESSAGE_FORMAT_CLAUSE
   - FILE_READ_TOOL_NAME
   - FILE_SEARCH_TOOL_NAME
+  - COMMIT_MESSAGE_EXAMPLE_SUFFIX
 -->
 # Committing changes with git
 
@@ -51,4 +52,8 @@ Important notes:
 - To keep the message format correct, always pass the commit message with a HEREDOC, as in this example:
 <example>
 git commit -m "$(cat <<'EOF'
-   Commit message here.
+   Commit message here.${COMMIT_MESSAGE_EXAMPLE_SUFFIX}
+   EOF
+   )"
+</example>
+
