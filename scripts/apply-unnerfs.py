@@ -59,6 +59,23 @@ This idempotency is intentional: you can run the script repeatedly, after any
 tweakcc re-extract, and it will converge to the un-nerfed state regardless of
 how many un-nerfs were already in place.
 
+SCOPE OF --dry-run / --check (WHAT A GREEN RESULT DOES AND DOES NOT PROVE)
+-------------------------------------------------------------------------
+This script reads and writes ONLY the replay `system-prompts/` tree, never the
+Claude Code binary. A green --check (exit 0) means every rule reported "skipped":
+each rule's `unnerf` is already present in the tree AND its `stock` is absent (so
+nothing would change). --check exits 1 whenever any rule would apply, fail, or be
+missing. So a green result proves the `unnerf` is in the tree; it does NOT prove
+the `stock` was ever in the tree, and it does NOT read the binary catalog.
+After a rule edit this creates a FALSE GREEN: once the tree already holds the
+`unnerf` from an earlier apply, the `elif rule.unnerf in content` branch reports
+"skipped" even if the edited `stock` matches neither the tree nor the binary
+catalog. So a green run here can hide a `stock` that drifted from the binary. The
+reliable binary-side check is that each rule's `stock` is a verbatim substring of
+the extracted catalog body; that check lives in the verify/upgrade path, not here.
+Treat a green run of this script as "the replay tree already holds the un-nerfs",
+not as "the binary will patch cleanly".
+
 REPORT FORMAT (READ BY CLAUDE AND HUMANS)
 -----------------------------------------
 For each file:
@@ -173,10 +190,30 @@ def _load_rules(rules_dir: Path) -> dict[str, list[Rule]]:
                     raise SystemExit(f"error: {path}: rule field '{field}' is empty")
                 if any("\r" in line for line in value):
                     raise SystemExit(f"error: {path}: rule field '{field}' contains a carriage return")
+            stock_text = "\n".join(r["stock"])
+            unnerf_text = "\n".join(r["unnerf"])
+            # Idempotency guard (authoring-time, loud). apply_rules() tests
+            # `rule.stock in content` BEFORE `rule.unnerf in content`, so if the
+            # stock text is a substring of (or equal to) the un-nerf, the stock
+            # stays present after the first apply: the next run re-replaces that
+            # stock fragment INSIDE the already-applied un-nerf and corrupts it,
+            # and --check never settles. A stock==unnerf no-op is also reported
+            # FAILED by the binary patcher. Caught here in the loader so it fires
+            # for every consumer, including --dump-rules, not just apply_rules.
+            if stock_text in unnerf_text:
+                relation = "equals" if stock_text == unnerf_text else "is a substring of"
+                raise SystemExit(
+                    f"error: {path}: rule {description!r} has `stock` that {relation} "
+                    f"its `unnerf`. The apply step matches `stock` before `unnerf`, so "
+                    f"this rule would re-apply on every run and --check would never "
+                    f"settle (a stock==unnerf no-op also reports FAILED from the binary "
+                    f"patcher). Reword the `unnerf` so it does not contain the `stock` "
+                    f"verbatim, or retire the rule if it is a no-op."
+                )
             entries.append(
                 Rule(
-                    stock="\n".join(r["stock"]),
-                    unnerf="\n".join(r["unnerf"]),
+                    stock=stock_text,
+                    unnerf=unnerf_text,
                     description=description,
                 )
             )
@@ -246,6 +283,10 @@ def apply_rules(
                         ),
                     )
                 )
+            # NOTE: the stock-is-substring-of-unnerf idempotency guard lives in
+            # _load_rules() (authoring-time, loud SystemExit), so no such rule can
+            # reach this point. It is enforced there, not here, so it also covers
+            # --dump-rules and any other consumer of the loaded catalog.
         if guard_failed:
             continue
         if not path.exists():

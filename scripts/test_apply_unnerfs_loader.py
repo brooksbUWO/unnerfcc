@@ -308,3 +308,65 @@ def test_body_line_with_cr_exits_loud_case_d(tmp_path):
     msg = str(exc_info.value)
     assert "error:" in msg
     assert str(path) in msg
+
+
+# --- Idempotency guard in _load_rules: a rule whose `stock` is contained in its
+# `unnerf` must fail loudly at LOAD time. apply_rules() tests `rule.stock in
+# content` before `rule.unnerf in content`, so a stock that is a substring of (or
+# equal to) its unnerf would re-apply on every run and --check would never settle.
+# The guard lives in _load_rules (not apply_rules) so it also covers --dump-rules
+# and any other consumer of the loaded catalog. The 2026-11-10 web-fetch rule hit
+# the substring case; a stock==unnerf no-op is the equal case the binary patcher
+# reports FAILED. A SystemExit at load time means the file never loads, so no rule
+# can reach apply_rules or --dump-rules — the whole-file "nothing applies" property
+# is enforced by the raise, not by a per-result assertion.
+
+
+def test_loader_rejects_stock_substring_of_unnerf(tmp_path):
+    path = _write_rule_file(tmp_path, "subset-id", [
+        _one_rule(
+            description="substring",
+            stock=["Keep it short."],
+            unnerf=["Do not keep it short. Keep it short. is the wrong instruction."],
+        ),
+    ])
+    with pytest.raises(SystemExit) as exc_info:
+        MOD._load_rules(tmp_path)
+    msg = str(exc_info.value)
+    assert "error:" in msg
+    assert str(path) in msg
+    assert "is a substring of" in msg
+
+
+def test_loader_rejects_stock_equal_to_unnerf(tmp_path):
+    path = _write_rule_file(tmp_path, "equal-id", [
+        _one_rule(description="no-op", stock=["Done."], unnerf=["Done."]),
+    ])
+    with pytest.raises(SystemExit) as exc_info:
+        MOD._load_rules(tmp_path)
+    msg = str(exc_info.value)
+    assert "error:" in msg
+    assert str(path) in msg
+    assert "equals" in msg
+
+
+def test_loader_accepts_good_rule(tmp_path):
+    """A rule whose stock is NOT contained in its unnerf loads cleanly."""
+    _write_rule_file(tmp_path, "good-id", [
+        _one_rule(description="good", stock=["Be brief."], unnerf=["Be thorough and complete."]),
+    ])
+    result = MOD._load_rules(tmp_path)
+    assert result["good-id.md"][0].stock == "Be brief."
+    assert result["good-id.md"][0].unnerf == "Be thorough and complete."
+
+
+def test_live_catalog_has_no_stock_contained_in_its_unnerf():
+    """Whole-catalog guard: no live rule may have its stock contained in its
+    unnerf, or it would re-apply every run. MOD.RULES was loaded by the live
+    _load_rules at import, so this re-asserts the guard held across the real
+    catalog and pins the 2026-11-10 web-fetch reword against regression."""
+    for filename, rules in MOD.RULES.items():
+        for rule in rules:
+            assert rule.stock not in rule.unnerf, (
+                f"{filename}: rule {rule.description!r} has stock contained in unnerf"
+            )
