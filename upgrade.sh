@@ -86,6 +86,62 @@ log()  { printf '\033[1;36m==>\033[0m %s\n' "$*"; }
 ok()   { printf '\033[1;32m  ✓\033[0m %s\n' "$*"; }
 warn() { printf '\033[1;33m  !\033[0m %s\n' "$*" >&2; }
 die()  { printf '\033[1;31mupgrade.sh: %s\033[0m\n' "$*" >&2; exit 1; }
+
+# The per-chunk AI outputs (relabel's labels-NNN.json, bucket-analysis's
+# verdicts-NNN.json) are the only parts of a sync that cost money, so they are
+# kept in a per-version cache outside $WORK. A sync routinely needs several
+# attempts at the SAME Claude Code version — the first run surfaces a broken
+# un-nerf anchor, a removed prompt or a format change in engine/, the
+# maintainer edits the repo, and the run starts over — and none of that editing
+# invalidates a label the model already produced.
+#
+# The cache is CONTENT-ADDRESSED on the chunk file: an entry is named for the
+# sha256 of the exact chunk input it answers. That is what makes a retry cheap
+# even when the inputs shifted underneath it:
+#
+#   - a chunk whose bytes are unchanged hits the cache, whatever else moved;
+#   - a chunk that genuinely changed misses, and ONLY that chunk is re-queried;
+#   - renumbering or re-chunking is harmless, since nothing is keyed to NNN.
+#
+# An earlier design guarded the whole cache with a single copy of worklist.json
+# and discarded ALL of it when the freshly prepared worklist differed by one
+# byte. That fired constantly: bucket-analyze embeds each file's existingRules
+# in its worklist, so merging a single accepted rule rewrote the worklist and
+# threw away all six chunks' verdicts. The re-query then rolled DIFFERENT
+# proposals (the model is not deterministic), merged those too, and changed the
+# worklist again — each retry of the same version appending another pair of
+# unreviewed rules to apply-unnerfs.py. Content-addressing ends that: 97 of 99
+# unchanged candidates stay cached and only the two that moved are re-asked.
+AI_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/unnerfcc"
+chunk_key() {       # <chunk file> -> sha256 of its contents
+  shasum -a 256 "$1" | cut -d' ' -f1
+}
+reuse_ai_cache() {  # <cache dir> <work dir> <file prefix>
+  local cache="$1" work="$2" prefix="$3" chunk cn key n=0
+  [ -d "$cache" ] || return 0
+  for chunk in "$work"/chunk-*.json; do
+    [ -f "$chunk" ] || continue
+    cn=$(basename "$chunk" .json); cn=${cn#chunk-}
+    key=$(chunk_key "$chunk")
+    if [ -f "$cache/$prefix-$key.json" ]; then
+      cp "$cache/$prefix-$key.json" "$work/$prefix-$cn.json" && n=$((n+1))
+    fi
+  done
+  [ "$n" -gt 0 ] && ok "reusing $n cached $prefix chunk(s) from an earlier run of this version ($cache)"
+  return 0
+}
+save_ai_cache() {   # <cache dir> <work dir> <file prefix>
+  local cache="$1" work="$2" prefix="$3" chunk cn key
+  mkdir -p "$cache"
+  for chunk in "$work"/chunk-*.json; do
+    [ -f "$chunk" ] || continue
+    cn=$(basename "$chunk" .json); cn=${cn#chunk-}
+    [ -f "$work/$prefix-$cn.json" ] || continue
+    key=$(chunk_key "$chunk")
+    cp "$work/$prefix-$cn.json" "$cache/$prefix-$key.json"
+  done
+  return 0
+}
 bun_incompatible() {
   printf '\033[1;31m\n╔══════════════════════════════════════════════════════════════╗\n'
   printf   '║  BUN FORMAT INCOMPATIBLE — engine/bun-binary.mjs could not parse ║\n'
@@ -410,7 +466,19 @@ elif [ "$PENDING" -gt 2000 ] && [ "$ASSUME_YES" -eq 0 ]; then
   case "$a" in [yY]*) node "$REPO/scripts/classify.mjs" "$CLI_JS" "$CC_VERSION" --provider "$LLM_PROVIDER" --batch "$CLASSIFY_BATCH" 2>&1 | sed 's/^/  /' || warn "classification incomplete (store is resumable)";;
     *) warn "skipped — run 'node scripts/classify.mjs $CLI_JS $CC_VERSION --provider $LLM_PROVIDER --batch $CLASSIFY_BATCH' later";; esac
 else
-  node "$REPO/scripts/classify.mjs" "$CLI_JS" "$CC_VERSION" --provider "$LLM_PROVIDER" --batch "$CLASSIFY_BATCH" 2>&1 | sed 's/^/  /' || warn "classification incomplete (store is resumable)"
+  # An incomplete classification is FATAL, not a warning. A string the model
+  # never judged is not admitted to the catalog at all, so a prompt that is
+  # still in the bundle silently goes missing from it -- and every downstream
+  # step then reads that absence as upstream having DELETED the prompt. In
+  # v2.1.321 two chunks failed with a transient "fetch failed" (469 of 1969
+  # strings), which dropped skill-artifact-design's body from the catalog and
+  # made the removed-id gate demand that four live un-nerf rules be retired
+  # for a skill Anthropic had not touched. Re-running classify alone
+  # classified all 469 on the first retry. The store is resumable and keyed
+  # by SHA-256, so dying here costs one cheap retry; continuing costs a
+  # corrupted catalog that reads as a plausible upstream change.
+  node "$REPO/scripts/classify.mjs" "$CLI_JS" "$CC_VERSION" --provider "$LLM_PROVIDER" --batch "$CLASSIFY_BATCH" 2>&1 | sed 's/^/  /' \
+    || die "classification incomplete — the store is resumable and SHA-256-cached, so just run upgrade.sh again (strings already classified are not re-billed). Continuing would drop the unclassified strings from the catalog and report them as removed upstream."
   [ -f "$REPO/data/unnerf-candidates.json" ] && ok "un-nerf candidates for review: data/unnerf-candidates.json"
 fi
 
@@ -437,6 +505,8 @@ if [ -n "${PREV_CATALOG:-}" ]; then
   log "Preparing relabel worklist"
   RL_WORK="$WORK/relabel"
   N=$(node "$REPO/scripts/relabel.mjs" prepare "$PREV_CATALOG" "$NEW_CATALOG" "$RL_WORK" | grep -oE 'worklist: [0-9]+' | grep -oE '[0-9]+' || echo 0)
+  RL_CACHE="$AI_CACHE/relabel-$CC_VERSION"
+  reuse_ai_cache "$RL_CACHE" "$RL_WORK" labels
 
   if [ "${N:-0}" -gt 0 ]; then
     # ONE job per chunk. A single job asked to emit ~1000 objects truncates and
@@ -468,6 +538,7 @@ if [ -n "${PREV_CATALOG:-}" ]; then
         if [ "$running" -ge "$JOBS" ]; then wait -n; running=$((running-1)); fi
       done
       wait
+      save_ai_cache "$RL_CACHE" "$RL_WORK" labels
       if node "$REPO/scripts/relabel.mjs" collect "$RL_WORK" "$NEW_CATALOG"; then break; fi
       [ "$attempt" = 3 ] && die "relabel incomplete after 3 attempts (see $RL_WORK)"
       log "  re-running short chunks"
@@ -488,7 +559,8 @@ if [ -n "${PREV_CATALOG:-}" ]; then
     done
     [ -f "$RL_WORK/labels.json" ] || die "relabel did not produce labels.json"
     log "Merging labels into the catalog"
-    node "$REPO/scripts/relabel.mjs" merge "$NEW_CATALOG" "$RL_WORK/labels.json" "$NEW_CATALOG"
+    node "$REPO/scripts/relabel.mjs" merge "$NEW_CATALOG" "$RL_WORK/labels.json" "$NEW_CATALOG" \
+      || { rm -rf "${RL_CACHE:?}"; die "relabel merge failed — cached labels discarded so the next run relabels from scratch"; }
     ok "relabeled + merged $N fragment(s)"
   else
     ok "no fragments need relabeling (extractor identified everything)"
@@ -508,6 +580,25 @@ fi
 # upstream deletion (see validate-catalog gate 6), re-run with ACK_REMOVED set to
 # the exact removed count to let the pipeline proceed. Any other count still fails.
 log "Validating catalog (structural gates)"
+# Under --yes, acknowledge the removed-id count without a human — but only when
+# no removed id still keys an un-nerf rule. A rule on a removed id is the real
+# harm that gate guards against (the un-nerf would silently stop applying);
+# ids without rules carry only names and descriptions.
+if [ -z "${ACK_REMOVED:-}" ] && [ "$ASSUME_YES" -eq 1 ] && [ -n "${PREV_CATALOG:-}" ]; then
+  RULES_JSON="$WORK/rules.json"
+  python3 "$REPO/scripts/apply-unnerfs.py" --dump-rules "$RULES_JSON" >/dev/null
+  read -r REMOVED_N ORPHANED <<<"$(node -e '
+    const fs=require("fs");const [a,b,r]=process.argv.slice(1);
+    const ids=f=>new Set((JSON.parse(fs.readFileSync(f,"utf8")).prompts??[]).map(p=>p.id).filter(Boolean));
+    const prev=ids(a),next=ids(b);const removed=[...prev].filter(i=>!next.has(i));
+    const ruled=new Set(JSON.parse(fs.readFileSync(r,"utf8")).map(x=>x.id));
+    const orphaned=removed.filter(i=>ruled.has(i));
+    console.log(removed.length, orphaned.join(",") || "-");
+  ' "$PREV_CATALOG" "$NEW_CATALOG" "$RULES_JSON")"
+  [ "$ORPHANED" = "-" ] || die "removed ids still have un-nerf rules in scripts/apply-unnerfs.py (re-key or retire them): $ORPHANED"
+  ACK_REMOVED="$REMOVED_N"
+  ok "--yes: $REMOVED_N removed id(s), none with an un-nerf rule — acknowledging"
+fi
 if [ -n "${ACK_REMOVED:-}" ]; then
   node "$REPO/scripts/validate-catalog.mjs" "$NEW_CATALOG" "${PREV_CATALOG:-}" --strict --ack-removed "$ACK_REMOVED"
 else
@@ -533,12 +624,25 @@ node "$REPO/scripts/sync-version.mjs" "$CC_VERSION"
 # --no-bucket-analyze: a version update re-anchors existing rules only. The
 # bucket-analysis merge writes NEW AI-authored rules into apply-unnerfs.py,
 # which is un-nerf content work and belongs to a separate remediation pass.
+# Bucket-analysis is the one AI step whose output is not merely expensive but
+# NON-IDEMPOTENT: it proposes lifts, and a re-run of the same version proposes a
+# DIFFERENT set, which merge then appends alongside the first. Several retries
+# of one sync would quietly grow apply-unnerfs.py with pairs of rules nobody
+# reviewed. A version is analyzed once: the review record proves the analysis
+# ran, and the dated block in apply-unnerfs.py proves its accepted rules landed.
+# Needing both means a run that died between the two still re-analyzes.
+BA_RECORD="$REPO/data/bucket-analysis-$CC_VERSION.json"
 if [ "$BUCKET_ANALYZE_ON" -eq 0 ]; then
   ok "bucket-analysis skipped (--no-bucket-analyze): no new rules are authored in this run"
+elif [ -f "$BUCKET_ANALYZE" ] && [ "$FORCE" -eq 0 ] && [ -f "$BA_RECORD" ] \
+   && grep -q "v$CC_VERSION sync (bucket-analyze.mjs" "$REPO/scripts/apply-unnerfs.py"; then
+  ok "bucket-analysis already done for v$CC_VERSION (data/bucket-analysis-$CC_VERSION.json) — not re-rolling it; --force to redo"
 elif [ -f "$BUCKET_ANALYZE" ]; then
   log "Preparing un-nerf bucket-analysis worklist"
   BA_WORK="$WORK/bucket-analysis"
   M=$(node "$BUCKET_ANALYZE" prepare "$CC_VERSION" "$BA_WORK" | grep -oE 'worklist: [0-9]+' | grep -oE '[0-9]+' || echo 0)
+  BA_CACHE="$AI_CACHE/bucket-analysis-$CC_VERSION"
+  reuse_ai_cache "$BA_CACHE" "$BA_WORK" verdicts
 
   if [ "${M:-0}" -gt 0 ]; then
     log "Bucket-analyzing $M new un-nerf candidate(s) via $LLM_PROVIDER in $(ls "$BA_WORK"/chunk-*.json | wc -l) chunk(s)"
@@ -555,6 +659,7 @@ elif [ -f "$BUCKET_ANALYZE" ]; then
               "Read BUCKET-ANALYSIS-TASK.md in this directory and follow it EXACTLY. Your assigned chunk file is chunk-$cn.json and you MUST write your verdicts to verdicts-$cn.json in this directory (a JSON array with exactly one object per item in chunk-$cn.json, echoing each ref verbatim — refs are global indices, they do not start at 0). Write the file as UTF-8 without a byte-order mark. The un-nerf guide is $REPO/UNNERF-GUIDE.md ; read its Part 1 in full before deciding anything. Do not ask questions; complete the task and write the file." ) || true
         fi
       done
+      save_ai_cache "$BA_CACHE" "$BA_WORK" verdicts
       if node "$BUCKET_ANALYZE" collect "$BA_WORK"; then break; fi
       [ "$attempt" = 3 ] && die "bucket-analysis incomplete after 3 attempts (see $BA_WORK)"
       log "  re-running short chunks"
@@ -575,8 +680,11 @@ elif [ -f "$BUCKET_ANALYZE" ]; then
     done
     [ -f "$BA_WORK/verdicts.json" ] || die "bucket-analysis did not produce verdicts.json"
     log "Merging accepted un-nerf rules into apply-unnerfs.py"
+    # The cached verdicts are KEPT on a merge failure: the model's answers are
+    # fine, it is the insertion (or an anchor the inserted rule targets) that
+    # broke, and re-rolling 99 candidates to fix a local edit is pure waste.
     node "$BUCKET_ANALYZE" merge "$BA_WORK" "$REPO/scripts/apply-unnerfs.py" "$CC_VERSION" \
-      || die "bucket-analysis merge failed — see output above"
+      || die "bucket-analysis merge failed — see output above (cached verdicts kept for the retry)"
     ok "bucket-analysis complete — full keep/lift review: data/bucket-analysis-$CC_VERSION.json"
   else
     ok "no new un-nerf candidates to bucket-analyze"
