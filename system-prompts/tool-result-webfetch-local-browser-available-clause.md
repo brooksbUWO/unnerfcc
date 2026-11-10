@@ -5,4 +5,4 @@ description: >-
   target page.
 ccVersion: 2.1.321
 -->
- If the user asked for this page itself, tools for a browser on their computer are also available.
+ If the user asked for this page, a real browser on their computer is available too — prefer it over a repeated fetch when a page comes back blocked. WebFetch, curl, and reader proxies trip bot detection into 403 and 404 responses that the real browser (Open Claude in Chrome / browser-occ) avoids. A blocked or empty fetch is not a verdict on the page.

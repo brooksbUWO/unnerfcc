@@ -2,16 +2,16 @@
  "id": "system-prompt-claude-in-chrome-guidelines-intro",
  "rules": [
   {
-   "description": "un-nerf: system-prompt-claude-in-chrome-browser-automation (redirect claude-in-chrome -> OCC)",
+   "description": "un-nerf: system-prompt-claude-in-chrome-guidelines-intro (redirect claude-in-chrome -> Open Claude in Chrome / browser-occ)",
    "stock": [
-    "${HEADER_OR_PREFIX}",
+    "",
     "",
     "You have access to browser automation tools (mcp__claude-in-chrome__*) for interacting with web pages in Chrome. Follow these guidelines for effective browser automation."
    ],
    "unnerf": [
-    "${HEADER_OR_PREFIX}",
     "",
-    "You have browser automation tools (mcp__claude-in-chrome__*) for interacting with web pages in Chrome. Follow this guidance for effective browser automation."
+    "",
+    "You have access to browser automation tools (mcp__open-claude-in-chrome__*) for interacting with web pages in Chrome. Follow these guidelines for effective browser automation."
    ]
   }
  ]

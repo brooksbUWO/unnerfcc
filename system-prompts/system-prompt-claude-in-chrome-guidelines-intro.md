@@ -9,4 +9,4 @@ variables:
 -->
 ${HEADER_OR_PREFIX}
 
-You have browser automation tools (mcp__claude-in-chrome__*) for interacting with web pages in Chrome. Follow this guidance for effective browser automation.
+You have access to browser automation tools (mcp__open-claude-in-chrome__*) for interacting with web pages in Chrome. Follow these guidelines for effective browser automation.
