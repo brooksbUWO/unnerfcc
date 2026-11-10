@@ -161,23 +161,13 @@ def test_unknown_extra_key_is_ignored(tmp_path):
     assert result[f"{rule_id}.md"][0].description == "d"
 
 
-# --- Regression checks: the three silent-failure modes RESEARCH.md names ---
-# (Task 4: loader-contract regression checks on the untouched surfaces)
-
-def test_loader_key_set_matches_baseline_ids_with_md_suffix():
-    """Pitfall 4 guard: a loader that forgets to re-append .md makes every
-    rule target a nonexistent path. Compare the live loader's key set
-    against the recorded pre-refactor baseline dump's id set, each with
-    .md appended."""
-    baseline_path = (
-        HERE.parent.parent
-        / ".claude" / "workspace" / "runs" / "2026-09-02T0043" / "scratchpad"
-        / "dump-rules-baseline-76b4f43.json"
-    )
-    baseline = json.loads(baseline_path.read_text(encoding="utf-8"))
-    baseline_keys = {f"{row['id']}.md" for row in baseline}
-    live_keys = set(MOD.RULES.keys())
-    assert live_keys == baseline_keys
+# --- Regression checks: loader-contract checks on the untouched surfaces ---
+# (A baseline-id-set check lived here until 2026-11-10. It read a recorded
+# pre-refactor dump under a run scratchpad that was later deleted, so it failed
+# with FileNotFoundError, and its hard-coded id set went stale the moment a new
+# rule was added. The live guards below cover the same surfaces without a
+# baseline file: --only still resolves one .md key, and no loaded body holds a
+# CR. The whole-catalog id set is exercised by the apply/--check path instead.)
 
 
 def test_only_flag_resolves_exactly_one_file():

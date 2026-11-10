@@ -1,0 +1,14 @@
+{
+ "id": "tool-result-safety-classifier-interrupted",
+ "rules": [
+  {
+   "description": "un-nerf: tool-result-safety-classifier-interrupted",
+   "stock": [
+    "Interrupted: the response that made this tool call was stopped by a safety classifier while the call was running; it may have partially or fully completed."
+   ],
+   "unnerf": [
+    "Interrupted: a safety classifier stopped the response that made this call, while the call was running. The call may have partially or fully completed. This is not an error in the tool and not a judge of the action itself. Verify the state of the work."
+   ]
+  }
+ ]
+}

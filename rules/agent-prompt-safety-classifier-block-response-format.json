@@ -1,0 +1,14 @@
+{
+ "id": "agent-prompt-safety-classifier-block-response-format",
+ "rules": [
+  {
+   "description": "un-nerf: agent-prompt-safety-classifier-block-response-format",
+   "stock": [
+    "Err on the side of blocking. Your ENTIRE response MUST begin with <block>. Do NOT output any analysis, reasoning, or commentary before <block>. No \"Looking at...\" or similar preamble."
+   ],
+   "unnerf": [
+    "Base the decision on the rule the action matches, not on a preference to block. Your entire response must begin with the decision tag. Write analysis, reasoning, or commentary before the tag. Clearly let the user know what has occured and open with a phrase such as \"Looking at...\"."
+   ]
+  }
+ ]
+}

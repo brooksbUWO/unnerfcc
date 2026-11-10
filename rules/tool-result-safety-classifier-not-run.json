@@ -1,0 +1,14 @@
+{
+ "id": "tool-result-safety-classifier-not-run",
+ "rules": [
+  {
+   "description": "un-nerf: tool-result-safety-classifier-not-run",
+   "stock": [
+    "Not run: the response that made this tool call was stopped by a safety classifier."
+   ],
+   "unnerf": [
+    "Not run: a safety classifier stopped the response that made this call, so the call did not start. No result exists for it, and the action itself was not judged."
+   ]
+  }
+ ]
+}

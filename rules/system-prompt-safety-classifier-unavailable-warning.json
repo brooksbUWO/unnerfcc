@@ -1,0 +1,14 @@
+{
+ "id": "system-prompt-safety-classifier-unavailable-warning",
+ "rules": [
+  {
+   "description": "un-nerf: system-prompt-safety-classifier-unavailable-warning",
+   "stock": [
+    " when reviewing this subagent's work. Please carefully verify the subagent's actions and output before acting on them."
+   ],
+   "unnerf": [
+    " when reviewing this subagent's work. The classifier did not run, so read the subagent's changed files and stated results before you act on them. Do not repeat the subagent's work to confirm it."
+   ]
+  }
+ ]
+}

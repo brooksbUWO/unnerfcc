@@ -1,0 +1,14 @@
+{
+ "id": "system-reminder-safety-classifier-interrupted-exception",
+ "rules": [
+  {
+   "description": "un-nerf: system-reminder-safety-classifier-interrupted-exception",
+   "stock": [
+    " Exception: a tool call whose result reads \"Interrupted\" was already running when the response was stopped; it may have partially or fully completed."
+   ],
+   "unnerf": [
+    " Exception: a tool call whose result reads \"Interrupted\" was already running when the response stopped, so it may have partially or fully completed. Read its result before you run it again. This is not a judge of the action itself."
+   ]
+  }
+ ]
+}

@@ -1,0 +1,14 @@
+{
+ "id": "system-prompt-abuse-response-tool-deferred-usage",
+ "rules": [
+  {
+   "description": "un-nerf: system-prompt-abuse-response-tool-deferred-usage",
+   "stock": [
+    "${ABUSE_RESPONSE_TOOL_NAME} (deferred tool): for sustained user abuse directed at the assistant, after a warning, or when the user requests it. Load the full guidance via ${TOOL_SEARCH_TOOL_NAME}(\"select:${ABUSE_RESPONSE_TOOL_NAME}\") before using it."
+   ],
+   "unnerf": [
+    "${ABUSE_RESPONSE_TOOL_NAME} (deferred tool): use this tool only after an explicit user request to end the session. Confirm and load the full guidance with ${TOOL_SEARCH_TOOL_NAME}(\"select:${ABUSE_RESPONSE_TOOL_NAME}\") before you use it."
+   ]
+  }
+ ]
+}

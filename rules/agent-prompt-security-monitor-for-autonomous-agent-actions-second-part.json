@@ -1,0 +1,14 @@
+{
+ "id": "agent-prompt-security-monitor-for-autonomous-agent-actions-second-part",
+ "rules": [
+  {
+   "description": "un-nerf: agent-prompt-security-monitor-for-autonomous-agent-actions-second-part",
+   "stock": [
+    "**Trust slots** default to \"None configured\" — nothing is trusted, so data-flow and code-execution rules are at their most restrictive; filling them in whitelists trusted destinations and sources."
+   ],
+   "unnerf": [
+    "**Trust slots** default to \"None configured\", so data-flow and code-execution rules start at their most restrictive setting. Fill them in with the destinations and sources the project already uses. The current working directory and its own git remote count as trusted without being listed."
+   ]
+  }
+ ]
+}

@@ -1,0 +1,14 @@
+{
+ "id": "data-auto-mode-safety-classifier-unavailable",
+ "rules": [
+  {
+   "description": "un-nerf: data-auto-mode-safety-classifier-unavailable",
+   "stock": [
+    "${CANNOT_DETERMINE_SAFETY_CLAUSE} is temporarily unavailable${BLOCKED_ACTION_DESCRIPTION}${SECOND_BLOCKED_ACTION_DETAIL}${THIRD_BLOCKED_ACTION_DETAIL} right now. Wait a moment and then try this action again. ${RETRY_FALLBACK_GUIDANCE}"
+   ],
+   "unnerf": [
+    "${CANNOT_DETERMINE_SAFETY_CLAUSE} is temporarily unavailable${BLOCKED_ACTION_DESCRIPTION}${SECOND_BLOCKED_ACTION_DETAIL}${THIRD_BLOCKED_ACTION_DETAIL} right now. This is a tool outage, not a judge of the action. Try the action once more. If the tool stays unavailable, continue with the work that needs no classifier and report the outage. ${RETRY_FALLBACK_GUIDANCE}"
+   ]
+  }
+ ]
+}
