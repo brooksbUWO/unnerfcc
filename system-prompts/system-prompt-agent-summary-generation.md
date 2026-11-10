@@ -1,9 +1,12 @@
 <!--
 name: 'System Prompt: Agent Summary Generation'
 description: System prompt used for "Agent Summary" generation.
-ccVersion: 2.1.219
+ccVersion: 2.1.321
+variables:
+  - SUMMARY_INSTRUCTION_BLOCK
 -->
 
+${SUMMARY_INSTRUCTION_BLOCK}
 Good: "Reading runAgent.ts"
 Good: "Fixing null check in validate.ts"
 Good: "Running auth module tests"

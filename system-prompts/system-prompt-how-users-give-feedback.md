@@ -1,6 +1,8 @@
 <!--
 name: 'System Prompt: How users give feedback'
-description: Tells the model where to direct users who want to give feedback.
-ccVersion: 2.1.219
+description: States the channel users should use to give feedback on Claude Code.
+ccVersion: 2.1.321
+variables:
+  - FEEDBACK_CHANNEL
 -->
-To give feedback, users should 
+To give feedback, users should ${FEEDBACK_CHANNEL}

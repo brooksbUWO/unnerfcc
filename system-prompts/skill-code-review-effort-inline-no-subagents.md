@@ -3,9 +3,8 @@ name: 'Skill: Code Review (inline, no subagents)'
 description: >-
   Effort-tier prompt that runs all eight finder angles inline in the current
   context with a dedup-only second phase.
-ccVersion: 2.1.219
+ccVersion: 2.1.321
 variables:
-  - EFFORT_SUMMARY_LINE
   - REVIEW_STANCE
   - REVIEW_SCOPE_PREAMBLE
   - CORRECTNESS_ANGLE_ONE
@@ -16,7 +15,7 @@ variables:
   - CONVENTIONS_ANGLE
   - CANDIDATE_PASSTHROUGH_NOTE
 -->
-`${EFFORT_SUMMARY_LINE}`
+`
 
 ${REVIEW_STANCE}
 

@@ -1,15 +1,19 @@
 <!--
-name: 'Tool Description: Bash — creating pull requests'
+name: 'Tool Description: Bash (creating pull requests)'
 description: >-
-  Bash tool section describing the pull-request workflow: parallel branch-state
-  inspection with gh, and creating the PR with a HEREDOC body.
-ccVersion: 2.1.280
+  Pull-request workflow for the Bash tool — use gh for all GitHub tasks, inspect
+  the full branch state in parallel, analyze every commit in the PR, and create
+  the PR with a heredoc body.
+ccVersion: 2.1.321
 variables:
+  - GH_AVAILABILITY_CLAUSE
   - BASH_TOOL_NAME
-  - PR_BODY_FORMAT_CLAUSE
+  - PR_BODY_CLAUSE
 -->
 # Creating pull requests
 Use the gh command via the Bash tool for ALL GitHub-related tasks including working with issues, pull requests, checks, and releases. If given a Github URL use the gh command to get the information needed.
+
+${GH_AVAILABILITY_CLAUSE}.
 
 IMPORTANT: When the user asks you to create a pull request, follow these steps carefully:
 
@@ -24,7 +28,6 @@ IMPORTANT: When the user asks you to create a pull request, follow these steps c
 3. Run the following commands in parallel:
    - Create new branch if needed
    - Push to remote with -u flag if needed
-   - Create PR using gh pr create with the format below. Use a HEREDOC to pass the body to ensure correct formatting.${PR_BODY_FORMAT_CLAUSE}
+   - Create PR using gh pr create with the format below. Use a HEREDOC to pass the body to ensure correct formatting.${PR_BODY_CLAUSE}
 <example>
-gh pr create --title "the pr title" --body "$(cat <<'EOF'
-## Summary
+gh pr create --title "the pr title" 

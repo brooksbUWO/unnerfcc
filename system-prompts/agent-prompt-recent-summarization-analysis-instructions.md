@@ -1,9 +1,12 @@
 <!--
-name: 'Agent Prompt: Recent summarization analysis instructions'
+name: 'Agent Prompt: Recent-messages summarization analysis instructions'
 description: >-
-  Instructs the summarization agent to perform a chronological analysis of
-  recent messages inside analysis tags before generating the partial summary.
-ccVersion: 2.1.272
+  Directs the summarizer to wrap its analysis in analysis tags and walk only the
+  recent messages chronologically, capturing requests, decisions, code details,
+  errors, and user feedback.
+ccVersion: 2.1.321
+variables:
+  - ADDITIONAL_ANALYSIS_ITEM
 -->
 Before providing your final summary, wrap your analysis in <analysis> tags to organize your thoughts and ensure you've covered all necessary points. In your analysis process:
 
@@ -18,5 +21,5 @@ Before providing your final summary, wrap your analysis in <analysis> tags to or
      - file edits
    - Errors that you ran into and how you fixed them
    - Pay special attention to specific user feedback that you received, especially if the user told you to do something differently.
-   - Note any security-relevant instructions or constraints the user stated (e.g., sensitive files or data to avoid, operations that must not be performed, credential or secret handling rules). These MUST be preserved verbatim in the summary so they continue to apply after compaction.
+   - ${ADDITIONAL_ANALYSIS_ITEM}
 2. Double-check for technical accuracy and completeness, addressing each required element thoroughly.

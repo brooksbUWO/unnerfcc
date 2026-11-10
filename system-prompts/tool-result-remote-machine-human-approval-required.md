@@ -1,10 +1,10 @@
 <!--
 name: 'Tool Result: Remote machine human approval required'
 description: >-
-  Advises asking the user to approve from the terminal prompt if human approval
-  is required.
-ccVersion: 2.1.251
+  Tells the model to retry the refused call once and otherwise stop and report
+  that this tool on the named machine needs the user's own approval.
+ccVersion: 2.1.321
 variables:
   - MACHINE_NAME
 -->
-If only a person's approval counts for this tool on ${MACHINE_NAME}, send the call again and ask the user to approve it from the terminal or desktop prompt.
+Retry once if it is still needed. If it is refused again, stop and tell the user that this tool on ${MACHINE_NAME} needs their own approval.

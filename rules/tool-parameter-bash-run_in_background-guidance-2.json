@@ -1,0 +1,14 @@
+{
+ "id": "tool-parameter-bash-run_in_background-guidance-2",
+ "rules": [
+  {
+   "description": "un-nerf: tool-parameter-bash-run-in-background-note",
+   "stock": [
+    "- You can use the `run_in_background` parameter to run the command in the background. Only use this if you don't need the result immediately. ${BACKGROUND_NOTIFICATION_GUIDANCE}"
+   ],
+   "unnerf": [
+    "- You can use the `run_in_background` parameter to run the command in the background. Use this only for a result you do not need at once. ${BACKGROUND_NOTIFICATION_GUIDANCE}"
+   ]
+  }
+ ]
+}

@@ -1,9 +1,9 @@
 <!--
 name: 'Skill: /insights report output'
 description: >-
-  Formats and displays the insights usage report results after the user runs the
-  /insights slash command
-ccVersion: 2.1.257
+  Supplies the insights data, report URL, and file paths after the user runs
+  /insights, and fixes the exact reply the model may send.
+ccVersion: 2.1.321
 variables:
   - INSIGHTS_DATA
   - REPORT_URL
@@ -28,5 +28,3 @@ Respond with exactly the following, and nothing else. Do not add, omit, or rewor
 
 Your shareable insights report is ready:
 ${REPORT_URL}
-
-Want to dig into any section or try one of the suggestions?

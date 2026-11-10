@@ -3,7 +3,7 @@ name: 'Data: Managed Agents reference — cURL'
 description: >-
   Provides cURL and raw HTTP request examples for the Managed Agents API
   including environment, agent, and session lifecycle operations
-ccVersion: 2.1.257
+ccVersion: 2.1.321
 -->
 # Managed Agents - cURL / Raw HTTP
 
@@ -18,7 +18,7 @@ export ANTHROPIC_API_KEY="your-api-key"
 HEADERS=(
   -H "Content-Type: application/json"
   -H "x-api-key: $ANTHROPIC_API_KEY"
-  -H "anthropic-version: 2023-06-01"
+  -H "anthropic-version: 2026-10-21"
   -H "anthropic-beta: managed-agents-2026-04-01"
 )
 ```
@@ -34,12 +34,12 @@ curl -X POST https://api.anthropic.com/v1/environments \
     "name": "my-dev-env",
     "config": {
       "type": "cloud",
-      "networking": { "type": "unrestricted" }
+      "networking": { "type": "limited", "allow_package_managers": true, "allow_mcp_servers": true }
     }
   }'
 ```
 
-### With restricted networking
+### Allowing specific hosts
 
 ```bash
 curl -X POST https://api.anthropic.com/v1/environments \
@@ -62,9 +62,11 @@ curl -X POST https://api.anthropic.com/v1/environments \
 
 ## Create an Agent (required first step)
 
-> Warning: **There is no inline agent config.** Under `managed-agents-2026-04-01`, `model`/`system`/`tools` are top-level fields on `POST /v1/agents`, not on the session. Always create the agent first - the session only takes `"agent": {"type": "agent", "id": "..."}`.
+> Warning: **A session needs an agent that already exists.** Under `managed-agents-2026-04-01`, `model`/`system`/`tools` are top-level fields on `POST /v1/agents`; a session can override them for that session only, with the `agent_with_overrides` form of `agent` (`shared/managed-agents-core.md` § Override agent configuration for a session). Always create the agent first - the session takes `"agent": "agent_abc123"` or `"agent": {"type": "agent", "id": "agent_abc123", "version": 1}`.
 
 ### Minimal
+
+The examples on this page turn both web tools off. Set `enabled` to true on `web_fetch` / `web_search` only when the job as described needs the web (a general-purpose or open-ended job stays off; tell the user how to switch it on) - see `shared/managed-agents-tools.md` § Agent Toolset. They also set the `auto` permission policy, under which a call can pause for your approval - see Confirm a Paused Tool Call. When nobody is watching the run, answer `deny`; never answer `allow` to every paused call.
 
 ```bash
 # 1. Create the agent
@@ -73,7 +75,16 @@ curl -X POST https://api.anthropic.com/v1/agents \
   -d '{
     "name": "Coding Assistant",
     "model": "{{OPUS_ID}}",
-    "tools": [{ "type": "agent_toolset_20260401" }]
+    "tools": [
+      {
+        "type": "agent_toolset_20260401",
+        "default_config": { "permission_policy": { "type": "auto" } },
+        "configs": [
+          { "name": "web_fetch", "enabled": false },
+          { "name": "web_search", "enabled": false }
+        ]
+      }
+    ]
   }'
 # -> { "id": "agent_abc123", ... }
 
@@ -99,7 +110,14 @@ curl -X POST https://api.anthropic.com/v1/agents \
     "model": "{{OPUS_ID}}",
     "system": "You are a senior code reviewer. Be thorough and constructive.",
     "tools": [
-      { "type": "agent_toolset_20260401" },
+      {
+        "type": "agent_toolset_20260401",
+        "default_config": { "permission_policy": { "type": "auto" } },
+        "configs": [
+          { "name": "web_fetch", "enabled": false },
+          { "name": "web_search", "enabled": false }
+        ]
+      },
       {
         "type": "custom",
         "name": "run_linter",
@@ -128,7 +146,7 @@ curl -X POST https://api.anthropic.com/v1/sessions \
         "url": "https://github.com/owner/repo",
         "mount_path": "/workspace/repo",
         "authorization_token": "ghp_...",
-        "branch": "feature-branch"
+        "checkout": { "type": "branch", "name": "feature-branch" }
       }
     ]
   }'
@@ -200,8 +218,10 @@ event: agent.message
 data: {"type":"agent.message","id":"sevt_...","content":[{"type":"text","text":"I'll review..."}],"processed_at":"..."}
 
 event: session.status_idle
-data: {"type":"session.status_idle","id":"sevt_...","processed_at":"..."}
+data: {"type":"session.status_idle","id":"sevt_...","stop_reason":{"type":"end_turn"},"processed_at":"..."}
 ```
+
+On `requires_action` the agent is not finished: the session is waiting on you - see Confirm a Paused Tool Call and Provide Custom Tool Result below.
 
 ---
 
@@ -232,6 +252,26 @@ curl -X POST https://api.anthropic.com/v1/sessions/$SESSION_ID/events \
         "type": "user.custom_tool_result",
         "custom_tool_use_id": "sevt_abc123",
         "content": [{ "type": "text", "text": "No linting errors found." }]
+      }
+    ]
+  }'
+```
+
+---
+
+## Confirm a Paused Tool Call
+
+An `agent.tool_use` / `agent.mcp_tool_use` event with `"evaluated_permission": "ask"` (`always_ask`, or `auto` with no determination) waits until you answer it. Send that event's `id` as `tool_use_id`, with `result` `allow` or `deny`. Ask a person or apply your own rule; deny when unattended:
+
+```bash
+curl -X POST https://api.anthropic.com/v1/sessions/$SESSION_ID/events \
+  "${HEADERS[@]}" \
+  -d '{
+    "events": [
+      {
+        "type": "user.tool_confirmation",
+        "tool_use_id": "sevt_abc123",
+        "result": "deny"
       }
     ]
   }'
@@ -287,10 +327,8 @@ curl -X DELETE https://api.anthropic.com/v1/sessions/$SESSION_ID \
 ```bash
 curl -X POST https://api.anthropic.com/v1/files \
   -H "x-api-key: $ANTHROPIC_API_KEY" \
-  -H "anthropic-version: 2023-06-01" \
-  -H "anthropic-beta: files-api-2025-04-14" \
-  -F "file=@path/to/file.txt" \
-  -F "purpose=agent"
+  -H "anthropic-version: 2026-10-21" \
+  -F "file=@path/to/file.txt"
 ```
 
 ---
@@ -303,14 +341,13 @@ List files the agent wrote to `/mnt/session/outputs/` during a session, then dow
 # List files associated with a session
 curl "https://api.anthropic.com/v1/files?scope_id=$SESSION_ID" \
   -H "x-api-key: $ANTHROPIC_API_KEY" \
-  -H "anthropic-version: 2023-06-01" \
-  -H "anthropic-beta: files-api-2025-04-14,managed-agents-2026-04-01"
+  -H "anthropic-version: 2026-10-21" \
+  -H "anthropic-beta: managed-agents-2026-04-01"
 
 # Download a specific file
 curl "https://api.anthropic.com/v1/files/$FILE_ID/content" \
   -H "x-api-key: $ANTHROPIC_API_KEY" \
-  -H "anthropic-version: 2023-06-01" \
-  -H "anthropic-beta: files-api-2025-04-14,managed-agents-2026-04-01" \
+  -H "anthropic-version: 2026-10-21" \
   -o downloaded_file.txt
 ```
 
@@ -338,7 +375,14 @@ curl -X POST https://api.anthropic.com/v1/agents \
       { "type": "url", "name": "my-tools", "url": "https://my-mcp-server.example.com/sse" }
     ],
     "tools": [
-      { "type": "agent_toolset_20260401" },
+      {
+        "type": "agent_toolset_20260401",
+        "default_config": { "permission_policy": { "type": "auto" } },
+        "configs": [
+          { "name": "web_fetch", "enabled": false },
+          { "name": "web_search", "enabled": false }
+        ]
+      },
       { "type": "mcp_toolset", "mcp_server_name": "my-tools" }
     ]
   }'
@@ -368,9 +412,11 @@ curl -X POST https://api.anthropic.com/v1/agents \
     "tools": [
       {
         "type": "agent_toolset_20260401",
-        "default_config": { "enabled": true },
+        "default_config": { "enabled": true, "permission_policy": { "type": "auto" } },
         "configs": [
-          { "name": "bash", "enabled": false }
+          { "name": "bash", "enabled": false },
+          { "name": "web_fetch", "enabled": false },
+          { "name": "web_search", "enabled": false }
         ]
       }
     ]

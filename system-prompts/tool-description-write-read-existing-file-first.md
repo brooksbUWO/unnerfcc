@@ -1,14 +1,14 @@
 <!--
-name: 'Tool Description: Write (read existing file first)'
+name: 'Tool Description: Write (read an existing file first)'
 description: >-
-  Tool description for Write in environments where existing files must be read
-  before overwrite.
-ccVersion: 2.1.231
+  Write tool guidance — use it for a new file or a full replacement of one
+  already read, overwriting an unread file fails, and partial changes belong to
+  the edit tool.
+ccVersion: 2.1.321
 variables:
   - READ_TOOL_NAME
-  - OVERWRITE_READ_REQUIREMENT_NOTE
   - EDIT_TOOL_NAME
 -->
 Writes a file to the local filesystem. If a file exists, this tool overwrites it.
 
-Use this tool to create a new file. Also use it to fully replace a file that you already read with ${READ_TOOL_NAME}.${OVERWRITE_READ_REQUIREMENT_NOTE} For partial changes, use ${EDIT_TOOL_NAME} instead.
+Use this tool to create a new file. Also use it to fully replace a file that you already read with ${READ_TOOL_NAME}. Overwriting an existing file you have not read with ${READ_TOOL_NAME} fails. For partial changes, use ${EDIT_TOOL_NAME} instead.

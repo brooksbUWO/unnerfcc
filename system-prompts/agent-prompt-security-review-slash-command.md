@@ -1,14 +1,16 @@
 <!--
-name: 'Agent Prompt: /security-review slash command'
+name: 'Agent Prompt: Security review slash command'
 description: >-
-  Comprehensive security review prompt for analyzing code changes with focus on
-  exploitable vulnerabilities
-ccVersion: 2.1.219
+  Prompt for the /security-review command — a senior security engineer reviews
+  only the branch diff for high-confidence exploitable vulnerabilities, with the
+  category list, severity and confidence scales, the markdown finding format,
+  and the false-positive filtering pass.
+ccVersion: 2.1.321
 variables:
-  - ALLOWED_TOOLS
+  - BASH_TOOL_NAME
 -->
 ---
-allowed-tools: ${ALLOWED_TOOLS}, Read, Glob, Grep, LS, Task
+allowed-tools: ${BASH_TOOL_NAME}, Read, Glob, Grep, LS, Task
 description: Complete a security review of the pending changes on the current branch
 ---
 
@@ -197,4 +199,3 @@ Begin your analysis now. Do this in 3 steps:
 2. Then for each vulnerability identified by the above sub-task, create a new sub-task to filter out false-positives. Launch these sub-tasks as parallel sub-tasks. In the prompt for these sub-tasks, include everything in the "FALSE POSITIVE FILTERING" instructions.
 3. Filter out any vulnerabilities where the sub-task reported a confidence less than 8.
 
-Your final reply must contain the markdown report and nothing else.

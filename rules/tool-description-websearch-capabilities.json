@@ -1,0 +1,20 @@
+{
+ "id": "tool-description-websearch-capabilities",
+ "rules": [
+  {
+   "description": "un-nerf: tool-description-websearch",
+   "stock": [
+    "",
+    "- Allows Claude to search the web and use the results to inform responses",
+    "- Provides up-to-date information for current events and recent data",
+    "- Returns search result information formatted as search result blocks"
+   ],
+   "unnerf": [
+    "",
+    "- Claude can search the web and use the results in responses.",
+    "- Gives up-to-date information for current events and recent data.",
+    "- Returns search result information as search result blocks."
+   ]
+  }
+ ]
+}

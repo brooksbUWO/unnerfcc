@@ -4,6 +4,8 @@ description: >-
   Task notification reporting that a background agent was running when the
   previous Claude Code process exited and did not complete, so its in-process
   state was lost.
-ccVersion: 2.1.280
+ccVersion: 2.1.321
+variables:
+  - RESUME_HINT
 -->
-It was running when the previous Claude Code process exited and did not complete. Its in-process state was lost. 
+It was running when the previous Claude Code process exited and did not complete. Its in-process state was lost. ${RESUME_HINT}

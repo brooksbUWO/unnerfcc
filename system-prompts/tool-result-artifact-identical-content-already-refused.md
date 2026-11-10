@@ -1,8 +1,11 @@
 <!--
 name: 'Tool Result: Identical Content Already Refused'
-description: Lead-in stating that identical content was already refused previously.
-ccVersion: 2.1.251
+description: >-
+  Lead-in stating that the resent content is identical to content already
+  refused.
+ccVersion: 2.1.321
 variables:
-  - PREFIX
+  - REFUSAL_PREFIX
+  - VERSION_INFO
 -->
-${PREFIX} this is the identical content already refused 
+${REFUSAL_PREFIX} this is the identical content already refused ${VERSION_INFO}, resent unchanged

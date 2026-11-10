@@ -1,8 +1,9 @@
 <!--
 name: 'Tool Description: Artifact responsive layout guidelines'
 description: >-
-  Layout rules for responsive artifacts including the phone-width gutter,
-  relative units, wrapping, and internal horizontal scroll containers.
-ccVersion: 2.1.280
+  Layout rules for responsive artifacts including the phone-width safe-area
+  gutter, relative units, wrapping, min-width zero on text children, and
+  internal horizontal scroll containers.
+ccVersion: 2.1.321
 -->
-**Responsive**: The page must also work at phone width (~400px). Keep a side gutter of at least 16px at every width: set it once as side padding on `body` or one outer wrapper, and give that element any vertical padding with `padding-block`, never a `padding` shorthand that zeroes the sides. Use relative units; let flex/grid rows wrap or stack to one column when narrow; put `max-width:100%` on images and on any `aspect-ratio` box, and no `min-width` wider than the screen on anything. Only tables, diagrams and code blocks may be wider, each inside its own `overflow-x: auto` container — the page body must never scroll horizontally.
+**Responsive**: The page must also work at phone width (about 400px), and the page body must never scroll horizontally. Keep a side gutter of at least 16px at every width, written `padding-left: max(16px, env(safe-area-inset-left, 0px))` and `padding-right: max(16px, env(safe-area-inset-right, 0px))` so that it also clears a system bar at the phone's side: set it once on `body` or one outer wrapper (where colored bands span the width, on each band's inner wrapper), and give that element its vertical padding with `padding-block`, never a `padding` shorthand that zeroes the sides. Use relative units. Let flex and grid rows wrap or stack to one column when narrow, and give any flex or grid child that holds running text, code or a table `min-width: 0`, so long content wraps or scrolls inside it instead of pushing the page wider. Put `max-width: 100%` on images and on any `aspect-ratio` box, and give nothing a `min-width` wider than the screen. Only tables, diagrams and code blocks may be wider, each inside its own `overflow-x: auto` container.

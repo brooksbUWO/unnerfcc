@@ -1,0 +1,14 @@
+{
+ "id": "skill-code-review-effort-low-header-prefix",
+ "rules": [
+  {
+   "description": "code-review low-effort tier line: drop the ≤4 cap (matches the findings-output flip)",
+   "stock": [
+    "`low effort → 1 diff pass → no verify → "
+   ],
+   "unnerf": [
+    "`low effort → 1 diff pass → no verify; report findings as unverified → "
+   ]
+  }
+ ]
+}

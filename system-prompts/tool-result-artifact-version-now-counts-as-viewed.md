@@ -1,6 +1,8 @@
 <!--
 name: 'Tool Result: Version Now Counts as Viewed'
-description: Notes that a version now counts as viewed and instructs reading that file.
-ccVersion: 2.1.251
+description: >-
+  Clause noting that the version now counts as viewed and pointing at where its
+  source is.
+ccVersion: 2.1.321
 -->
- and now counts as viewed: Read that file
+now counts as viewed; where its source

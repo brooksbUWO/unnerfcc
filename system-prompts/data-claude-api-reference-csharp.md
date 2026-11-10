@@ -4,7 +4,7 @@ description: >-
   C# SDK reference including the namespace table, client initialization, basic
   requests, streaming, tool use with the beta tool runner, and
   Microsoft.Extensions.AI integration.
-ccVersion: 2.1.280
+ccVersion: 2.1.321
 -->
 # Claude API - C#
 
@@ -17,7 +17,7 @@ Types are organized by namespace. If a type you need isn't shown in an example b
 | `using` | Contains |
 |---|---|
 | `Anthropic` | `AnthropicClient`, top-level options |
-| `Anthropic.Models.Messages` | non-beta request/response types - `MessageCreateParams`, `Model`, `Role`, `ContentBlock`, `TextBlock`, `ToolUseBlock`, `ToolResultBlockParam`, `Tool*` (tool definition classes) |
+| `Anthropic.Models.Messages` | non-beta request/response types - `MessageCreateParams`, `Model`, `UserMessageParam`, `AssistantMessageParam`, `ContentBlock`, `TextBlock`, `ToolUseBlock`, `ToolResultBlockParam`, `Speed`, `Tool*` (tool definition classes) |
 | `Anthropic.Models.Beta.Messages` | beta-endpoint equivalents - `MessageCreateParams`, `BetaMessage`, `BetaTool*`, `Speed`, `BetaRequestMcpServerUrlDefinition`, context-editing/compaction configs |
 | `Anthropic.Models.Beta` | shared beta constants |
 | `Anthropic.Models.Beta.Files` | Files API types |
@@ -43,7 +43,7 @@ Write from this table instead of reflecting the SDK assembly. Endpoint column te
 | Programmatic tool calling | non-beta | `CodeExecutionTool20260120`, `ToolResultBlockParam`, `ContentBlockParam` |
 | Task budgets | beta | `BetaOutputConfig` with `TaskBudget = new BetaTokenTaskBudget { ... }` |
 | Tool search | non-beta | `new ToolUnion(new ToolSearchToolRegex20251119 { Type = ToolSearchToolRegex20251119Type.ToolSearchToolRegex20251119 })` - `Type` must be set explicitly. |
-| Web search | non-beta | `new ToolUnion(new WebSearchTool20260209())` - the latest variant with dynamic filtering ({{FABLE_NAME}} + {{OPUS_NAME}} + Opus 4.8/4.7/4.6 + {{SONNET_NAME}} + Sonnet 4.6). For older models or Vertex, use `WebSearchTool20250305()` |
+| Web search | non-beta | `new ToolUnion(new WebSearchTool20260209())` - a variant with dynamic filtering ({{FABLE_NAME}} / {{MYTHOS_NAME}} + {{PREV_FABLE_NAME}} / {{PREV_MYTHOS_NAME}} + {{OPUS_NAME}} + {{PREV_OPUS_NAME}} + Opus 4.8/4.7/4.6 + {{SONNET_NAME}} + {{PREV_SONNET_NAME}} + Sonnet 4.6). For older models or Vertex, use `WebSearchTool20250305()` |
 
 ### Discovering type and member names
 
@@ -68,7 +68,7 @@ var message = await client.Messages.Create(new MessageCreateParams
 {
     Model = "{{OPUS_ID}}",
     MaxTokens = 1024,
-    Messages = [ new() { Role = Role.User, Content = "Hello, Claude" } ],
+    Messages = [ new UserMessageParam { Content = "Hello, Claude" } ],
 });
 
 Console.WriteLine(message);
@@ -88,7 +88,7 @@ var response = await client.Beta.Messages.Create(new MessageCreateParams
     Model = "{{OPUS_ID}}",
     MaxTokens = 4096,
     Betas = ["<beta-flag>"],
-    Messages = [ new() { Role = Role.User, Content = "..." } ],
+    Messages = [ new BetaUserMessageParam { Content = "..." } ],
     // Tools = new BetaToolUnion[] { new BetaSomeTool { ... } },   // for tool features
 });
 
@@ -133,7 +133,7 @@ var parameters = new MessageCreateParams
 {
     Model = "{{OPUS_ID}}",
     MaxTokens = 16000,
-    Messages = [new() { Role = Role.User, Content = "What is the capital of France?" }]
+    Messages = [new UserMessageParam { Content = "What is the capital of France?" }]
 };
 var response = await client.Messages.Create(parameters);
 
@@ -152,8 +152,9 @@ foreach (var text in response.Content.Select(b => b.Value).OfType<TextBlock>())
 
 **Adaptive thinking is the recommended mode for Claude 4.6+ models.** Claude decides dynamically when and how much to think.
 
-> **Fable 5, {{OPUS_NAME}}, Opus 4.8, Opus 4.7, Opus 4.6, and Sonnet 4.6:** Use adaptive thinking (below). `new ThinkingConfigEnabled { BudgetTokens = N }` is removed on Fable 5, {{OPUS_NAME}}, Opus 4.8, and 4.7 (400 if sent); deprecated on Opus 4.6 and Sonnet 4.6.
-> **{{OPUS_NAME}}:** thinking is on by default - omitting `Thinking` runs adaptive (`ThinkingConfigAdaptive` is equivalent), unlike Opus 4.8/4.7 where omitting it meant no thinking. `ThinkingConfigDisabled` is accepted only at effort `high` or lower; pairing it with `xhigh`/`max` returns a 400.
+> **Fable / Mythos 5/5.1/5.2, {{OPUS_NAME}}, {{PREV_OPUS_NAME}}, Opus 4.8, Opus 4.7, Opus 4.6, and Sonnet 4.6:** Use adaptive thinking (below). `new ThinkingConfigEnabled { BudgetTokens = N }` is removed on Fable / Mythos 5/5.1/5.2, {{OPUS_NAME}}, {{PREV_OPUS_NAME}}, Opus 4.8, and 4.7 (400 if sent); deprecated on Opus 4.6 and Sonnet 4.6.
+> **{{OPUS_NAME}}:** thinking is always on - omit `Thinking` (or send `ThinkingConfigAdaptive`, which is equivalent); `ThinkingConfigDisabled` returns a 400 at every effort, as does a thinking budget. Control depth with `OutputConfig.Effort` instead - the default is `medium` on this model, where {{PREV_OPUS_NAME}} defaults to `high`.
+> **{{PREV_OPUS_NAME}}:** thinking is on by default - omitting `Thinking` runs adaptive (`ThinkingConfigAdaptive` is equivalent), unlike Opus 4.8/4.7 where omitting it meant no thinking. `ThinkingConfigDisabled` is accepted only at effort `high` or lower; pairing it with `xhigh`/`max` returns a 400.
 > **Older models:** Use `new ThinkingConfigEnabled { BudgetTokens = N }` (budget must be < `MaxTokens`, min 1024).
 
 ```csharp
@@ -165,11 +166,11 @@ var response = await client.Messages.Create(new MessageCreateParams
     MaxTokens = 16000,
     // ThinkingConfigParam? implicitly converts from the concrete variant classes -
     // no wrapper needed.
-    // display opt-in: default is omitted (empty thinking text) on Fable 5/5.1, Mythos 5/5.1, {{OPUS_NAME}}, Opus 4.8/4.7, and {{SONNET_NAME}}
+    // display opt-in: default is omitted (empty thinking text) on Fable 5/5.1/5.2, Mythos 5/5.1/5.2, {{OPUS_NAME}}, {{PREV_OPUS_NAME}}, Opus 4.8/4.7, {{SONNET_NAME}}, and {{PREV_SONNET_NAME}}
     Thinking = new ThinkingConfigAdaptive { Display = Display.Summarized },
     Messages =
     [
-        new() { Role = Role.User, Content = "Solve: 27 * 453" },
+        new UserMessageParam { Content = "Solve: 27 * 453" },
     ],
 });
 
@@ -193,12 +194,12 @@ Alternative to `TryPick*`: `.Select(b => b.Value).OfType<ThinkingBlock>()` (same
 
 ## Context Editing / Compaction (Beta)
 
-**Beta-namespace prefix is inconsistent** (source-verified against `src/Anthropic/Models/Beta/Messages/*.cs` @ 12.9.0). No prefix: `MessageCreateParams`, `MessageCountTokensParams`, `Role`, `Speed`. **Everything else has the `Beta` prefix**: `BetaMessageParam`, `BetaMessage`, `BetaContentBlock`, `BetaToolUseBlock`, all block param types. The unprefixed `Role` WILL collide with `Anthropic.Models.Messages.Role` if you import both namespaces (CS0104). Safest: import only Beta; if mixing, alias the beta `Role`:
+**Beta-namespace prefix is inconsistent** (Anthropic 13.1.0). No prefix: `MessageCreateParams`, `MessageCountTokensParams`, `Speed`, `Display`, `Effort`, and helper unions such as `Tool` and `ContentBlock` (a beta response's blocks are `BetaContentBlock`). Message and block types have it: `BetaUserMessageParam`, `BetaMessage`, `BetaToolUseBlock`, all block param types. Importing both namespaces makes the unprefixed names ambiguous (CS0104). Safest: import only Beta; if mixing, alias the non-beta namespace:
 
 ```csharp
 using Anthropic.Models.Beta.Messages;
 using NonBeta = Anthropic.Models.Messages;  // only if you also need non-beta types
-// Now: MessageCreateParams, BetaMessageParam, Role (beta's), NonBeta.Role (if needed)
+// Now: MessageCreateParams (beta's), NonBeta.MessageCreateParams (if needed)
 ```
 
 
@@ -236,7 +237,7 @@ if (resp.ContextManagement is { } ctx)
         Console.WriteLine($"cleared {edit.ClearedInputTokens} tokens");
 }
 
-// ROUND-TRIP: BetaMessageParam.Content is BetaMessageParamContent (a string|list
+// ROUND-TRIP: BetaAssistantMessageParam.Content is BetaMessageContentParam (a string|list
 // union). It implicit-converts from List<BetaContentBlockParam>, NOT from the
 // response's IReadOnlyList<BetaContentBlock>. Convert each block:
 List<BetaContentBlockParam> paramBlocks = [];
@@ -246,7 +247,7 @@ foreach (var b in resp.Content)
     else if (b.TryPickCompaction(out var c)) paramBlocks.Add(new BetaCompactionBlockParam { Content = c.Content });
     // ... other variants as needed
 }
-messages.Add(new BetaMessageParam { Role = Role.Assistant, Content = paramBlocks });
+messages.Add(new BetaAssistantMessageParam { Content = paramBlocks });
 ```
 
 All 15 `BetaContentBlock.TryPick*` variants: `Text`, `Thinking`, `RedactedThinking`, `ToolUse`, `ServerToolUse`, `WebSearchToolResult`, `WebFetchToolResult`, `CodeExecutionToolResult`, `BashCodeExecutionToolResult`, `TextEditorCodeExecutionToolResult`, `ToolSearchToolResult`, `McpToolUse`, `McpToolResult`, `ContainerUpload`, `Compaction`.
@@ -299,7 +300,7 @@ Verify hits via `response.Usage.CacheCreationInputTokens` / `response.Usage.Cach
 ```csharp
 MessageTokensCount result = await client.Messages.CountTokens(new MessageCountTokensParams {
     Model = "{{OPUS_ID}}",
-    Messages = [new() { Role = Role.User, Content = "Hello" }],
+    Messages = [new UserMessageParam { Content = "Hello" }],
 });
 long tokens = result.InputTokens;
 ```
@@ -313,8 +314,7 @@ long tokens = result.InputTokens;
 `DocumentBlockParam` takes a `DocumentBlockParamSource` union: `Base64PdfSource` / `UrlPdfSource` / `PlainTextSource` / `ContentBlockSource`. `Base64PdfSource` auto-sets `MediaType = "application/pdf"` and `Type = "base64"`.
 
 ```csharp
-new MessageParam {
-    Role = Role.User,
+new UserMessageParam {
     Content = new List<ContentBlockParam> {
         new DocumentBlockParam { Source = new Base64PdfSource { Data = base64String } },
         new TextBlockParam { Text = "Summarize this PDF" },
@@ -324,13 +324,12 @@ new MessageParam {
 
 ---
 
-## Fast Mode (Beta)
+## Fast Mode
 
 ```csharp
-var response = await client.Beta.Messages.Create(new MessageCreateParams {
+var response = await client.Messages.Create(new MessageCreateParams {
     Model = "{{OPUS_ID}}", MaxTokens = 4096,
     Speed = Speed.Fast,
-    Betas = ["fast-mode-2026-02-01"],
     Messages = [...],
 });
 ```
@@ -347,7 +346,7 @@ var one = await client.Models.Retrieve("{{OPUS_ID}}");
 
 Set `MaxTokens = 128000` on `client.Messages` and use the streaming path (see `streaming.md`). On Claude 4+ models, 128k output is native - no `output-128k-*` beta header or beta namespace is needed.
 
-**Prefilling the assistant message** (putting a trailing `Role.Assistant` message in the input) is **not supported** on {{FABLE_NAME}}, {{OPUS_NAME}}, Opus 4.8, Opus 4.7, Opus 4.6, and Sonnet 4.6 - requests return a 400. Use `OutputConfig.Format` (structured outputs) instead.
+**Prefilling the assistant message** (putting a trailing `AssistantMessageParam` in the input) is **not supported** on Fable 5/5.1/5.2, Mythos 5/5.1/5.2, {{OPUS_NAME}}, {{PREV_OPUS_NAME}}, Opus 4.8, Opus 4.7, Opus 4.6, {{SONNET_NAME}}, {{PREV_SONNET_NAME}}, Sonnet 4.6, and {{HAIKU_NAME}} - requests return a 400. Use `OutputConfig.Format` (structured outputs) instead.
 
 ## Stop Details
 
@@ -361,7 +360,7 @@ if (response.StopReason == "refusal" && response.StopDetails is { } details)
 }
 ```
 
-**Refusal fallbacks ({{FABLE_NAME}}) - opt in by default.** Fallbacks are opt-in: without them a refused request simply stops. In `{{FABLE_ID}}` code, include `Fallbacks = [new(Model.ClaudeOpus4_8)]` plus the `AnthropicBeta.ServerSideFallback2026_06_01` beta on the beta messages call by default - a policy decline is re-served by the fallback model inside the same call. Not available on Amazon Bedrock, Vertex AI, or Microsoft Foundry - use the client-side handler there: `new AnthropicClient { Handlers = [new BetaRefusalFallbackHandler { Fallbacks = [new(Model.ClaudeOpus4_8)] }] }` (namespace `Anthropic.Helpers`), with per-conversation state via `BetaFallbackState.Create()` scoped with `using (fallbackState.Use()) { ... }`. Full semantics (billing, sticky routing, streaming) and a runnable example: `shared/model-migration.md` -> Migrating to {{FABLE_NAME}} -> `refusal` stop reason, and the C# SDK repo's `examples/` (WebFetch via `shared/live-sources.md`).
+**Refusal fallbacks ({{FABLE_NAME}}) - opt in by default.** Fallbacks are opt-in: without them a refused request simply stops. In `{{FABLE_ID}}` code, include `Fallbacks = new([new("claude-opus-4-8")])` plus the `AnthropicBeta.ServerSideFallback2026_07_01` beta (namespace `Anthropic.Models.Beta`) on the beta messages call by default - a policy decline is re-served by the fallback model inside the same call. Not available on Amazon Bedrock, Vertex AI, or Microsoft Foundry - use the client-side handler there: `new AnthropicClient { Handlers = [new BetaRefusalFallbackHandler { Fallbacks = [new("claude-opus-4-8")] }] }` (namespace `Anthropic.Helpers`), with per-conversation state via `BetaFallbackState.Create()` scoped with `using (fallbackState.Use()) { ... }`. Full semantics (billing, sticky routing, streaming) and a runnable example: `shared/model-migration.md` -> Migrating to {{PREV_FABLE_NAME}} -> `refusal` stop reason, and the C# SDK repo's `examples/` (fetch it from `shared/live-sources.md`).
 
 ---
 

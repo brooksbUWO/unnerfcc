@@ -1,9 +1,10 @@
 <!--
 name: 'Data: Claude API reference - PHP'
 description: >-
-  PHP SDK reference including installation, client initialization, streaming,
-  the beta tool runner, and structured output helpers.
-ccVersion: 2.1.280
+  PHP SDK reference including installation, client initialization for the Claude
+  API and the Bedrock, Vertex AI, and Foundry endpoints, extended thinking,
+  prompt caching, refusal stop details and fallbacks, and error types.
+ccVersion: 2.1.321
 -->
 # Claude API - PHP
 
@@ -20,8 +21,8 @@ composer require "anthropic-ai/sdk"
 ```php
 use Anthropic\Client;
 
-// Using API key from environment variable
-$client = new Client(apiKey: getenv("ANTHROPIC_API_KEY"));
+// Reads ANTHROPIC_API_KEY from the environment, or another configured credential such as an `ant auth login` profile
+$client = new Client();
 ```
 
 ### Amazon Bedrock
@@ -34,6 +35,8 @@ $client = new MantleClient(awsRegion: 'us-east-1');
 ```
 
 Model IDs on Bedrock take an `anthropic.` prefix - e.g. `model: 'anthropic.{{OPUS_ID}}'`.
+
+For a model older than Claude 4.7, pin `anthropic-ai/sdk` to 0.x (`composer require "anthropic-ai/sdk:^0.61"`): 1.0.0 and later send API version `2026-10-21`, which Bedrock accepts only for Claude 4.7 and later (SKILL.md -> Amazon Bedrock).
 
 ### Google Vertex AI
 
@@ -53,8 +56,8 @@ $client = Vertex\Client::fromEnvironment(
 use Anthropic\Foundry;
 
 // Constructor is private. baseUrl or resource is required.
-$client = Foundry\Client::withCredentials(
-    apiKey: getenv('ANTHROPIC_FOUNDRY_API_KEY'),
+// Reads the key from ANTHROPIC_FOUNDRY_API_KEY.
+$client = Foundry\Client::fromEnvironment(
     baseUrl: 'https://<resource>.services.ai.azure.com/anthropic/v1',
 );
 ```
@@ -106,7 +109,7 @@ use Anthropic\Messages\ThinkingBlock;
 $message = $client->messages->create(
     model: '{{OPUS_ID}}',
     maxTokens: 16000,
-    thinking: ['type' => 'adaptive', 'display' => 'summarized'], // display opt-in: default is omitted (empty thinking text) on Fable 5/5.1, Mythos 5/5.1, {{OPUS_NAME}}, Opus 4.8/4.7, and {{SONNET_NAME}}
+    thinking: ['type' => 'adaptive', 'display' => 'summarized'], // display opt-in: default is omitted (empty thinking text) on Fable 5/5.1/5.2, Mythos 5/5.1/5.2, {{OPUS_NAME}}, {{PREV_OPUS_NAME}}, Opus 4.8/4.7, {{SONNET_NAME}}, and {{PREV_SONNET_NAME}}
     messages: [
         ['role' => 'user', 'content' => 'Solve: 27 * 453'],
     ],
@@ -124,8 +127,9 @@ foreach ($message->content as $block) {
 }
 ```
 
-> **Fable 5, {{OPUS_NAME}}, Opus 4.8, Opus 4.7, Opus 4.6, and Sonnet 4.6:** Use adaptive thinking (above). `['type' => 'enabled', 'budgetTokens' => N]` is removed on Fable 5, {{OPUS_NAME}}, Opus 4.8, and 4.7 (400 if sent); deprecated on Opus 4.6 and Sonnet 4.6.
-> **{{OPUS_NAME}}:** thinking is on by default - omitting `thinking:` runs adaptive (`['type' => 'adaptive']` is equivalent), unlike Opus 4.8/4.7 where omitting it meant no thinking. `['type' => 'disabled']` is accepted only at effort `high` or lower; pairing it with `xhigh`/`max` returns a 400.
+> **Fable / Mythos 5/5.1/5.2, {{OPUS_NAME}}, {{PREV_OPUS_NAME}}, Opus 4.8, Opus 4.7, Opus 4.6, and Sonnet 4.6:** Use adaptive thinking (above). `['type' => 'enabled', 'budgetTokens' => N]` is removed on Fable / Mythos 5/5.1/5.2, {{OPUS_NAME}}, {{PREV_OPUS_NAME}}, Opus 4.8, and 4.7 (400 if sent); deprecated on Opus 4.6 and Sonnet 4.6.
+> **{{OPUS_NAME}}:** thinking is always on - omit `thinking:` (or send `['type' => 'adaptive']`, which is equivalent); `['type' => 'disabled']` returns a 400 at every effort, as does a thinking budget. Control depth with the `outputConfig:` effort instead - the default is `medium` on this model, where {{PREV_OPUS_NAME}} defaults to `high`.
+> **{{PREV_OPUS_NAME}}:** thinking is on by default - omitting `thinking:` runs adaptive (`['type' => 'adaptive']` is equivalent), unlike Opus 4.8/4.7 where omitting it meant no thinking. `['type' => 'disabled']` is accepted only at effort `high` or lower; pairing it with `xhigh`/`max` returns a 400.
 > **Older models:** Use `thinking: ['type' => 'enabled', 'budgetTokens' => N]` (budget must be < `maxTokens`, min 1024).
 
 `$block->type === 'thinking'` also works for the check; `instanceof` narrows for PHPStan.
@@ -164,7 +168,7 @@ if ($message->stopReason === 'refusal' && $message->stopDetails !== null) {
 }
 ```
 
-**Refusal fallbacks ({{FABLE_NAME}}) - opt in by default.** Fallbacks are opt-in: without them a refused request simply stops. New `{{FABLE_ID}}` code should include the server-side `fallbacks` parameter (beta header `server-side-fallback-2026-06-01`, fallback model `{{PREV_OPUS_ID}}`, on the beta messages call) by default. The exact PHP binding (and the client-side middleware for providers without server-side support) is not documented here - WebFetch the PHP SDK repo's `examples/` from `shared/live-sources.md`; full semantics in `shared/model-migration.md` -> Migrating to {{FABLE_NAME}} -> `refusal` stop reason.
+**Refusal fallbacks ({{FABLE_NAME}}) - opt in by default.** Fallbacks are opt-in: without them a refused request simply stops. New `{{FABLE_ID}}` code should include the server-side `fallbacks` parameter (beta header `server-side-fallback-2026-07-01`, fallback model `claude-opus-4-8`, on the beta messages call) by default. The exact PHP binding (and the client-side middleware for providers without server-side support) is not documented here - fetch the PHP SDK repo's `examples/` from `shared/live-sources.md`; full semantics in `shared/model-migration.md` -> Migrating to {{PREV_FABLE_NAME}} -> `refusal` stop reason.
 
 ---
 

@@ -4,10 +4,10 @@
   {
    "description": "/loop scheduling confirm lead-in: thorough, not brief",
    "stock": [
-    "3. Briefly confirm: ${CONFIRMATION_TEXT}"
+    "3. Briefly confirm: ${CONFIRMATION_DETAILS}"
    ],
    "unnerf": [
-    "3. Confirm thoroughly: ${CONFIRMATION_TEXT}"
+    "3. Confirm thoroughly: ${CONFIRMATION_DETAILS}"
    ]
   }
  ]

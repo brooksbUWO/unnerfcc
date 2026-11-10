@@ -2,9 +2,9 @@
 name: 'Skill: Code Review (medium effort, no ReportFindings tool)'
 description: >-
   Effort-tier header for a medium-effort review when the reporting tool is
-  unavailable — a single inline pass capped at 8 findings.
-ccVersion: 2.1.219
+  unavailable, so the review runs as a single inline pass.
+ccVersion: 2.1.321
 variables:
   - REPORT_FINDINGS_TOOL_NAME
 -->
-medium effort → ${REPORT_FINDINGS_TOOL_NAME} tool unavailable → single-pass inline → ≤8 findings
+medium effort → ${REPORT_FINDINGS_TOOL_NAME} tool unavailable → single-pass inline → 

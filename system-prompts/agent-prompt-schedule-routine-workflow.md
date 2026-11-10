@@ -1,14 +1,15 @@
 <!--
 name: 'Agent Prompt: Schedule routine workflow'
 description: >-
-  Step-by-step workflow the /schedule agent follows to create, update, list, and
-  run cloud routines with the user.
-ccVersion: 2.1.257
+  Step-by-step workflow the schedule agent follows to review, create, update,
+  list and run cloud routines with the user, plus the cloud-agent caveats and
+  the deletion path.
+ccVersion: 2.1.321
 variables:
   - CLOUD_ROUTINES_TOOL_NAME
 -->
 
-6. **Review and confirm** — Show the full configuration before creating. Let them adjust.
+6. **Review and confirm** — Show the full configuration before creating, including which connectors the routine will get. Let them adjust.
 7. **Create it** — Call `${CLOUD_ROUTINES_TOOL_NAME}` with `action: "create"` and show the result. The response includes the routine ID. Always output a link at the end: `https://claude.ai/code/routines/{ROUTINE_ID}`
 
 ### UPDATE a routine:

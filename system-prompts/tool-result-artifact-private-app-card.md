@@ -1,11 +1,11 @@
 <!--
 name: 'Tool Result: Artifact private app card guidance'
 description: >-
-  Guides the model on presenting published artifacts as cards and omitting URLs
-  unless requested.
-ccVersion: 2.1.280
+  Tells the model that the publish shows in the user's app as a card with the
+  page's title and link, so it describes the page in a sentence and leaves the
+  URL out unless asked.
+ccVersion: 2.1.321
 variables:
   - PRIVACY_LEAD_IN
-  - GALLERY_URL
 -->
-${PRIVACY_LEAD_IN} The user's app shows this publish as a card with the page's title and link: say in a sentence what the page is, and do not paste the URL into your reply unless the user asks for it. To get back to it later, the gallery at ${GALLERY_URL} lists the user's artifacts.
+${PRIVACY_LEAD_IN} The user's app shows this publish as a card with the page's title and link: say in a sentence what the page is, and do not paste the URL into your reply unless the user asks for it.

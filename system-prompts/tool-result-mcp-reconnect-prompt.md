@@ -1,6 +1,9 @@
 <!--
 name: 'Tool Result: MCP reconnect prompt'
-description: Error message prompting to send mcp_reconnect and retry mcp_call.
-ccVersion: 2.1.251
+description: Error message prompting the model to send mcp_reconnect and retry the call.
+ccVersion: 2.1.321
+variables:
+  - ERROR_DETAIL
+  - RETRY_TARGET
 -->
- — send mcp_reconnect and retry mcp_call: 
+ ${ERROR_DETAIL} — send mcp_reconnect and retry${RETRY_TARGET}

@@ -3,7 +3,7 @@ name: 'Skill: update-config settings-file-locations section'
 description: >-
   Where Claude Code stores settings.json across scopes, their load order, and
   the settings schema reference.
-ccVersion: 2.1.280
+ccVersion: 2.1.321
 -->
 ## Settings File Locations
 
@@ -66,7 +66,7 @@ Settings load in order: user → project → local (later overrides earlier).
   }
 }
 ```
-Set `commit` or `pr` to empty string `""` to hide that attribution.
+Set `commit` or `pr` to empty string `""` to hide that attribution. To hide all of it, set both to `""` and also set `"sessionUrl": false`. Write this object form, not `"attribution": false`: older Claude Code versions reject true or false here and then skip the whole settings file.
 
 ### MCP Server Management
 ```json
@@ -89,7 +89,7 @@ Plugin syntax: `plugin-name@source` where source is `claude-code-marketplace`, `
 
 ### Other Settings
 - `language`: Preferred response language (e.g., "japanese")
-- `cleanupPeriodDays`: Days to keep transcripts before automatic cleanup (default: 30; minimum 1)
+- `cleanupPeriodDays`: Days to keep transcripts on this computer before automatic cleanup (default: 30; minimum 1)
 - `respectGitignore`: Whether to respect .gitignore (default: true)
 - `spinnerTipsEnabled`: Show tips in spinner
 - `timeFormat`: Clock format for times shown in the UI: "auto" (default), "12-hour", "24-hour", "24-hour-utc", or a strftime pattern such as "%H:%M"

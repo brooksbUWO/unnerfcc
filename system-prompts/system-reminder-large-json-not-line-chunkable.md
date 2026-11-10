@@ -1,10 +1,11 @@
 <!--
 name: 'System Reminder: Large JSON is not line-chunkable'
 description: >-
-  Tells the model to probe the file's structure with jq and extract slices with
-  jq or python because Read's line-based offset/limit cannot chunk it.
-ccVersion: 2.1.219
+  Tells the model that the read tool's line-based offset and limit cannot chunk
+  this file, so it must extract slices another way.
+ccVersion: 2.1.321
 variables:
-  - FILE_PATH
+  - STRUCTURE_PROBE_GUIDANCE
+  - READ_TOOL_NAME
 -->
-first probe the structure (e.g., jq 'type, length, keys?' ${FILE_PATH}), then extract slices with jq or python — Read's line-based offset/limit will not chunk this file.
+${STRUCTURE_PROBE_GUIDANCE} — ${READ_TOOL_NAME}'s line-based offset/limit will not chunk this file.

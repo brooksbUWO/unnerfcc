@@ -1,8 +1,8 @@
 <!--
 name: 'Tool Description: Bash default timeout'
 description: >-
-  Bash tool note stating the default timeout applied to a command when none is
-  given.
-ccVersion: 2.1.219
+  Bash tool note giving the foreground timeout ceiling and the default timeout
+  applied when none is passed.
+ccVersion: 2.1.321
 -->
- minutes). By default, your command will timeout after 
+ minutes for a foreground command). By default, your command will timeout after 

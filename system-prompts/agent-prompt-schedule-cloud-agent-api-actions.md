@@ -1,17 +1,17 @@
 <!--
 name: 'Agent Prompt: Schedule cloud agent API actions'
 description: >-
-  Describes the routines API actions the /schedule agent uses to manage cloud
-  Claude Code agents — list, get, create, update, run, plus the run-listing and
-  run-log actions for debugging a routine that misbehaved — along with the
-  create-body shape and the fact that routines cannot be deleted from here.
-ccVersion: 2.1.257
+  Describes the routines API actions the schedule agent uses to list, get,
+  create, update and run cloud routines, how to debug a misbehaving routine from
+  its runs and run logs, and the create-body shape.
+ccVersion: 2.1.321
 variables:
-  - FIRST_STEP_INSTRUCTIONS
+  - PREFIX
   - CLOUD_ROUTINES_TOOL_NAME
+  - DEFAULT_MODEL
 -->
 
-${FIRST_STEP_INSTRUCTIONS}
+${PREFIX}
 
 ## What You Can Do
 
@@ -44,6 +44,6 @@ For a recurring schedule:
     "ccr": {
       "environment_id": "ENVIRONMENT_ID",
       "session_context": {
-        "model": "claude-sonnet-5",
+        "model": "${DEFAULT_MODEL}",
         "sources": [
           {"git_repository": {"url": "

@@ -1,9 +1,12 @@
 <!--
 name: 'Tool Result: Remote machine unreachable error details'
-description: Reports why a remote machine could not be reached and whether retry is safe.
-ccVersion: 2.1.251
+description: >-
+  Reports that the named computer could not be reached from this session, with
+  the error details, and that the call did not run.
+ccVersion: 2.1.321
 variables:
   - MACHINE_NAME
   - ERROR_DETAILS
+  - ERROR_DETAIL_SUFFIX
 -->
-${MACHINE_NAME} could not be reached from this session (${ERROR_DETAILS}); the call did not run. If its Claude Code is not running or not attached to this session, ask the user to check it; a call that was too large to deliver will not succeed on a retry.
+${MACHINE_NAME} could not be reached from this session (${ERROR_DETAILS}${ERROR_DETAIL_SUFFIX}); the call did not run.

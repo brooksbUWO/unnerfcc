@@ -1,6 +1,6 @@
 <!--
 name: 'Tool Result: Request replaced by newer copy'
-description: Reason stating the request was replaced by a newer version.
-ccVersion: 2.1.257
+description: Reason stating that a newer copy of the request replaced this one.
+ccVersion: 2.1.321
 -->
-a newer copy of the request replaced it
+a newer copy of the request replaced this one

@@ -1,8 +1,8 @@
 <!--
-name: 'System Reminder: Background tasks marked failed on exit'
+name: 'System Reminder: Background tasks in-process state lost'
 description: >-
-  Reports background tasks that were running when the process exited, marked
-  failed, and instructs checking worktree/output for partial work.
-ccVersion: 2.1.270
+  Reports that background tasks were running when the previous process exited
+  and did not complete, so their in-process state was lost.
+ccVersion: 2.1.321
 -->
-They were running when the previous Claude Code process exited and did not complete; their in-process state was lost. Check each worktree/output for partial work before assuming a task landed. They have been marked failed.
+They were running when the previous Claude Code process exited and did not complete; their in-process state was lost.

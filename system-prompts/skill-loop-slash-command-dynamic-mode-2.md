@@ -1,16 +1,18 @@
 <!--
-name: 'Skill: /loop slash command (dynamic mode)'
+name: 'Skill: /loop slash command (fixed-interval mode)'
 description: >-
-  Parses user input into an interval and prompt for scheduling recurring or
-  dynamically self-paced loop executions
-ccVersion: 2.1.219
+  Fixed-interval branch of the /loop command — converts the interval to a cron
+  expression, schedules the recurring task, and confirms the cadence, expiry and
+  cancel path to the user.
+ccVersion: 2.1.321
 variables:
+  - PREFIX
   - CRON_CONVERSION_RULES
   - CRON_CREATE_TOOL_NAME
   - RECURRING_EXPIRY_DAYS
   - CRON_DELETE_TOOL_NAME
 -->
-
+${PREFIX}
 ## Fixed-interval mode (rules 1 and 2)
 
 Convert the interval to a cron expression:

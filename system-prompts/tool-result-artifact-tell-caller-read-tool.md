@@ -1,10 +1,10 @@
 <!--
-name: 'Tool Result: Tell caller to use artifact tool to read'
+name: 'Tool Result: Tell the caller to read it themselves'
 description: >-
-  Advises telling the caller to read the artifact using the artifact tool in its
-  own session.
-ccVersion: 2.1.251
+  Directs the agent to tell its caller to read the saved content with the read
+  tool in the caller's own session.
+ccVersion: 2.1.321
 variables:
-  - ARTIFACT_TOOL_NAME
+  - READ_TOOL_NAME
 -->
- Tell the caller to read it with the ${ARTIFACT_TOOL_NAME} tool (action: "read", url) in its own session instead.
+ Tell the caller to read it with ${READ_TOOL_NAME} in its own session instead.

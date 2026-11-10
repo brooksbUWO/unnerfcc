@@ -1,21 +1,18 @@
 <!--
-name: 'Tool Description: Bash git commit and PR creation instructions'
+name: 'Tool Description: Bash (PR creation close-out)'
 description: >-
-  Closing of the Bash pull-request section — the HEREDOC example tail, the tools
-  that must not be used, and the requirement to return the PR URL.
-ccVersion: 2.1.280
+  Closing notes of the pull-request workflow — which tools not to use, returning
+  the PR URL, and the common gh operations.
+ccVersion: 2.1.321
 variables:
-  - PR_BODY_TEMPLATE
-  - FIRST_FORBIDDEN_TOOL_NAME
-  - SECOND_FORBIDDEN_TOOL_NAME
+  - FORBIDDEN_TOOL_1
+  - FORBIDDEN_TOOL_2
 -->
-${PR_BODY_TEMPLATE}
-EOF
-)"
+
 </example>
 
 Important:
-- DO NOT use the ${FIRST_FORBIDDEN_TOOL_NAME} or ${SECOND_FORBIDDEN_TOOL_NAME} tools
+- DO NOT use the ${FORBIDDEN_TOOL_1} or ${FORBIDDEN_TOOL_2} tools
 - Return the PR URL when you're done, so the user can see it
 
 # Other common operations

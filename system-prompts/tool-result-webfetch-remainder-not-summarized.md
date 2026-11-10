@@ -1,8 +1,10 @@
 <!--
-name: 'Tool Result: Remainder of the page was not summarized'
+name: 'Tool Result: Page remainder not summarized or read'
 description: >-
-  Status clause in the WebFetch result reporting that the part of the page
-  beyond the verbatim cut could not be summarized and was never read.
-ccVersion: 2.1.232
+  States that the remaining characters of the page could not be summarized and
+  were not read.
+ccVersion: 2.1.321
+variables:
+  - TRAILING_NOTE
 -->
- characters could not be summarized and were not read
+ characters could not be summarized and were not read${TRAILING_NOTE}

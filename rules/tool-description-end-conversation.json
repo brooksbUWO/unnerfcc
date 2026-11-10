@@ -1,0 +1,14 @@
+{
+ "id": "tool-description-end-conversation",
+ "rules": [
+  {
+   "description": "un-nerf: tool-description-endconversation",
+   "stock": [
+    "End the current conversation. Use for sustained user abuse directed at the assistant, or when the user requests it. This will close the conversation and prevent any further messages from being sent."
+   ],
+   "unnerf": [
+    "End the current conversation. Use this tool only for two cases. The first case is sustained user abuse directed at the assistant. The second case is an explicit user request to end the conversation. This tool closes the conversation and prevents any further messages."
+   ]
+  }
+ ]
+}

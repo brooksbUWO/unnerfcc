@@ -1,0 +1,14 @@
+{
+ "id": "tool-description-listconnectors-no-cards",
+ "rules": [
+  {
+   "description": "un-nerf: tool-description-listconnectors",
+   "stock": [
+    "List the MCP connectors installed for the user's claude.ai org. Call this when the user asks what connectors they have. Pass keywords to filter to a topic; omit to list all."
+   ],
+   "unnerf": [
+    "List the MCP connectors installed for the claude.ai org of the user. When the user asks which connectors they have, call this tool. To filter to a topic, pass keywords. To list all connectors, omit the keywords."
+   ]
+  }
+ ]
+}

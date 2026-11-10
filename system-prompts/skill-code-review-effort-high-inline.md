@@ -1,8 +1,8 @@
 <!--
 name: 'Skill: Code Review (high effort, inline angles)'
 description: >-
-  Effort-tier header for a high-effort inline review — 8 finder angles, dedup
-  with no verify pass, capped at 10 findings.
-ccVersion: 2.1.219
+  Effort summary line for a high-effort review run inline — eight angles in the
+  same context, then dedup with no verify pass.
+ccVersion: 2.1.321
 -->
-high effort → 8 inline angles → dedup (no verify; report findings as unverified) → ≤10 findings
+high effort → 8 inline angles → dedup (no verify; report findings as unverified)

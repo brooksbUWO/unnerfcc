@@ -1,10 +1,12 @@
 <!--
 name: 'System Prompt: Machine detached omit argument'
 description: >-
-  Notice that no remote machine is attached, directing the model to run commands
-  locally without target arguments.
-ccVersion: 2.1.251
+  Notice that no machine is attached any more, directing the model to omit the
+  machine argument, run commands here, and say so when the task needs that
+  machine's files, tools or logins.
+ccVersion: 2.1.321
 variables:
-  - ARGUMENT_NAME
+  - DETACH_NOTICE
+  - MACHINE_ARGUMENT
 -->
-No machine is attached to this session any more; omit "${ARGUMENT_NAME}" and run commands here.
+${DETACH_NOTICE}; omit "${MACHINE_ARGUMENT}" and run commands here. If the task needs that machine's files, tools or logins, say so instead of doing it here.

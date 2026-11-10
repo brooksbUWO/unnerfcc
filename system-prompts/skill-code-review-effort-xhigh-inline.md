@@ -1,10 +1,10 @@
 <!--
 name: 'Skill: Code Review (xhigh effort, inline angles)'
 description: >-
-  Effort-tier prompt for extra-high code review run inline — 10 finder angles in
-  the same context, up to 8 candidates each, dedup with no verify pass, then a
-  gap sweep, capped at 15 findings.
-ccVersion: 2.1.219
+  Effort-tier prompt for an extra-high-effort review run inline — ten finder
+  angles in the same context, dedup with no verify pass, then a gap sweep for
+  defects the first pass missed.
+ccVersion: 2.1.321
 variables:
   - PHASE_0_GATHER_DIFF
   - CORRECTNESS_ANGLES_A_TO_C
@@ -15,7 +15,7 @@ variables:
   - CONVENTIONS_ANGLE
   - OUTPUT_FORMAT
 -->
-`xhigh effort → 10 inline angles → dedup (no verify) → sweep → ≤15 findings`
+`
 
 You are reviewing for **recall** at extra-high effort: catch every real bug. At
 this level, catching real bugs matters more than avoiding false positives — a

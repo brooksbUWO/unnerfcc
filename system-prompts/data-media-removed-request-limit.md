@@ -1,6 +1,8 @@
 <!--
-name: 'Data: Media removed (request limit)'
-description: Content block replacing media stripped due to the request media limit.
-ccVersion: 2.1.178
+name: 'Data: Media removed for request limit'
+description: >-
+  Placeholder text marking media dropped from the request because it exceeded
+  the per-request limit.
+ccVersion: 2.1.321
 -->
-[media removed: request limit]
+[media removed: request limit.

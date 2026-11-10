@@ -2,9 +2,10 @@
 name: 'Tool Description: SuggestConnectors'
 description: >-
   Describes the SuggestConnectors tool for resolving SearchMcpRegistry
-  directoryUuid values into full connector payloads and install-state guidance
-ccVersion: 2.1.199
+  directoryUuid values or installed server_id values into full connector
+  payloads, with install-state and session-availability guidance.
+ccVersion: 2.1.321
 -->
-Get the full connector payloads for a set of directoryUuid values from SearchMcpRegistry. Call this tool only with directoryUuid values from a SearchMcpRegistry result. Do not guess UUIDs. Do not pass connector names.
+Get the full connector payloads for a set of directoryUuid values from SearchMcpRegistry. Call this tool only with directoryUuid values from a SearchMcpRegistry result, or installed connectors' server_id values listed in your system prompt. Do not guess UUIDs. Do not pass connector names.
 
-This tool returns the name, the description, the url, the iconUrl, and sample tool names of each connector. It also returns whether the connector is installed for the claude.ai org of the user. The installState field shows org-level auth only. It does not show whether the tools are loaded this session. To know whether a connector is usable here, examine the enabledInChat field from ListConnectors first. If a result is relevant and is not installed, tell the user to connect it through claude.ai. This tool does not connect anything itself.
+Returns name, description, url, iconUrl, sample tool names, and whether the connector is already installed for the user's claude.ai org. installState reflects org-level auth, not whether tools are loaded this session — check ListConnectors' enabledInChat before claiming a connector is usable here. If a result looks relevant and is not installed, tell the user they could connect it via claude.ai; this tool does not itself connect anything.

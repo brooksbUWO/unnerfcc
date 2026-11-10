@@ -1,8 +1,8 @@
 <!--
 name: 'Tool Result: Remote machine possible offline reasons'
 description: >-
-  Enumerates possible reasons why a remote machine is unreachable (asleep,
-  offline, serving disabled).
-ccVersion: 2.1.251
+  Enumerates possible reasons the user's computer is unreachable, from sleep or
+  offline to tool serving being switched off.
+ccVersion: 2.1.321
 -->
-it may be asleep, offline, not running, serving may be switched off on it, or its announcement could not be verified by this session
+the computer may be asleep or offline, Claude may not be running on it, running tools for cloud sessions may be switched off on it, or this session could not verify it

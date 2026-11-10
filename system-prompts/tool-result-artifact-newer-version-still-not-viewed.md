@@ -1,11 +1,11 @@
 <!--
 name: 'Tool Result: Newer Artifact Version Still Not Viewed'
 description: >-
-  Refuses to reconsider previously rejected content because the newer version
-  has not been viewed.
-ccVersion: 2.1.251
+  Explains that the newer published version still does not count as viewed, so
+  the refused content was not reconsidered.
+ccVersion: 2.1.321
 variables:
-  - PREFIX
+  - REFUSAL_PREFIX
   - VERSION_INFO
 -->
-${PREFIX} the newer version ${VERSION_INFO} still does not count as viewed, so this content (already refused against it) was not reconsidered
+${REFUSAL_PREFIX} the newer version ${VERSION_INFO} still does not count as viewed, so 

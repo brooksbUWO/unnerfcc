@@ -1,9 +1,11 @@
 <!--
 name: 'Skill: /loop slash command (dynamic mode)'
 description: >-
-  Parses user input into an interval and prompt for scheduling recurring or
-  dynamically self-paced loop executions
-ccVersion: 2.1.219
+  Parses the /loop input into an interval and a prompt for scheduling a
+  recurring or dynamically self-paced run.
+ccVersion: 2.1.321
+variables:
+  - MODE_SECTIONS
 -->
 # /loop — schedule a recurring or self-paced prompt
 
@@ -24,3 +26,4 @@ Examples:
 - `check the deploy` → no interval → dynamic mode, prompt `check the deploy` (rule 3)
 - `check every PR` → no interval → dynamic mode, prompt `check every PR` (rule 3 — "every" not followed by time)
 - `5m` → empty prompt → show usage
+${MODE_SECTIONS}

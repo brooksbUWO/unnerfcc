@@ -1,11 +1,15 @@
 <!--
 name: 'Tool Result: Web search budget exhausted'
 description: >-
-  Tells the model this session has spent its WebSearch budget and to continue
-  from information already gathered or have the user raise the limit.
-ccVersion: 2.1.219
+  Tells the model this session has spent its WebSearch budget, to continue from
+  information already gathered, and not to route around the limit through
+  shells, browsers, computer use, or third-party readers and proxies.
+ccVersion: 2.1.321
 variables:
-  - SEARCHES_USED
-  - MAX_SEARCHES
+  - BUDGET_SCOPE_NOUN
+  - SEARCH_USAGE_COUNTS
+  - CONTINUE_WITHOUT_SEARCH_GUIDANCE
+  - SHELL_TOOL_NAME
+  - ADDITIONAL_BUDGET_NOTE
 -->
-Web search was not performed: this session has used its web search budget (${SEARCHES_USED} of ${MAX_SEARCHES} WebSearch calls). Continue with the information already gathered instead of issuing more searches. If more searches are genuinely needed, ask the user to raise CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION.
+Web search was not performed: this ${BUDGET_SCOPE_NOUN}'s web search budget is used up (${SEARCH_USAGE_COUNTS}). ${CONTINUE_WITHOUT_SEARCH_GUIDANCE}; do not work around the limit by querying search engines with curl or wget from ${SHELL_TOOL_NAME}, by querying them in a browser or through a computer-use tool, or by searching or fetching through a third-party reader, proxy or archive service.${ADDITIONAL_BUDGET_NOTE}

@@ -1,11 +1,10 @@
 <!--
 name: 'System Prompt: Remote service served by different client'
 description: >-
-  Notifies that a service or machine is now served by a different attached
-  client.
-ccVersion: 2.1.251
+  Notifies that the named machine is now served by a different attached client
+  of this session than before.
+ccVersion: 2.1.321
 variables:
-  - SERVICE_OR_MACHINE_NAME
-  - TIMESTAMP
+  - MACHINE_NAME
 -->
-- ${SERVICE_OR_MACHINE_NAME} is now served by a different attached client of this session than before (re-announced at ${TIMESTAMP} UTC).
+- ${MACHINE_NAME} is now served by a different attached client of this session than before (re-announced at 

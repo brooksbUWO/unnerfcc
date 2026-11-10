@@ -1,8 +1,8 @@
 <!--
 name: 'Tool Result: Artifact type fixed files'
 description: >-
-  Artifact tool result fragment listing the fixed files defined by the Artifact
-  type.
-ccVersion: 2.1.251
+  Artifact tool result fragment noting that the type's files are fixed and not
+  listed.
+ccVersion: 2.1.321
 -->
-. The type's files (fixed): 
+. The type's files are fixed and not listed here.

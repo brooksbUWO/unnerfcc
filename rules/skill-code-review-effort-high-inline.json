@@ -4,10 +4,10 @@
   {
    "description": "un-nerf: high-tier header - loud no-verify cut (defect 6)",
    "stock": [
-    "high effort → 8 inline angles → dedup (no verify) → ≤10 findings"
+    "high effort → 8 inline angles → dedup (no verify)"
    ],
    "unnerf": [
-    "high effort → 8 inline angles → dedup (no verify; report findings as unverified) → ≤10 findings"
+    "high effort → 8 inline angles → dedup (no verify; report findings as unverified)"
    ]
   }
  ]

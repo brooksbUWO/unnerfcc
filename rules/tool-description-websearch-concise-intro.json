@@ -1,0 +1,20 @@
+{
+ "id": "tool-description-websearch-concise-intro",
+ "rules": [
+  {
+   "description": "un-nerf: tool-description-websearch-concise",
+   "stock": [
+    "Search the web. Returns result blocks with titles and URLs. US-only.",
+    "",
+    "- The current month is ${CURRENT_MONTH_YEAR} — use this when searching for recent information.",
+    "- `allowed_domains` / `blocked_domains` filter results."
+   ],
+   "unnerf": [
+    "Search the web. Returns result blocks with titles and URLs. US-only.",
+    "",
+    "- The current month is ${CURRENT_MONTH_YEAR}. Use this month for a search for recent information.",
+    "- `allowed_domains` / `blocked_domains` filter results."
+   ]
+  }
+ ]
+}

@@ -2,17 +2,19 @@
 name: 'Agent Prompt: /batch slash command'
 description: >-
   Instructions for orchestrating a large, parallelizable change across a
-  codebase.
-ccVersion: 2.1.219
+  codebase through plan-mode research, independent work units, an end-to-end
+  test recipe, parallel worktree workers, and a progress table.
+ccVersion: 2.1.321
 variables:
   - USER_INSTRUCTIONS
   - ENTER_PLAN_MODE_TOOL_NAME
-  - MIN_5_UNITS
-  - MAX_30_UNITS
+  - MIN_UNITS
+  - MAX_UNITS
   - ASK_USER_QUESTION_TOOL_NAME
   - EXIT_PLAN_MODE_TOOL_NAME
   - AGENT_TOOL_NAME
   - WORKER_PROMPT
+  - ADDITIONAL_SPAWN_NOTE
 -->
 # Batch: Parallel Work Orchestration
 
@@ -28,12 +30,12 @@ Call the `${ENTER_PLAN_MODE_TOOL_NAME}` tool now to enter plan mode, then:
 
 1. **Understand the scope.** Launch one or more subagents (in the foreground — you need their results) to deeply research what this instruction touches. Find all the files, patterns, and call sites that need to change. Understand the existing conventions so the migration is consistent.
 
-2. **Decompose into independent units.** Break the work into ${MIN_5_UNITS}–${MAX_30_UNITS} self-contained units. Each unit must:
+2. **Decompose into independent units.** Break the work into ${MIN_UNITS}–${MAX_UNITS} self-contained units. Each unit must:
    - Be independently implementable in an isolated git worktree (no shared state with sibling units)
    - Be mergeable on its own without depending on another unit's PR landing first
    - Be roughly uniform in size (split large units, merge trivial ones)
 
-   Scale the count to the actual work: few files → closer to ${MIN_5_UNITS}; hundreds of files → closer to ${MAX_30_UNITS}. Prefer per-directory or per-module slicing over arbitrary file lists.
+   Scale the count to the actual work: few files → closer to ${MIN_UNITS}; hundreds of files → closer to ${MAX_UNITS}. Prefer per-directory or per-module slicing over arbitrary file lists.
 
 3. **Determine the e2e test recipe.** Figure out how a worker can verify its change actually works end-to-end — not just that unit tests pass. Look for:
    - A `claude-in-chrome` skill or browser-automation tool (for UI changes: click through the affected flow, screenshot the result)
@@ -69,7 +71,7 @@ ${WORKER_PROMPT}
 ```
 
 Use `subagent_type: "general-purpose"` unless a more specific agent type fits.
-
+${ADDITIONAL_SPAWN_NOTE}
 ## Phase 3: Track Progress
 
 After launching all workers, render an initial status table:

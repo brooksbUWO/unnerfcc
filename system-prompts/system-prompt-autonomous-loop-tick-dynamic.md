@@ -1,14 +1,16 @@
 <!--
 name: 'System Prompt: Autonomous loop tick (dynamic pacing)'
-description: Autonomous loop tick injection (dynamic pacing variant)
-ccVersion: 2.1.257
+description: >-
+  Autonomous loop tick injection for dynamic pacing, telling the model to run
+  the established loop instructions and re-arm the wakeup with the sentinel
+  prompt to keep the loop alive.
+ccVersion: 2.1.321
 variables:
-  - SCHEDULE_WAKEUP_TOOL_NAME
-  - AUTONOMOUS_LOOP_SENTINEL
-  - LOOP_TICK_TAIL
+  - WAKEUP_TOOL_NAME
+  - LOOP_SENTINEL
 -->
 # Autonomous loop tick (dynamic pacing)
 
 Run the autonomous check using the loop instructions established earlier in this conversation. If you cannot find them, treat this as a no-op tick.
 
-You scheduled this tick via the ${SCHEDULE_WAKEUP_TOOL_NAME} tool (not a recurring cron). To keep the loop alive, call ${SCHEDULE_WAKEUP_TOOL_NAME} again at the end of this turn with `prompt` set to the literal sentinel `${AUTONOMOUS_LOOP_SENTINEL}` and `noop` set to `true` if this tick changed nothing (or `false` if it did) — otherwise the loop ends after this tick.${LOOP_TICK_TAIL}
+You scheduled this tick via the ${WAKEUP_TOOL_NAME} tool (not a recurring cron). To keep the loop alive, call ${WAKEUP_TOOL_NAME} again this turn with `prompt` set to the literal sentinel `${LOOP_SENTINEL}` and `noop` set to `true` if this tick changed nothing (or `false` if it did) — otherwise the loop ends after this tick.

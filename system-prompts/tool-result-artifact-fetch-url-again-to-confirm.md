@@ -1,8 +1,8 @@
 <!--
 name: 'Tool Result: Fetch Artifact URL Again to Confirm'
 description: >-
-  Directs fetching the artifact URL again to confirm live content instead of
-  reading a saved copy.
-ccVersion: 2.1.251
+  Directs fetching the artifact URL again to confirm live content, since
+  re-reading a file handed over by an earlier refusal does not count.
+ccVersion: 2.1.321
 -->
-fetch the artifact's URL again to confirm it (a Read of this saved copy does not) and publish again once you have that fetch's result
+fetch the artifact's URL again to confirm it (re-Reading a file an earlier refusal handed you does not count; if that fetch's result says the version counts as viewed only once its saved file is Read, Read every line of that file first) and, once you have that fetch's result,
