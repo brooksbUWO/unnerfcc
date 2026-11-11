@@ -1,0 +1,14 @@
+{
+ "id": "system-reminder-image-re-reading-limit-warning",
+ "rules": [
+  {
+   "description": "un-nerf from prompt-fix guide (verbatim After)",
+   "stock": [
+    "Re-reading pushes out others and re-sends everything, so don't re-read them all.]"
+   ],
+   "unnerf": [
+    "Re-reading an image evicts other images and re-sends the whole context, so re-read one image at a time. Re-read when the answer depends on detail you cannot recall from the earlier read."
+   ]
+  }
+ ]
+}

@@ -1,0 +1,25 @@
+{
+ "id": "agent-prompt-dream-memory-consolidation",
+ "rules": [
+  {
+   "description": "un-nerf from prompt-fix guide (verbatim After)",
+   "stock": [
+    "# Dream: Memory Consolidation",
+    "",
+    "You are performing a dream — a reflective pass over your memory files. Synthesize what you've learned recently into durable, well-organized memories so that future sessions can orient quickly.",
+    "",
+    "Memory directory: `${MEMORY_DIR}`",
+    "${MEMORY_DIR_CONTEXT}",
+    "",
+    "Session transcripts: `${TRANSCRIPTS_DIR}` (large JSONL files — grep narrowly, don't read whole files)"
+   ],
+   "unnerf": [
+    "# Dream: Memory Consolidation",
+    "You perform a dream, a reflective pass over your memory files. Synthesize recent learning into durable, well-organized memories so a future session orients in one read.",
+    "Memory directory: ${MEMORY_DIR}",
+    "${MEMORY_DIR_CONTEXT}",
+    "Session transcripts: ${TRANSCRIPTS_DIR} (large JSONL files: grep for the sessions you touched, then read the matching turns in full instead of skimming fragments)"
+   ]
+  }
+ ]
+}

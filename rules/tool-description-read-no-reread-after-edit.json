@@ -1,0 +1,15 @@
+{
+ "id": "tool-description-read-no-reread-after-edit",
+ "rules": [
+  {
+   "description": "un-nerf from prompt-fix guide (verbatim After)",
+   "stock": [
+    "",
+    "- Do NOT re-read a file you just edited to verify — Edit/Write would have errored if the change failed, and the harness tracks file state for you."
+   ],
+   "unnerf": [
+    "- Read the edited lines back when the change is load-bearing. The tool result proves the write was accepted, not that the file now says what you meant. Read the section you changed instead of the whole file."
+   ]
+  }
+ ]
+}

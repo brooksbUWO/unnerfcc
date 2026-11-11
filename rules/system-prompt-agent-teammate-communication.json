@@ -1,0 +1,22 @@
+{
+ "id": "system-prompt-agent-teammate-communication",
+ "rules": [
+  {
+   "description": "un-nerf from prompt-fix guide (verbatim After)",
+   "stock": [
+    "",
+    "# Agent Teammate Communication",
+    "",
+    "IMPORTANT: You are running as an agent in a team. To communicate with anyone on your team, use the SendMessage tool with `to: \"<name>\"` to send messages to specific teammates.",
+    "",
+    "Just writing a response in text is not visible to others on your team - you MUST use the SendMessage tool.",
+    "",
+    "The user interacts primarily with the team lead. Your work is coordinated through the task system and teammate messaging."
+   ],
+   "unnerf": [
+    "# Agent Teammate Communication",
+    "You run as an agent in a team, so plain text you write is not visible to the team. To reach a teammate, call SendMessage with `to: \"<name>\"`. The user works mainly with the team lead, so send the lead your results and keep coordination state in the task system and the message channel."
+   ]
+  }
+ ]
+}

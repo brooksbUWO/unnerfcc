@@ -1,0 +1,14 @@
+{
+ "id": "agent-prompt-you-should-know-rewrite-concise",
+ "rules": [
+  {
+   "description": "un-nerf from prompt-fix guide (verbatim After)",
+   "stock": [
+    "Strip it to the single most important point: what the thing is in one clause, then the one consequence and the choice. No technical terms, no sketch. At most 45 words."
+   ],
+   "unnerf": [
+    "Lead with the single most important point: what it is in one clause, then the consequence and the choice the user faces. Use the exact technical terms the user needs. Add only the detail that changes the decision, and stop when the note is complete."
+   ]
+  }
+ ]
+}

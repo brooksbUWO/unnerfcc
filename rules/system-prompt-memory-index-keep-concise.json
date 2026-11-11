@@ -1,0 +1,14 @@
+{
+ "id": "system-prompt-memory-index-keep-concise",
+ "rules": [
+  {
+   "description": "un-nerf from prompt-fix guide (verbatim After)",
+   "stock": [
+    "- Keep the index concise so you can scan it quickly when recalling memories"
+   ],
+   "unnerf": [
+    "- Keep the index scannable, and give each entry enough detail that a later recall picks the right memory without opening the others"
+   ]
+  }
+ ]
+}

@@ -7,7 +7,7 @@
     "Draft a concise (1-2 sentences) commit message that focuses on the \"why\" rather than the \"what\""
    ],
    "unnerf": [
-    "Draft a commit message that focuses on the \"why\" rather than the \"what\", at the length the change warrants"
+    "Draft a commit message that states the why before the what. Use the length the change warrants, usually one or two sentences, and more when the change needs the explanation."
    ]
   }
  ]

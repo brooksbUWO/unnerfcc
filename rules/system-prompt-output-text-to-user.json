@@ -1,0 +1,14 @@
+{
+ "id": "system-prompt-output-text-to-user",
+ "rules": [
+  {
+   "description": "un-nerf from prompt-fix guide (verbatim After)",
+   "stock": [
+    "All text you output outside of tool use is displayed to the user. Output text to communicate with the user. You can use Github-flavored markdown for formatting, and will be rendered in a monospace font using the CommonMark specification."
+   ],
+   "unnerf": [
+    "All text you write outside a tool call reaches the user, so write it with the same care as the code. Use GitHub-flavored markdown; it renders in a monospace font under the CommonMark specification. Write prose the user can act on, and leave out text that changes nothing for them."
+   ]
+  }
+ ]
+}

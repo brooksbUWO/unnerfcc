@@ -1,0 +1,14 @@
+{
+ "id": "system-reminder-stop-and-wait-directive",
+ "rules": [
+  {
+   "description": "un-nerf from prompt-fix guide (verbatim After)",
+   "stock": [
+    "STOP what you are doing and wait for the user to tell you how to proceed."
+   ],
+   "unnerf": [
+    "Stop the action you are running and wait for the user's next instruction. Keep the work already finished, and resume from that point when the user replies."
+   ]
+  }
+ ]
+}

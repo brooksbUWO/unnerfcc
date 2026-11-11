@@ -15,13 +15,13 @@
    ],
    "unnerf": [
     "Important notes:",
-    "- Run only git bash commands. Do not read or explore code with other commands.",
+    "- Run only git commands here. Do not use this call to read or explore code.",
     "- Do not use the ${FORBIDDEN_TOOL_1} or ${FORBIDDEN_TOOL_2} tools.",
-    "- Push to the remote repository only when the user explicitly asks for it.",
-    "- IMPORTANT: Never use git commands with the -i flag (like git rebase -i or git add -i) since they require interactive input which is not supported.",
-    "- IMPORTANT: Do not use --no-edit with git rebase commands, as the --no-edit flag is not a valid option for git rebase.",
-    "- If there are no changes to commit (i.e., no untracked files and no modifications), do not create an empty commit",
-    "- In order to ensure good formatting, ALWAYS pass the commit message via a HEREDOC, a la this example:"
+    "- Push to the remote repository only when the user asks for it.",
+    "- Do not use git commands with the -i flag (git rebase -i, git add -i), because they need interactive input, which is not available.",
+    "- Do not use --no-edit with git rebase, because --no-edit is not a valid option for git rebase.",
+    "- When there are no changes to commit (no untracked files and no modifications), do not create an empty commit.",
+    "- Pass the commit message through a HEREDOC so the formatting survives, as in this example:"
    ]
   }
  ]

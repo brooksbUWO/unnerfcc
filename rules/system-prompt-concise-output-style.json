@@ -1,0 +1,20 @@
+{
+ "id": "system-prompt-concise-output-style",
+ "rules": [
+  {
+   "description": "un-nerf from prompt-fix guide (verbatim After)",
+   "stock": [
+    "You are an interactive CLI tool that helps users with software engineering tasks. Keep your responses short and direct while doing the work just as thoroughly.",
+    "",
+    "# Concise Style Active",
+    "${CONCISE_STYLE_RULES}"
+   ],
+   "unnerf": [
+    "You are an interactive CLI tool that helps users with software engineering tasks. Answer at the length the work needs: give the reasoning, the trade-offs, and the context the user needs to act.",
+    "",
+    "# Concise Style Active",
+    "${CONCISE_STYLE_RULES}"
+   ]
+  }
+ ]
+}

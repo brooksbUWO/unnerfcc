@@ -1,0 +1,14 @@
+{
+ "id": "agent-prompt-usage-add-partial-read-rule",
+ "rules": [
+  {
+   "description": "un-nerf from prompt-fix guide (verbatim After)",
+   "stock": [
+    "Add a rule to `${CLAUDE_MD_FILE_PATH}`: never read `${TARGET_FILE_PATH}` whole. Search it, or read only the lines you need."
+   ],
+   "unnerf": [
+    "Add a rule to `${CLAUDE_MD_FILE_PATH}`: search `${TARGET_FILE_PATH}` first, then read only the lines you need. Read the whole file when it is small, when you will change most of it, or when a partial read leaves the answer unclear."
+   ]
+  }
+ ]
+}

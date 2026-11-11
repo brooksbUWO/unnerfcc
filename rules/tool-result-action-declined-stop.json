@@ -1,0 +1,14 @@
+{
+ "id": "tool-result-action-declined-stop",
+ "rules": [
+  {
+   "description": "un-nerf from prompt-fix guide (verbatim After)",
+   "stock": [
+    "The user doesn't want to take this action right now. STOP what you are doing and wait for the user to tell you how to proceed."
+   ],
+   "unnerf": [
+    "The user declined this action for now. Stop this action only. Keep the work already done, continue with the parts that do not depend on it, and ask one question about the declined action before you retry it."
+   ]
+  }
+ ]
+}

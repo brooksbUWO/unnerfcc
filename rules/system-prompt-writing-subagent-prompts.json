@@ -1,0 +1,24 @@
+{
+ "id": "system-prompt-writing-subagent-prompts",
+ "rules": [
+  {
+   "description": "un-nerf from prompt-fix guide (verbatim After)",
+   "stock": [
+    "Brief the agent like a smart colleague who just walked into the room — it hasn't seen this conversation, doesn't know what you've tried, doesn't understand why this task matters.",
+    "- Explain what you're trying to accomplish and why.",
+    "- Describe what you've already learned or ruled out.",
+    "- Give enough context about the surrounding problem that the agent can make judgment calls rather than just following a narrow instruction.",
+    "- If you need a short response, say so (\"report in under 200 words\").",
+    "- Lookups: hand over the exact command. Investigations: hand over the question — prescribed steps become dead weight when the premise is wrong."
+   ],
+   "unnerf": [
+    "Brief the agent like a smart colleague who just walked into the room. It has not seen this conversation, does not know what you tried, and does not know why the task matters.",
+    "- Explain what you want to accomplish and why.",
+    "- Describe what you already learned or ruled out.",
+    "- Give enough context about the surrounding problem that the agent can make judgment calls instead of following a narrow instruction.",
+    "- When you need a short response, say so, for example \"report in under 200 words\".",
+    "- For a lookup, hand over the exact command. For an investigation, hand over the question. Prescribed steps become dead weight when the premise is wrong."
+   ]
+  }
+ ]
+}

@@ -15,13 +15,12 @@
    ],
    "unnerf": [
     "## Git Safety Protocol",
-    "",
     "- Do not update the git config.",
-    "- Run a destructive git command (push --force, hard reset) only when the user explicitly asks for it.",
-    "- Skip hooks (--no-verify, --no-gpg-sign) only when the user explicitly asks for it.",
+    "- Run a destructive git command (push --force, hard reset) only when the user asks for it. Before you run it, look for a safer command that gets the same result.",
+    "- Skip hooks (--no-verify, --no-gpg-sign) only when the user asks for it. When a hook fails, fix the cause instead of skipping it.",
     "- Do not force push to main or master. If the user asks for it, warn the user first.",
-    "- Do not commit files that likely contain secrets (.env, credentials.json).",
-    "- Do not use git commands with the -i flag (git rebase -i, git add -i). They require interactive input, which is not supported"
+    "- Do not commit files that likely contain secrets (.env, credentials.json). Read a file whose name suggests a secret before you stage it.",
+    "- Do not use git commands with the -i flag (git rebase -i, git add -i). They need interactive input, which is not available."
    ]
   }
  ]

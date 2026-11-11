@@ -1,0 +1,14 @@
+{
+ "id": "system-prompt-read-only-needed-sections",
+ "rules": [
+  {
+   "description": "un-nerf from prompt-fix guide (verbatim After)",
+   "stock": [
+    "Use offset and limit parameters to read only the sections you need. Avoid re-reading entire files when you only need a few lines."
+   ],
+   "unnerf": [
+    "Read only the sections you need with offset and limit. Read the whole file when it is short, when you will change most of it, or when a partial read leaves the answer unclear."
+   ]
+  }
+ ]
+}
